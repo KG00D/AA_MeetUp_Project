@@ -3,11 +3,6 @@
 Welcome to the Meetup Clone Backend Application! 
 This is a coding bootcamp project aimed at cloning the popular website Meetup.com.
 
-
-
-
-
-
 ## Prerequisites
 
     Node.js
@@ -44,7 +39,7 @@ npm install.
 ```bash
 sequelize db:migrate. 
 ````
-## Usage/Examples
+## Usage/Examples -- Work In Progress
 
 1. Start the applicaiton
 
@@ -55,7 +50,7 @@ npm app.js
 2. Access the API endpoints with a REST client like Postman at http://localhost:3000
 
 
-## API Endpoints
+## API Endpoints -- Work In Progress
 
     GET /events: Retrieve all events. 
 
