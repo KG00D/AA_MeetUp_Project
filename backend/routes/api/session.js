@@ -8,15 +8,14 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const validateLogin = [
   check('credential')
-    .exists({ checkFalsy: true })
-    .notEmpty()
-    .withMessage("Provide a valid email or username.'),
+      .exists({ checkFalsy: true })
+      .notEmpty()
+      .withMessage('Please provide a valid email or username.'),
   check('password')
-    .exists({ checkFalsy: true })
-    .withMessage("Provide a password."),
-  handleValidationErrors
+      .exists({ checkFalsy: true })
+      .withMessage('Please provide a password.'),
+  handleValidationErrors,
 ];
-
 
 router.post(
   '/',
@@ -33,34 +32,26 @@ router.post(
       err.errors = ['The provided credentials were invalid.'];
       return next(err);
     }
-
     await setTokenCookie(res, user);
-
+    
     return res.json({
       user
     });
   }
 );
 
-router.get(
-  '/',
-  restoreUser,
-  (req, res) => {
-    const { user } = req;
-    if (user) {
-      return res.json({
-        user: user.toSafeObject()
-      });
-    } else return res.json({});
-  }
-);
+router.delete('/', (_req, res) => {
+  res.clearCookie('token');
+  return res.json({ message: 'success' });
+});
 
-router.delete(
-  '/',
-  (_req, res) => {
-    res.clearCookie('token');
-    return res.json({ message: 'success' });
-  }
-);
+router.get('/', (req, res) => {
+  const { user } = req;
+  if (user) {
+      return res.json({
+          user: user.toSafeObject(),
+      });
+  } else return res.json({ user: null });
+});
 
 module.exports = router;
