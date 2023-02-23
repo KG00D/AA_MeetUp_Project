@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       return bcrypt.compareSync(password, this.hashedPassword.toString());
     }
 
-
     static getCurrentUserById(id) {
       return User.scope("currentUser").findByPk(id);
     }
@@ -33,18 +32,44 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
 
-    static async signup({ username, email, password }) {
+    static async signup({ username, email, password, firstName, lastName }) {
       const hashedPassword = bcrypt.hashSync(password);
       const user = await User.create({
         username,
         email,
-        hashedPassword
+        hashedPassword,
+        firstName,
+        lastName
       });
       return await User.scope('currentUser').findByPk(user.id);
     }
 
+    validateSync() {
+      const errors = {};
+      if (!this.firstName) {
+        errors.firstName = 'First name is required.';
+      }
+      if (!this.lastName) {
+        errors.lastName = 'Last name is required.';
+      }
+      if (!this.email) {
+        errors.email = 'Email is required.';
+      } else {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(this.email)) {
+          errors.email = `${this.email} is not a valid email address.`;
+        }
+      }
+      if (Object.keys(errors).length > 0) {
+        return new Error(JSON.stringify(errors));
+      }
+      return null;
+    }
+
     static associate(models) {
-      // define association here
+      User.hasMany(models.Attendance, {foreignKey: 'userId'}),
+      User.hasMany(models.Membership, {foreignKey: 'userId'}),
+      User.hasMany(models.Group, {foreignKey: 'organizerId'})
     }
   };
 
@@ -65,16 +90,10 @@ module.exports = (sequelize, DataTypes) => {
       firstName: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-          len: [20]
-        }
       },
       lastName: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-          len: [20]
-        }
       },
       email: {
         type: DataTypes.STRING,

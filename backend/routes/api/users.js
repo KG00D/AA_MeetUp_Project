@@ -1,8 +1,12 @@
 const express = require('express');
+const { Op } = require('sequelize');
+
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User } = require('../../db/models');
 const { check } = require('express-validator');
+
 const { handleValidationErrors } = require('../../utils/validation');
+
 const router = express.Router();
 
 const validateSignup = [
@@ -25,23 +29,39 @@ const validateSignup = [
     handleValidationErrors
   ];
 
+const userEmailExists = async (req, res, next) => {
+  const { email, username} = req.body;
+  const user = await User.scope('currentUser').findOne({
+    where: {
+      [Op.or]: [{username: username}, { email: email}],
+    },
+  })
+  console.log(user);
+  if (user) {
+    const error = Error('Username has already been used');
+    error.title = 'Username has already been used';
+    error.status = 403;
+    if (user.email === email) {
+      error.errors = ['blablablabla'];
+    } else if (user.username === username) {
+      error.errors = ['User with that username blabablabalbla'];
+    }
+    return next(error)
+  }
+  next();
+}
 
 // Sign up
-router.post(
-  '/',
-  validateSignup,
-  async (req, res) => {
-    const { email, password,firstName,lastName, username } = req.body;
-    const user = await User.signup({ email, username,firstName,lastName, password });
-
+router.post('/', validateSignup, userEmailExists, async (req, res) => {
+    //console.log(req.body)    
+    const {email, firstName, lastName, username, password} = req.body;
+    const user = await User.signup({ email, firstName, lastName, username, password });
     await setTokenCookie(res, user);
-
     return res.json({
-      user,
+      user: user,
     });
   }
 );
-  
 
 module.exports = router;
  
