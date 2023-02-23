@@ -17,20 +17,20 @@ module.exports = {
       venueId: {
         type: Sequelize.INTEGER,
         references: { 
-          model: 'Venues',
-          key: 'id'
+          model: "Venues",
+          key: "id"
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
       },
       groupId: {
         type: Sequelize.INTEGER,
         references: { 
-          model: 'Groups',
-          key: 'id'
+          model: "Groups",
+          key: "id"
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
       },
       name: {
         type: Sequelize.STRING
