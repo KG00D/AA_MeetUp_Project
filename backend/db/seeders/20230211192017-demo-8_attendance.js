@@ -46,7 +46,7 @@ module.exports = {
       );
     } catch (error) {
       console.error('Error deleting data from Attendances table: ', error);
-      throw error;
+      throw error; 
     }
   },
 };
