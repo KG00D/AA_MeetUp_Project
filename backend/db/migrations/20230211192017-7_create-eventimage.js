@@ -17,11 +17,11 @@ module.exports = {
       eventId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Events',
-          key: 'id'
+          model: "Events",
+          key: "id"
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
       },
       url: {
         type: Sequelize.STRING
