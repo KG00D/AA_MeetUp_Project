@@ -12,7 +12,7 @@ module.exports = {
       venueId: {
         type: Sequelize.STRING,
         references: { 
-          model: 'Venue',
+          model: 'Venues',
           key: 'id'
         },
         onDelete: 'CASCADE',
