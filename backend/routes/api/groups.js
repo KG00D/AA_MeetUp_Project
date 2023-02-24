@@ -1,5 +1,6 @@
 const express = require('express');
 const sequelize = require('sequelize');
+const { body, validationResult } = require('express-validator');
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
 const { Group, Membership, groupImage } = require('../../db/models');
 const router = express.Router();
@@ -102,13 +103,29 @@ router.get("/:id", async (req, res, next) => {
     }
 });
 
+
 // Start of all my posts
-// Create Group
+// Create a Group
 // TODO Changed a lot of the migration names, need to 100% double-check these.....
 // TODO and compare with postman body to ensure it's synched...
 // TODO check database for creation.
-router.post('/', requireAuth, async (req, res, next) => {
+router.post('/', requireAuth, [
+  body('name').isLength({ max: 60 }).withMessage('Name must be 60 characters or less'),
+  body('about').isLength({ min: 50 }).withMessage('About must be 50 characters or more'),
+  body('type').isIn(['Online', 'In person']).withMessage("Type must be 'Online' or 'In person'"),
+  body('private').isBoolean().withMessage('Private must be a boolean'),
+  body('city').notEmpty().withMessage('City is required'),
+  body('state').notEmpty().withMessage('State is required'),
+], async (req, res, next) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: 'Validation Error',
+        statusCode: 400,
+        errors: errors.array().map(error => error.msg),
+      });
+    }
     const { name, about, type, private, city, state } = req.body;
     const group = await Group.create({
       name,
@@ -126,7 +143,7 @@ router.post('/', requireAuth, async (req, res, next) => {
   }
 });
 
-
+// Add an Image to a Group
 router.post("/:id/images", async (req, res, next) => {
   try {
     const { user } = req;
