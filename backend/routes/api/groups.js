@@ -26,6 +26,13 @@ router.get('/current', requireAuth, async (req, res, next) => {
             model: Membership,
             where: { userId },
           },
+          {
+            model: Membership,
+            attributes: ['groupId',
+              [sequelize.fn('COUNT', sequelize.col('userId')), 'numMembers'],
+          ],
+          group:['Membership.groupId'], 
+          },
         ],
       });
       return res.status(200).json({ Groups: groups });
