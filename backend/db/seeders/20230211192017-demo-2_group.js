@@ -34,7 +34,7 @@ module.exports = {
         city: 'Los Angelas',
         state: 'California'
       }
-    ], {});
+    ], );
   },
 
   down: async (queryInterface, Sequelize) => {
