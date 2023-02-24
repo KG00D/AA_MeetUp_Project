@@ -149,7 +149,7 @@ router.post('/', requireAuth, [
 // Add an Image to a Group - PM
 // Add an Image to a Group based on the Group's id - GH
 // Removing extra error handling. Add back in for pportfolio? Don't need unwanted errors for now..
-router.post('/api/groups/:groupId/images', async (req, res, next) => {
+router.post('/api/groups/:groupId/images', requireAuth, async (req, res, next) => {
   try {
     const { user } = req;
     console.log(user)
