@@ -84,11 +84,11 @@ router.get("/:id", async (req, res, next) => {
             attributes: []
           },
           {
-            model: GroupImage,
+            model: groupImage,
             attributes: ['id', 'url']
           }
         ],
-        group: ["Group.id", "GroupImages.id"]
+        group: ["Group.id", "groupImages.id"]
       });
   
       if (!group) {
@@ -160,7 +160,8 @@ router.post('/api/groups/:groupId/images', async (req, res, next) => {
       err.status = 404;
       return next(err);
     }
-    const groupImage = await GroupImage.create({
+    // TODO is this bad styling on line 164? ask, google, something
+    const groupImage = await groupImage.create({
       groupId,
       url,
       preview,
