@@ -36,7 +36,7 @@ module.exports = {
           type: Sequelize.STRING
         },
         private: {
-          type: Sequelize.BOOLEAN // changed from STRING to BOOLEAN for clarity
+          type: Sequelize.BOOLEAN
         },
         city: {
           type: Sequelize.STRING

@@ -22,7 +22,7 @@ module.exports = {
         groupId:  1,
         status: 'true'
       }
-    ], {});
+    ], options);
   },
 
   down: async (queryInterface, Sequelize) => {
