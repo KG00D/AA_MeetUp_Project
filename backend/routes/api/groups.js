@@ -152,8 +152,11 @@ router.post('/', requireAuth, [
 router.post('/api/groups/:groupId/images', async (req, res, next) => {
   try {
     const { user } = req;
+    console.log(user)
     const groupId = req.params.groupId;
+    console.log(groupId)
     const { url, preview } = req.body;
+    console.log(url, preview)
     const group = await Group.findByPk(groupId);
     if (!group) {
       const err = new Error(`Group couldn't be found with ID ${groupId}`);
