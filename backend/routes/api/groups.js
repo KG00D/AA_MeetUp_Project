@@ -93,13 +93,21 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // Start of all my posts
+// Create Group
+// TODO Changed a lot of the migration names, need to 100% double-check these.....
+// TODO and compare with postman body to ensure it's synched...
+// TODO check database for creation.
 router.post('/', requireAuth, async (req, res, next) => {
   try {
-    const { name, description } = req.body;
+    const { name, about, type, private, city, state } = req.body;
     const group = await Group.create({
       name,
-      description,
-      ownerId: req.user.id 
+      about,
+      type,
+      private,
+      city,
+      state,
+      organizerId: req.user.id 
     });
     console.log(group);
     return res.status(201).json({ Group: group });
