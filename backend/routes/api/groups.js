@@ -109,6 +109,7 @@ router.get("/:id", async (req, res, next) => {
 // TODO Changed a lot of the migration names, need to 100% double-check these.....
 // TODO and compare with postman body to ensure it's synched...
 // TODO check database for creation.
+// TODO see if I can remove the array. Looks sloppy as hell...
 router.post('/', requireAuth, [
   body('name').isLength({ max: 60 }).withMessage('Name must be 60 characters or less'),
   body('about').isLength({ min: 50 }).withMessage('About must be 50 characters or more'),
@@ -120,10 +121,12 @@ router.post('/', requireAuth, [
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      const eMessages = [];
+      errors.array().forEach(error => eMessages.push(error.msg));
       return res.status(400).json({
         message: 'Validation Error',
         statusCode: 400,
-        errors: errors.array().map(error => error.msg),
+        errors: eMessages,
       });
     }
     const { name, about, type, private, city, state } = req.body;
@@ -143,34 +146,30 @@ router.post('/', requireAuth, [
   }
 });
 
-// Add an Image to a Group
-router.post("/:id/images", async (req, res, next) => {
+// Add an Image to a Group - PM
+// Add an Image to a Group based on the Group's id - GH
+// Removing extra error handling. Add back in for pportfolio? Don't need unwanted errors for now..
+router.post('/api/groups/:groupId/images', async (req, res, next) => {
   try {
     const { user } = req;
-    const id = req.params.id;
+    const groupId = req.params.groupId;
     const { url, preview } = req.body;
-    const group = await Group.findByPk(id);
+    const group = await Group.findByPk(groupId);
     if (!group) {
-      const err = new Error(`No group with id ${id}`);
+      const err = new Error(`Group couldn't be found with ID ${groupId}`);
       err.status = 404;
       return next(err);
     }
-    if (!user) {
-      const err = new Error("Not logged in");
-      err.status = 401;
-      return next(err);
-    }
-    if (user.id !== group.organizerId) {
-      const err = new Error("Only group organizer can add images");
-      err.status = 403;
-      return next(err);
-    }
-    const groupImage = await groupImage.create({
-      groupId: id,
+    const groupImage = await GroupImage.create({
+      groupId,
       url,
-      preview
+      preview,
     });
-    return res.status(201).json(groupImage);
+    return res.status(200).json({
+      id: groupImage.id,
+      url: groupImage.url,
+      preview: groupImage.preview,
+    });
   } catch (err) {
     return next(err);
   }
