@@ -99,7 +99,7 @@ router.get("/:id", async (req, res, next) => {
 // TODO check database for creation.
 router.post('/', requireAuth, async (req, res, next) => {
   try {
-    const { name, description } = req.body;
+    const { name, about, type, private, city, state } = req.body;
     const group = await Group.create({
       name,
       about,
