@@ -84,7 +84,7 @@ router.get("/:id", async (req, res, next) => {
             attributes: ['id', 'url']
           }
         ],
-        group: ["Group.id", "groupImages.id"]
+        group: ["Group.id", "groupImages.id" ,"groupImages.previewUrl"]
       });
   
       if (!group) {
