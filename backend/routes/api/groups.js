@@ -10,12 +10,11 @@ router.use(restoreUser)
 // Start of all my GETs
 // Get All Groups - GH
 // Get All Groups - PM
-router.get('/groups', requireAuth, async (req, res, next) => {
+router.get('/', requireAuth, async (req, res, next) => {
     try {
-      // const groups = await Group.findAll();
-      // console.log(groups)
-      // return res.status(200).json({ Groups: groups });
-      return res.status(200).send('hello world');
+      const groups = await Group.findAll();
+      console.log(groups)
+      return res.status(200).json({ Groups: groups });
     } catch (error) {
       next(error);
     }
@@ -23,7 +22,7 @@ router.get('/groups', requireAuth, async (req, res, next) => {
 
 // Get All Groups Joined or oganized by Current User - GH
 // Get all Groups by current User - PM
-router.get('/groups/current', requireAuth, async (req, res, next) => {
+router.get('/current', requireAuth, async (req, res, next) => {
   try {
     console.log(req)
     const { user } = req;
@@ -146,7 +145,7 @@ router.post('/', requireAuth, [
 // Add an Image to a Group - PM
 // Add an Image to a Group based on the Group's id - GH
 // Removing extra error handling. Add back in for pportfolio? Don't need unwanted errors for now..
-router.post('/api/groups/:groupId/images', requireAuth, async (req, res, next) => {
+router.post('/:groupId/images', requireAuth, async (req, res, next) => {
   try {
     const { user } = req;
     console.log(user)
