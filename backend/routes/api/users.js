@@ -74,5 +74,16 @@ router.use((err, req, res, next) => {
   next(err);
 });
 
+router.use((err, req, res, next) => {
+  if (err.status === 400) {
+    return res.status(400).json({
+      message: err.message,
+      statusCode: err.status,
+      errors: err.errors,
+    });
+  }
+  next(err);
+});
+
 module.exports = router;
  
