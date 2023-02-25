@@ -63,7 +63,7 @@ router.get("/:id/venues", async (req, res, next) => {
     }
 });
 
-router.get('/:groupId', async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const groupId = req.params.groupId;
     const group = await Group.findOne({
