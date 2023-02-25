@@ -133,26 +133,23 @@ router.put('/:groupId', async (req, res) => {
     }
     const groups = await Group.findByPk(groupId);
     if (groups) {
-      groups.name = name || groups.name;
-      groups.about = about || groups.about;
-      groups.type = type || groups.type;
-      if (isPrivate !== undefined) {
-        groups.isPrivate = isPrivate;
-      }
-      groups.city = city || groups.city;
-      groups.state = state || groups.state;
-
-      await groups.save();
-
-      res.status(200).json(groups);
+      const updatedGroup = await groups.update({
+        name: name || groups.name,
+        about: about || groups.about,
+        type: type || groups.type,
+        isPrivate: isPrivate === undefined ? groups.isPrivate : isPrivate,
+        city: city || groups.city,
+        state: state || groups.state
+      });
+      res.status(200).json(updatedGroup);
     } else {
       res.status(404).json({ message: "Group not found" });
     }
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error(err);
+    res.status(404).json({ message: "Group not found" });
   }
 });
-
 
 // Start of all my posts
 // Create a Group
