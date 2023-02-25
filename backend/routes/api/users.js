@@ -39,7 +39,6 @@ const userEmailExists = async (req, res, next) => {
 
   if (user) {
     const error = new Error('User already exists');
-    error.title = 'User already exists';
     error.status = 403;
     if (user.email === email) {
       error.errors = ['User with that email already exists'];
