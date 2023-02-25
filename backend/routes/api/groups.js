@@ -24,25 +24,18 @@ router.get('/groups', async (req, res, next) => {
 // Get all Groups by current User - PM
 router.get('/api/groups/current', requireAuth, async (req, res, next) => {
     try {
-      const userId = req.user.id;
-      const groups = await Group.findAll({
-        include: [
-          {
-            model: Membership,
-            where: { userId },
-          },
-          {
-            model: Membership,
-            attributes: ['groupId',
-              [sequelize.fn('COUNT', sequelize.col('userId')), 'numMembers'],
-          ],
-          group:['Membership.groupId'], 
-          },
-        ],
-        attributes: ['id', 'organizer', 'name', 'about', 
-                     'type' ,'private', 'city', 'state' , 'state', 
-                     'createdAt', 'updatedAt', 'numMembers']
-      });
+      //const userId = req.user.id;
+      console.log(req);
+      const groups = await Group.findAll({});
+
+      //   where : {
+      //     organizerId :
+      //   }
+        
+      //   attributes: ['id', 'organizerId', 'name' ,'about', 
+      //                'type', 'private', 'city', 'state', 'createdAt', 'updatedAt']
+      // })
+
       return res.status(200).json({ Groups: groups });
     } catch (error) {
       next(error);
