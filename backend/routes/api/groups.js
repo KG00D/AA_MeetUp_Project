@@ -23,23 +23,26 @@ router.get('/groups', async (req, res, next) => {
 // Get All Groups Joined or oganized by Current User - GH
 // Get all Groups by current User - PM
 router.get('/api/groups/current', requireAuth, async (req, res, next) => {
-    try {
-      //const userId = req.user.id;
-      console.log(req);
-      const groups = await Group.findAll({});
+  try {
+    console.log(req)
+  }
+    // try {
+    //   //const userId = req.user.id;
+    //   console.log(req);
+    //   const groups = await Group.findAll({});
 
-      //   where : {
-      //     organizerId :
-      //   }
+    //   //   where : {
+    //   //     organizerId :
+    //   //   }
         
-      //   attributes: ['id', 'organizerId', 'name' ,'about', 
-      //                'type', 'private', 'city', 'state', 'createdAt', 'updatedAt']
-      // })
+    //   //   attributes: ['id', 'organizerId', 'name' ,'about', 
+    //   //                'type', 'private', 'city', 'state', 'createdAt', 'updatedAt']
+    //   // })
 
-      return res.status(200).json({ Groups: groups });
-    } catch (error) {
-      next(error);
-    }
+    //   return res.status(200).json({ Groups: groups });
+    // } catch (error) {
+    //   next(error);
+    // }
   });
 
 router.get("/:id/venues", async (req, res, next) => {
