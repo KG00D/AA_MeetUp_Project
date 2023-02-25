@@ -100,10 +100,10 @@ router.get("/:id", async (req, res, next) => {
 
 // Edit a Group - PM
 // Edit a Group - GH
-router.put('/:id', (req, res) => {
+router.put('/:groupId', async (req, res) => {
   try {
-    const id = req.params.id;
-    const { name, about, type, private: isPrivate, city, state } = req.body;
+    const groupId = req.params.groupId;
+    const { name, about, type, isPrivate, city, state } = req.body;
     const errors = [];
     if (name && name.length > 60) {
       errors.push("Name must be 60 characters or less");
@@ -131,15 +131,20 @@ router.put('/:id', (req, res) => {
       });
       return;
     }
-    const group = findById(id, groups);
-    if (group) {
-      group.name = name || group.name;
-      group.about = about || group.about;
-      group.type = type || group.type;
-      group.private = isPrivate !== undefined ? isPrivate : group.private;
-      group.city = city || group.city;
-      group.state = state || group.state;
-      res.status(200).json(group);
+    const groups = await Group.findByPk(groupId);
+    if (groups) {
+      groups.name = name || groups.name;
+      groups.about = about || groups.about;
+      groups.type = type || groups.type;
+      if (isPrivate !== undefined) {
+        groups.isPrivate = isPrivate;
+      }
+      groups.city = city || groups.city;
+      groups.state = state || groups.state;
+
+      await groups.save();
+
+      res.status(200).json(groups);
     } else {
       res.status(404).json({ message: "Group not found" });
     }
@@ -147,13 +152,7 @@ router.put('/:id', (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-function findById(id, groups) {
-  const group = groups.find(group => group.id === Number(id));
-  if (!group) {
-    throw new Error("Group not found");
-  }
-  return group;
-}
+
 
 // Start of all my posts
 // Create a Group
