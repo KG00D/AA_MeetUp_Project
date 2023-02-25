@@ -12,9 +12,10 @@ router.use(restoreUser)
 // Get All Groups - PM
 router.get('/groups', requireAuth, async (req, res, next) => {
     try {
-      const groups = await Group.findAll();
-      console.log(groups)
-      return res.status(200).json({ Groups: groups });
+      // const groups = await Group.findAll();
+      // console.log(groups)
+      // return res.status(200).json({ Groups: groups });
+      return res.status(200).send('hello world');
     } catch (error) {
       next(error);
     }
@@ -34,7 +35,6 @@ router.get('/groups/current', requireAuth, async (req, res, next) => {
       attributes: ['id', 'organizerId', 'name', 'about', 'type', 
       'private', 'city', 'state', 'createdAt', 'updatedAt']
     });
-
     return res.status(200).json({ groups });
   } catch (error) {
     console.error(error);
