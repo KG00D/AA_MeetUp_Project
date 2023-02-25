@@ -38,9 +38,11 @@ const userEmailExists = async (req, res, next) => {
   })
   console.log(user);
   if (user) {
-    const error = Error('Username has already been used');
-    error.title = 'Username has already been used';
-    error.status = 403;
+    const error = {
+      message: 'User already exists',
+      statusCode: 403,
+      errors: [],
+    };
     if (user.email === email) {
       error.errors = ['User with that email already exists'];
     } else if (user.username === username) {
