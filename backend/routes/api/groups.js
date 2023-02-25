@@ -2,7 +2,7 @@ const express = require('express');
 const sequelize = require('sequelize');
 const { body, validationResult } = require('express-validator');
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
-const { Group, Membership, groupImage, Venue } = require('../../db/models');
+const { Group, Membership, groupImage, Venue, User } = require('../../db/models');
 const router = express.Router();
 
 router.use(restoreUser)
@@ -67,7 +67,7 @@ router.get("/:id/venues", async (req, res, next) => {
 router.get('/:groupId', async (req, res, next) => {
   try {
     const groupId = req.params.groupId;
-    const group = await Group.findOne({
+    const group = await Group.findAll({
       where: { id: groupId },
       include: [
         { model: User, as: 'Organizer', attributes: ['id', 'firstName', 'lastName'] },
