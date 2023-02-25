@@ -29,6 +29,33 @@ router.get('/', async (req, res, next) => {
       return next(err);
     }
   });
+
+  router.get('/:groupId/events', async (req, res, next) => {
+    try {
+      const groupId = req.params.groupId;
+      const group = await Group.findOne({
+        where: { id: groupId },
+      });
+  
+      if (!group) {
+        const err = new Error('Group could not be found');
+        err.status = 404;
+        throw err;
+      }
+  
+      const events = await Event.findAll({
+        where: { groupId: groupId },
+        include: [
+          { model: Group, attributes: ['id', 'name', 'city', 'state'] },
+          { model: Venue, attributes: ['id', 'city', 'state'] },
+        ],
+      });
+  
+      return res.json({ Events: events });
+    } catch (err) {
+      return next(err);
+    }
+  });
   
   module.exports = router;
 
