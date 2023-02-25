@@ -66,7 +66,6 @@ router.get("/:id/venues", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
     try {
       const id = req.params.id;
-  
       const group = await Group.findOne({
         where: { id },
         attributes: {
@@ -98,6 +97,68 @@ router.get("/:id", async (req, res, next) => {
       return next(err);
     }
 });
+
+// Edit a Group - PM
+// Edit a Group - GH
+app.put('/:id', (req, res) => {
+  try {
+    const id = req.params.id;
+    const { name, about, type, private: isPrivate, city, state } = req.body;
+    const errors = [];
+    if (name && name.length > 60) {
+      errors.push("Name must be 60 characters or less");
+    }
+    if (about && about.length < 50) {
+      errors.push("About must be 50 characters or more");
+    }
+    if (type && !['Online', 'In person'].includes(type)) {
+      errors.push("Type must be 'Online' or 'In person'");
+    }
+    if (isPrivate !== undefined && typeof isPrivate !== 'boolean') {
+      errors.push("Private must be a boolean");
+    }
+    if (!city) {
+      errors.push("City is required");
+    }
+    if (!state) {
+      errors.push("State is required");
+    }
+    if (errors.length > 0) {
+      res.status(400).json({
+        message: "Validation Error",
+        statusCode: 400,
+        errors: errors
+      });
+      return;
+    }
+    const group = findById(id, groups);
+    if (group) {
+      group.name = name || group.name;
+      group.about = about || group.about;
+      group.type = type || group.type;
+      group.private = isPrivate !== undefined ? isPrivate : group.private;
+      group.city = city || group.city;
+      group.state = state || group.state;
+      res.status(200).json(group);
+    } else {
+      res.status(404).json({ message: "Group not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+function findById(id, groups) {
+  const group = groups.find(group => group.id === Number(id));
+  if (!group) {
+    throw new Error("Group not found");
+  }
+  return group;
+}
+
+  
+
+
+
 
 
 // Start of all my posts
