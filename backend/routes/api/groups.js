@@ -41,7 +41,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
   }
 });
 
-router.get("/:id/venues", async (req, res, next) => {
+router.get("/:groupId/venues", async (req, res, next) => {
     try {
       const { id } = req.params;
       const group = await Group.findByPk(id);
