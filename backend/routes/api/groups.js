@@ -14,7 +14,8 @@ router.get('/', requireAuth, async (req, res, next) => {
   try {
     const groups = await Group.findAll({
       attributes: {include: [[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"]]},
-      include: [{model: Membership, attributes: []}]
+      include: [{model: Membership, attributes: []}],
+      group: ['Group.id']
     });
     return res.status(200).json({ Groups: groups });
   } catch (error) {
