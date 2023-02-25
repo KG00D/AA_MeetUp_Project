@@ -64,11 +64,17 @@ router.get("/:groupId/venues", async (req, res, next) => {
 });
 
 //this is my test
-router.get('/:id', async (req, res, next) => {
+router.get('/:groupId', async (req, res, next) => {
   try {
     const id = req.params.id;
     const group = await Group.scope([
-      "organizer",
+      {
+        method: ["organizer"],
+        include: {
+          model: User,
+          attributes: ["id", "firstName", "lastName", "email"],
+        },
+      },
       "groupImage",
       {
         method: ["countMembers", id],
@@ -94,6 +100,7 @@ router.get('/:id', async (req, res, next) => {
     next(error);
   }
 });
+
 
 
 // Edit a Group - PM
