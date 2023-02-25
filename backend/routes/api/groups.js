@@ -100,7 +100,7 @@ router.get("/:id", async (req, res, next) => {
 
 // Edit a Group - PM
 // Edit a Group - GH
-app.put('/:id', (req, res) => {
+router.put('/:id', (req, res) => {
   try {
     const id = req.params.id;
     const { name, about, type, private: isPrivate, city, state } = req.body;
@@ -154,12 +154,6 @@ function findById(id, groups) {
   }
   return group;
 }
-
-  
-
-
-
-
 
 // Start of all my posts
 // Create a Group
