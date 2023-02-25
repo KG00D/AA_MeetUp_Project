@@ -24,7 +24,9 @@ router.get('/groups', requireAuth, async (req, res, next) => {
 // Get all Groups by current User - PM
 router.get('/groups/current', requireAuth, async (req, res, next) => {
   try {
+    console.log(req)
     const { user } = req;
+    console.log(user)
     const groups = await Group.findAll({
       where: {
         organizerId: user.id,
