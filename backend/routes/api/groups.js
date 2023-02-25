@@ -143,11 +143,11 @@ router.put('/:groupId', async (req, res) => {
       });
       res.status(200).json(updatedGroup);
     } else {
-      res.status(404).json({ message: "Group not found" });
+      res.status(404).json({ message: "Group couldn't be found" });
     }
   } catch (err) {
     console.error(err);
-    res.status(404).json({ message: "Group not found" });
+    res.status(404).json({ message: "Group couldn't be found" });
   }
 });
 
