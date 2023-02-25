@@ -23,21 +23,22 @@ router.get('/groups', async (req, res, next) => {
 // Get All Groups Joined or oganized by Current User - GH
 // Get all Groups by current User - PM
 router.get('/api/groups/current', requireAuth, async (req, res, next) => {
-    console.log(req);
-    try {
-      const { user } = req;
-      const groups = await Group.findAll({
-        where: {
-          organizerId: user.id,
-        },
-        attributes: {['id', 'organizerId', 'name', 'about', 'type', 
-                      'private', 'city', 'state', 'createdAt', 'updatedAt']},
-      });
-      return res.status(200).json({ Groups: groups });
-    } catch (error) {
-      next(error);
-    }
-  });
+  try {
+    const { user } = req;
+    const groups = await Group.findAll({
+      where: {
+        organizerId: user.id,
+      },
+      attributes: ['id', 'organizerId', 'name', 'about', 'type', 
+      'private', 'city', 'state', 'createdAt', 'updatedAt']
+    });
+
+    return res.status(200).json({ groups });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 router.get("/:id/venues", async (req, res, next) => {
     try {
