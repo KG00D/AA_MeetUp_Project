@@ -2,7 +2,7 @@ const express = require('express');
 const sequelize = require('sequelize');
 const { body, validationResult } = require('express-validator');
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
-const { Group, Membership, groupImage } = require('../../db/models');
+const { Group, Membership, groupImage, Venue } = require('../../db/models');
 const router = express.Router();
 
 router.use(restoreUser)
@@ -63,39 +63,28 @@ router.get("/:id/venues", async (req, res, next) => {
     }
 });
 
-router.get("/:groupId", async (req, res, next) => {
-    try {
-      const id = req.params.id;
-      const group = await Group.findOne({
-        where: { id },
-        attributes: {
-          include: [
-            [sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"]
-          ]
-        },
-        include: [
-          {
-            model: Membership,
-            attributes: []
-          },
-          {
-            model: groupImage,
-            attributes: ['id', 'url']
-          }
-        ],
-        group: ["Group.id", "groupImages.id" ,"groupImages.preview"]
-      });
-  
-      if (!group) {
-        const err = new Error('Group not found');
-        err.status = 404;
-        return next(err);
-      }
-  
-      return res.status(200).json(group);
-    } catch (err) {
-      return next(err);
+router.get('/:groupId', async (req, res, next) => {
+  try {
+    const groupId = req.params.groupId;
+    const group = await Group.findOne({
+      where: { id: groupId },
+      include: [
+        { model: User, as: 'Organizer', attributes: ['id', 'firstName', 'lastName'] },
+        { model: Venue, attributes: ['id', 'address', 'city', 'state', 'lat', 'lng'] },
+        { model: GroupImage, attributes: ['id', 'url', 'preview'] },
+      ],
+    });
+
+    if (!group) {
+      const err = new Error('Group could not be found');
+      err.status = 404;
+      throw err;
     }
+
+    return res.json(group);
+  } catch (err) {
+    return next(err);
+  }
 });
 
 // Edit a Group - PM
