@@ -36,22 +36,20 @@ const userEmailExists = async (req, res, next) => {
       [Op.or]: [{username: username}, { email: email}],
     },
   })
-  console.log(user);
+
   if (user) {
-    const error = {
-      message: 'User already exists',
-      statusCode: 403,
-      errors: [],
-    };
+    const error = new Error('User already exists');
+    error.title = 'User already exists';
+    error.status = 403;
     if (user.email === email) {
       error.errors = ['User with that email already exists'];
     } else if (user.username === username) {
       error.errors = ['User with that username already exists'];
     }
-    return next(error)
+    return next(error);
   }
   next();
-}
+};
 
 // Sign up
 router.post('/', validateSignup, userEmailExists, async (req, res) => {
