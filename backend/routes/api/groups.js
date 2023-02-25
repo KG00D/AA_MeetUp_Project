@@ -74,8 +74,8 @@ router.get('/:groupId', async (req, res, next) => {
         include: [
           {model: User,
           attributes: ["id", "firstName", "lastName", "email"],
-          },
-        ],
+            },
+          ],
         },
       "groupImage",
       {
