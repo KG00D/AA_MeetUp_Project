@@ -12,8 +12,10 @@ router.use(restoreUser)
 // Get All Groups - PM
 router.get('/', requireAuth, async (req, res, next) => {
     try {
-      const groups = await Group.findAll();
-      console.log(groups)
+      const groups = await Group.findAll(
+        attributes: {include: [[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"]]},
+        include: [{model: Membership, attributes: []}]
+      );
       return res.status(200).json({ Groups: groups });
     } catch (error) {
       next(error);
