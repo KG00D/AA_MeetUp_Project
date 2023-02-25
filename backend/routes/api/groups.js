@@ -10,7 +10,7 @@ router.use(restoreUser)
 // Start of all my GETs
 // Get All Groups - GH
 // Get All Groups - PM
-router.get('/groups', async (req, res, next) => {
+router.get('/groups', requireAuth, async (req, res, next) => {
     try {
       const groups = await Group.findAll();
       console.log(groups)
@@ -22,7 +22,7 @@ router.get('/groups', async (req, res, next) => {
 
 // Get All Groups Joined or oganized by Current User - GH
 // Get all Groups by current User - PM
-router.get('/api/groups/current', requireAuth, async (req, res, next) => {
+router.get('/groups/current', requireAuth, async (req, res, next) => {
   try {
     const { user } = req;
     const groups = await Group.findAll({
