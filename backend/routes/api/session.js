@@ -24,7 +24,7 @@ router.post('/', validateLogin, async (req, res, next) => {
     const authenticatedUser = await User.login({ credential, password});
     if (!authenticatedUser) {
       return res.status(401).json({
-        message: 'Email or password is incorrect',
+        message: 'Invalid Credentials',
         statusCode: 401,
       });
     }
