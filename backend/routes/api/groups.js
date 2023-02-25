@@ -70,11 +70,13 @@ router.get('/:groupId', async (req, res, next) => {
     const group = await Group.scope([
       {
         method: ["organizer"],
-        include: {
-          model: User,
+        attributes: [],
+        include: [
+          {model: User,
           attributes: ["id", "firstName", "lastName", "email"],
+            },
+          ],
         },
-      },
       "groupImage",
       {
         method: ["countMembers", id],
@@ -100,7 +102,6 @@ router.get('/:groupId', async (req, res, next) => {
     next(error);
   }
 });
-
 
 
 // Edit a Group - PM
