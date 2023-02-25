@@ -23,20 +23,19 @@ router.get('/', requireAuth, async (req, res, next) => {
   }
 });
 
-
 // Get All Groups Joined or oganized by Current User - GH
 // Get all Groups by current User - PM
 router.get('/current', requireAuth, async (req, res, next) => {
   try {
-    console.log(req)
     const { user } = req;
-    console.log(user)
     const groups = await Group.findAll({
+      attributes: {include: [[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"]]},
       where: {
         organizerId: user.id,
       },
       attributes: ['id', 'organizerId', 'name', 'about', 'type', 
-      'private', 'city', 'state', 'createdAt', 'updatedAt']
+      'private', 'city', 'state', 'createdAt', 'updatedAt'],
+      group: ['Group.id']
     });
     return res.status(200).json({ groups });
   } catch (error) {
