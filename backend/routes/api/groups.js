@@ -2,7 +2,7 @@ const express = require('express');
 const sequelize = require('sequelize');
 const { body, validationResult } = require('express-validator');
 const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
-const { Group, Membership, groupImage, Venue, User } = require('../../db/models');
+const { Group, Membership, groupImage, Venue, User, Event } = require('../../db/models');
 const router = express.Router();
 
 router.use(restoreUser)
@@ -64,29 +64,37 @@ router.get("/:groupId/venues", async (req, res, next) => {
 });
 
 //this is my test
-router.get('/:groupId', async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
-    const groupId = req.params.groupId;
-    const group = await Group.findAll({
-      where: { id: groupId },
+    const id = req.params.id;
+    const group = await Group.scope([
+      "organizer",
+      "groupImage",
+      {
+        method: ["countMembers", id],
+        as: "numMembers",
+      },
+    ]).findByPk(id, {
       include: [
-        { model: User, as: 'Organizer', attributes: ['id', 'firstName', 'lastName'] },
-        { model: Venue, attributes: ['id', 'address', 'city', 'state', 'lat', 'lng'] },
-        { model: groupImage, attributes: ['id', 'url', 'preview'] },
+        {
+          model: Membership,
+          attributes: [],
+        },
       ],
+      group: ["Group.id"],
     });
-
     if (!group) {
-      const err = new Error('Group could not be found');
+      const err = new Error("Group couldn't be found");
       err.status = 404;
-      throw err;
+      return next(err);
     }
-
-    return res.json(group);
-  } catch (err) {
-    return next(err);
+    return res.status(200).json(group);
+  } catch (error) {
+    console.error(error);
+    next(error);
   }
 });
+
 
 // Edit a Group - PM
 // Edit a Group - GH
