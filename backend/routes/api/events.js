@@ -10,7 +10,7 @@ router.use(restoreUser)
 // PM Get all Events
 // GH -- Need to add it for sanity checks
 //
-router.get('/events', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     try {
       const events = await Event.findAll({
         include: [
