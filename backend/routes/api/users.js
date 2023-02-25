@@ -45,7 +45,7 @@ const userEmailExists = async (req, res, next) => {
     } else if (user.username === username) {
       error.errors = ['User with that username already exists'];
     }
-    return next(error);
+    throw error; 
   }
   next();
 };
@@ -61,6 +61,18 @@ router.post('/', validateSignup, userEmailExists, async (req, res) => {
     });
   }
 );
+
+// Middle-ware to try and handle the error and return the right response? No idea at this point.
+router.use((err, req, res, next) => {
+  if (err.status === 403) {
+    return res.status(403).json({
+      message: err.message,
+      statusCode: err.status,
+      errors: err.errors,
+    });
+  }
+  next(err);
+});
 
 module.exports = router;
  
