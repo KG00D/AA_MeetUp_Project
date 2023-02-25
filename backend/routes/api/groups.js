@@ -11,16 +11,17 @@ router.use(restoreUser)
 // Get All Groups - GH
 // Get All Groups - PM
 router.get('/', requireAuth, async (req, res, next) => {
-    try {
-      const groups = await Group.findAll(
-        attributes: {include: [[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"]]},
-        include: [{model: Membership, attributes: []}]
-      );
-      return res.status(200).json({ Groups: groups });
-    } catch (error) {
-      next(error);
-    }
-  });
+  try {
+    const groups = await Group.findAll({
+      attributes: {include: [[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"]]},
+      include: [{model: Membership, attributes: []}]
+    });
+    return res.status(200).json({ Groups: groups });
+  } catch (error) {
+    next(error);
+  }
+});
+
 
 // Get All Groups Joined or oganized by Current User - GH
 // Get all Groups by current User - PM
