@@ -72,7 +72,7 @@ router.get('/:groupId', async (req, res, next) => {
     }
     const group = await Group.findAll({
       where: {
-        groupId: id
+        id: id
       },
       include: [
         {
