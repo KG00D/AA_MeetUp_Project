@@ -71,7 +71,8 @@ router.get('/:groupId', async (req, res, next) => {
       include: [{
         model: groupImage
       }]
-    })
+    });
+    return res.status(200).json({ groups });
   } catch (error) {  
 });
 
