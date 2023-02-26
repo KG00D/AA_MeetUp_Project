@@ -71,7 +71,7 @@ router.get('/:groupId', async (req, res, next) => {
   try {
     const id = req.params.id;
     const groups = await Group.findAll(id, {
-      where: { id: groupId},
+      where: { id: id },
       include: [
         {model: groupImage, attributes: ['id', 'url', 'preview']},
         {model: User, attributes: ['id', 'firstName', 'lastName']},
