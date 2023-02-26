@@ -74,18 +74,18 @@ router.get('/:groupId', async (req, res, next) => {
       where: {
         id: id
       },
-      include: [
-        {
-          model: User,
-          attributes: ["id", "firstName", "lastName"],
-          subQuery: false,
-        },
-        {
-          model: Venue,
-          attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng'],
-          subQuery: false,
-        },
-      ]
+      // include: [
+      //   {
+      //     model: User,
+      //     attributes: ["id", "firstName", "lastName"],
+      //     subQuery: false,
+      //   },
+      //   {
+      //     model: Venue,
+      //     attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng'],
+      //     subQuery: false,
+      //   },
+      //]
   
     })
     return res.json(group)
