@@ -63,19 +63,21 @@ router.get("/:groupId/venues", async (req, res, next) => {
     }
 });
 
-//this is my test
+// create a get route to get rows of a group by its id
+// this is my test
 router.get('/:groupId', async (req, res, next) => {
   try {
     const id = req.params.id;
-    const group = await group.findAll({
+    const groups = await Group.findAll({
       include: [{
         model: groupImage
       }]
     });
     return res.status(200).json({ groups });
-  } catch (error) {  
+  } catch (error) {
+    console.error(error);
+  }
 });
-
 
 // Edit a Group - PM
 // Edit a Group - GH
