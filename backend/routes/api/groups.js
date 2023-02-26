@@ -69,17 +69,35 @@ router.get("/:groupId/venues", async (req, res, next) => {
 // and joins the Venues table to get the id, groupId, address, city, state, lat, lng
 router.get('/:groupId', async (req, res, next) => {
   try {
-    const id = req.params.id;
-    const groups = await Group.findAll(id, {
-      where: { id: id },
-      include: [
-        {model: groupImage, attributes: ['id', 'url', 'preview']},
-        {model: User, attributes: ['id', 'firstName', 'lastName']},
-        {model: Venue, attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']}
-      ],
-      attributes: ['id', 'organizerId' ,'name', 'about', 'type', 
-                   'private','city', 'state', 'createdAt', 'updatedAt']
-    });
+    const id = req.params.groupId;
+    const groups = await Group.findByPk(id)
+    if (!groups) {
+      res.status(404).json({ message: 'Group not found', status:404 })
+    } 
+    const groupImages = await groupImage.findAll(
+      { where: { groupId: id },
+        attributes: ['id', 'url', 'preview'] }
+    )
+    const users = await User.findAll(
+      { where: { id: groups.dataValues.organizerId },
+        attributes: ['id', 'firstName', 'lastName'] }
+    )
+    const venues = await Venue.findAll(
+      { where: { groupId: id },
+        attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng'] }
+    )
+      //, 
+      //{
+      // where: { id: id },
+      // include: [
+      //   {model: groupImage, attributes: ['id', 'url', 'preview']},
+      //   {model: User, attributes: ['id', 'firstName', 'lastName']},
+      //   {model: Venue, attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']}
+      // ],
+      // attributes: ['id', 'organizerId' ,'name', 'about', 'type', 
+      //              'private','city', 'state', 'createdAt', 'updatedAt']
+    //}
+    //);
     return res.status(200).json({ groups });
   } catch (error) {
     console.error(error);
