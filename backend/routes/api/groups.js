@@ -70,19 +70,17 @@ router.get("/:groupId/venues", async (req, res, next) => {
 router.get('/:groupId', async (req, res, next) => {
   try {
     const id = req.params.id;
-    const group = await Group.findAll(id, {
-      include: [{
-        model: groupImage,
-        attributes: ['id', 'url', 'preview']
-      }, {
-        model: User,
-        attributes: ['id', 'firstName', 'lastName']
-      }, {
-        model: Venue,
-        attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
-      }]
+    const groups = await Group.findAll(id, {
+      where: { id: groupId},
+      include: [
+        {model: groupImage, attributes: ['id', 'url', 'preview']},
+        {model: User, attributes: ['id', 'firstName', 'lastName']},
+        {model: Venue, attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']}
+      ],
+      attributes: ['id', 'organizerId' ,'name', 'about', 'type', 
+                   'private','city', 'state', 'createdAt', 'updatedAt']
     });
-    return res.status(200).json({ group });
+    return res.status(200).json({ groups });
   } catch (error) {
     console.error(error);
   }
