@@ -64,16 +64,24 @@ router.get("/:groupId/venues", async (req, res, next) => {
 });
 
 // create a get route to get rows of a group by its id
-// this is my test
+// and joins the groupImage table to get the id, url, and preview,
+// and joins the users table to get the id, firstName, lastName
+// and joins the Venues table to get the id, groupId, address, city, state, lat, lng
 router.get('/:groupId', async (req, res, next) => {
   try {
     const id = req.params.id;
-    const groups = await Group.findAll({
+    const group = await Group.findAll(id, {
       include: [{
         model: groupImage
+      }, {
+        model: User,
+        attributes: ['id', 'firstName', 'lastName']
+      }, {
+        model: Venue,
+        attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
       }]
     });
-    return res.status(200).json({ groups });
+    return res.status(200).json({ group });
   } catch (error) {
     console.error(error);
   }
