@@ -64,7 +64,6 @@ router.get("/:groupId/venues", async (req, res, next) => {
 });
 
 router.get('/:groupId', async (req, res, next) => {
-  try {
     const id = req.params.groupId;
     const groups = await Group.findByPk(id)
     if (!groups) {
@@ -89,10 +88,7 @@ router.get('/:groupId', async (req, res, next) => {
   
     })
     return res.json(group)
-  } catch (error) {
-    console.error(error);
-  }
-});
+  })
 
 //     if (!groups) {
 //       res.status(404).json({ message: 'Group not found', status:404 })
