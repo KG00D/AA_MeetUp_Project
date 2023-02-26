@@ -67,40 +67,12 @@ router.get("/:groupId/venues", async (req, res, next) => {
 router.get('/:groupId', async (req, res, next) => {
   try {
     const id = req.params.id;
-    const group = await Group.scope([
-      {
-        method: ["organizer"],
-        attributes: [],
-        include: [
-          {model: User,
-          attributes: ["id", "firstName", "lastName", "email"],
-            },
-          ],
-        },
-      "groupImage",
-      {
-        method: ["countMembers", id],
-        as: "numMembers",
-      },
-    ]).findByPk(id, {
-      include: [
-        {
-          model: Membership,
-          attributes: [],
-        },
-      ],
-      group: ["Group.id"],
-    });
-    if (!group) {
-      const err = new Error("Group couldn't be found");
-      err.status = 404;
-      return next(err);
-    }
-    return res.status(200).json(group);
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
+    const group = await group.findAll({
+      include: [{
+        model: groupImage
+      }]
+    })
+  } catch (error) {  
 });
 
 
