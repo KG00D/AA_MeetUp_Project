@@ -1,10 +1,8 @@
 const express = require('express');
 const { Op } = require('sequelize');
-
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User } = require('../../db/models');
 const { check } = require('express-validator');
-
 const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
@@ -13,7 +11,7 @@ const validateSignup = [
     check('email')
       .exists({ checkFalsy: true })
       .isEmail()
-      .withMessage('Please provide a valid email.'),
+      .withMessage('Invalid email'),
     check('username')
       .exists({ checkFalsy: true })
       .isLength({ min: 4 })
