@@ -28,7 +28,7 @@ router.get('/', async (req, res, next) => {
           required: false 
         }
       ],
-      group: ['Group.id']
+      group: ['Group.id', 'groupImages.id']
     });
     
     const formattedResponse = groups.map(group => ({
