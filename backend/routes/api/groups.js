@@ -62,7 +62,7 @@ router.get('/current', restoreUser, async (req, res, next) => {
       where: { organizerId: user.id },
       attributes: { include: [[sequelize.fn("COUNT", sequelize.col("Memberships.id")), "numMembers"]] },
       include: [{ model: Membership, attributes: [] }, { model: groupImage, attributes: ['url'], required: false }],
-      group: ['Group.id']
+      group: ['Group.id', 'groupImages.id']
     });
     const formattedGroups = groups.map((group) => {
       return {
