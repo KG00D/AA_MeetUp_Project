@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   eventImage.init({
     eventId: DataTypes.INTEGER,
     url: DataTypes.STRING,
-    preview: DataTypes.STRING
+    preview: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'eventImage',
