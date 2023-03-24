@@ -33,7 +33,7 @@ router.get('/', async (req, res, next) => {
             attributes: ['id', 'city', 'state'],
           },
         ],
-        group: ['Event.id']
+        group: ['Event.id', 'Group.id', 'Venue.id']
       });
       return res.status(200).json({ Events: events });
     } catch (error) {
