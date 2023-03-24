@@ -151,8 +151,7 @@ router.get('/:groupId', async (req, res, next) => {
     return res.json(group)
   })
 
-// Get all Events by Gtroup ID - PM
-// Get all Events of a Group specified by its id - GH
+
 router.get('/:groupId/events', async (req, res) => {
   try {
     const id = req.params.groupId;
@@ -167,7 +166,7 @@ router.get('/:groupId/events', async (req, res) => {
                    'type', 
                    'startDate', 
                    'endDate',
-                   [sequelize.literal("(SELECT COUNT(id) FROM Events)"), "numAttending"]
+                   [sequelize.literal("(SELECT COUNT(id) FROM Attendances)"), "numAttending"]
                 ],
       include: [
         {
@@ -193,6 +192,7 @@ router.get('/:groupId/events', async (req, res) => {
     console.error(error);
   }
 });
+
 
 // TODO This is not working 100% correctly
 // Get details of an Event specified by its id - GH
@@ -456,7 +456,7 @@ router.post('/:groupId/images', restoreUser, requireAuth, async (req, res, next)
     const { user } = req;
     const groupId = req.params.groupId;
     const { url, preview } = req.body;
-    
+
     const group = await Group.findByPk(groupId);
     
     if (!user) {
