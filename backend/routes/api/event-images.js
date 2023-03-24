@@ -23,7 +23,7 @@ router.delete('/:eventImageId', async (req, res) => {
         statusCode: 404,
       });
     }
-
+ 
     const event = eventImage.Event;
     const groupId = event.groupId;
 

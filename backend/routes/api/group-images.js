@@ -9,8 +9,7 @@ router.use(restoreUser)
 
 router.delete('/:groupImageId', async (req, res) => {
   const imageId = req.params.imageId;
-  const userId = req.user.id; // assuming the user object is attached to the request
-  
+  const userId = req.user.id; 
   const image = await groupImage.findOne({
     where: { id: imageId },
     include: [{ model: Group, as: 'group' }]
@@ -31,7 +30,7 @@ router.delete('/:groupImageId', async (req, res) => {
       statusCode: 403
     });
   }
-
+ 
   // Delete the image
   await image.destroy();
 

@@ -456,6 +456,7 @@ router.post('/:groupId/images', restoreUser, requireAuth, async (req, res, next)
     const { user } = req;
     const groupId = req.params.groupId;
     const { url, preview } = req.body;
+    
     const group = await Group.findByPk(groupId);
     
     if (!user) {
