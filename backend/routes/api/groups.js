@@ -211,24 +211,12 @@ router.get('/:eventId', async (req, res) => {
 
 router.get('/:groupId/events', async (req, res) => {
   try {
-    const groupId = req.params.groupId;
-
-    // Retrieve the group information
-    const group = await Group.findByPk(groupId);
-
-    if (!group) {
-      return res.status(404).json({
-        message: 'Group could not be found',
-        statusCode: 404
-      });
-    }
-
-    // Retrieve the events for the group
+    const groupId = Number(req.params.groupId);
     const events = await Event.findAll({
-      where: {
-        groupId: groupId
+      where: { groupId: groupId },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'capacity', 'price']
       },
-      attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'startDate', 'endDate'],
       include: [
         {
           model: Group,
@@ -241,101 +229,24 @@ router.get('/:groupId/events', async (req, res) => {
       ]
     });
 
-    // Retrieve the count of attendees for each event
-    const eventIds = events.map(event => event.id);
-    const attendees = await Attendance.findAll({
-      attributes: ['eventId', [sequelize.fn('COUNT', sequelize.col('id')), 'numAttending']],
-      where: {
-        eventId: {
-          [Op.in]: eventIds
-        }
-      },
-      group: ['eventId']
-    });
+    const group = await Group.findByPk(groupId);
 
-    // Map the attendees data to the events data
-    const eventAttendees = {};
-    attendees.forEach(attendee => {
-      eventAttendees[attendee.eventId] = attendee.numAttending;
-    });
-
-    // Retrieve the URL of the preview image for each event
-    const eventImages = await eventImage.findAll({
-      where: {
-        eventId: {
-          [Op.in]: eventIds
-        },
-        preview: true
-      },
-      attributes: ['eventId', 'url']
-    });
-
-    // Map the event images data to the events data
-    const eventImagesMap = {};
-    eventImages.forEach(eventImage => {
-      eventImagesMap[eventImage.eventId] = eventImage.url;
-    });
-
-    // Combine the event data with the attendee count and event image data
-    const results = events.map(event => {
-      const result = event.toJSON();
-      result.numAttending = eventAttendees[result.id] || 0;
-      result.previewImage = eventImagesMap[result.id] || null;
-      return result;
-    });
-
-    return res.status(200).json({
-      Events: results
-    });
+    if (group) {
+      return res.json({ Events: events });
+    } else {
+      return res.status(404).json({
+        message: "Group couldn't be found",
+        statusCode: 404
+      });
+    }
   } catch (error) {
     console.error(error);
+    return res.status(500).json({
+      message: 'Internal server error',
+      statusCode: 500
+    });
   }
 });
-
-
-
-// router.get('/:groupId/events', async (req, res) => {
-//   try {
-//     const id = req.params.groupId;
-//     const group = await Group.findByPk(id);
-
-//     const events = await Event.findAll({
-//       where: {
-//         groupId: id
-//       },
-//       attributes: ['id', 
-//                    'groupId',
-//                    'venueId',
-//                    'name',
-//                    'type', 
-//                    'startDate', 
-//                    'endDate',
-//                    [sequelize.literal("(SELECT COUNT(id) FROM Events)"), "numAttending"]
-//                 ],
-//       include: [
-//         {
-//           model: Group,
-//           attributes: ['id', 'name', 'city', 'state']
-//         },
-//         {
-//           model: Venue,
-//           attributes: ['id', 'city', 'state']
-//         }
-//       ]
-//     });
-//     if (!events.length) {
-//       return res.status(404).json({
-//         message: 'Group could not be found',
-//         statusCode: 404
-//       });
-//     }
-//     return res.status(200).json({
-//       Events: events
-//     });
-//   } catch (error) {
-//     console.error(error);
-//   }
-// });
 
 router.get("/:groupId/members", async (req, res, next) => {
   const { user } = req;
