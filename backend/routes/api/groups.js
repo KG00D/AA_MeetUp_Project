@@ -244,7 +244,7 @@ router.get('/:groupId/events', async (req, res) => {
     // Retrieve the count of attendees for each event
     const eventIds = events.map(event => event.id);
     const attendees = await Attendance.findAll({
-      attributes: ['eventId', [Sequelize.fn('COUNT', Sequelize.col('id')), 'numAttending']],
+      attributes: ['eventId', [sequelize.fn('COUNT', sequelize.col('id')), 'numAttending']],
       where: {
         eventId: {
           [Op.in]: eventIds
@@ -260,7 +260,7 @@ router.get('/:groupId/events', async (req, res) => {
     });
 
     // Retrieve the URL of the preview image for each event
-    const eventImages = await EventImage.findAll({
+    const eventImages = await eventImage.findAll({
       where: {
         eventId: {
           [Op.in]: eventIds
