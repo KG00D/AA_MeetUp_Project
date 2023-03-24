@@ -151,49 +151,6 @@ router.get('/:groupId', async (req, res, next) => {
     return res.json(group)
   })
 
-
-router.get('/:groupId/events', async (req, res) => {
-  try {
-    const id = req.params.groupId;
-    const events = await Event.findAll({
-      where: {
-        groupId: id
-      },
-      attributes: ['id', 
-                   'groupId',
-                   'venueId',
-                   'name',
-                   'type', 
-                   'startDate', 
-                   'endDate',
-                   [sequelize.literal("(SELECT COUNT(id) FROM Attendances)"), "numAttending"]
-                ],
-      include: [
-        {
-          model: Group,
-          attributes: ['id', 'name', 'city', 'state']
-        },
-        {
-          model: Venue,
-          attributes: ['id', 'city', 'state']
-        }
-      ]
-    });
-    if (!events.length) {
-      return res.status(404).json({
-        message: 'Group could not be found',
-        statusCode: 404
-      });
-    }
-    return res.status(200).json({
-      Events: events
-    });
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-
 // TODO This is not working 100% correctly
 // Get details of an Event specified by its id - GH
 // Get details of event by id - PM

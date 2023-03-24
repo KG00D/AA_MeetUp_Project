@@ -133,6 +133,49 @@ router.get("/:eventId/attendees", async (req, res) => {
     return res.status(200).json({ Attendees: attend });
 });  
 
+router.get('/:groupId/events', async (req, res) => {
+    try {
+      const id = req.params.groupId;
+
+      const group = await Group.findByPk(id);
+      const events = await Event.findAll({
+        where: {
+          groupId: id
+        },
+        attributes: ['id', 
+                     'groupId',
+                     'venueId',
+                     'name',
+                     'type', 
+                     'startDate', 
+                     'endDate',
+                     [sequelize.literal("(SELECT COUNT(id) FROM Events)"), "numAttending"]
+                  ],
+        include: [
+          {
+            model: Group,
+            attributes: ['id', 'name', 'city', 'state']
+          },
+          {
+            model: Venue,
+            attributes: ['id', 'city', 'state']
+          }
+        ]
+      });
+      if (!events.length) {
+        return res.status(404).json({
+          message: 'Group could not be found',
+          statusCode: 404
+        });
+      }
+      return res.status(200).json({
+        Events: events
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
 router.get('/api/events', async (req, res) => {
     try {
       const { page = 0, size = 20, name, type, startDate } = req.query;
