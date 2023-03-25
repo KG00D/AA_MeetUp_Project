@@ -354,46 +354,26 @@ router.put("/:eventId", async (req, res, next) => {
   });
   
   // DELETE
-// Delete an Event specified by its id - GH
-// Delete an event - Send twice.... -- PM
-  router.delete("/:eventId", async (req, res, next) => {
-    const { eventId } = req.params;
-    const { user } = req;
+  router.delete("/:eventId", requireAuth, async (req, res, next) => {
+    const eventId  = req.params.eventId;
     try {
-      if (!user) {
-        const error = new Error(`Authentication required`);
-        error.status = 401;
-        throw error;
-      }
       const event = await Event.findByPk(eventId);
       if (!event) {
         return res.status(404).json({
-            message: "Event couldn't be found",
-            statusCode: 404,
-          });
-      }
-      const group = await event.getGroup();
-      const attendee = await Attendance.findOne({
-        where: { eventId: event.id, userId: user.id },
-      });
-      const member = await Member.findOne({
-        where: { groupId: group.id, userId: user.id },
-      });
-      if (
-        user.id !== event.organizerId &&
-        (!attendee || attendee.status !== "co-host") &&
-        (!member || member.status !== "co-host")
-      ) {
-        const error = new Error(`Not authorized to delete this event`);
-        error.status = 403;
-        throw error;
+          message: "Event couldn't be found",
+          statusCode: 404
+        });
       }
       await event.destroy();
-      return res.status(200).json({ message: "Successfully deleted" });
+      return res.json({
+        message: "Successfully deleted event"
+      });
     } catch (error) {
+      console.error(error);
       return next(error);
     }
   });
+  
 
   router.delete('/:eventId/attendance', async (req, res) => {
     const eventId = req.params.eventId;
