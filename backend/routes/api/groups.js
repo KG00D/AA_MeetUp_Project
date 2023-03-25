@@ -677,54 +677,47 @@ router.delete("/:id", requireAuth, async (req, res, next) => {
   }
 });
 
-// Request a Membership for a Group based on the Group's id - GH
-router.put("/:groupId/membership", async (req, res, next) => {
-  const groupId = req.params.groupId;
-  const user = req.user;
-  
+router.put('/:groupId/membership', requireAuth, async (req, res) => {
+  const { user, params, body } = req;
+  const { groupId } = params;
+  const { status } = body;
+
   try {
-    if (!user) {
-      throw { status: 401, message: "Authentication required" };
-    }
     const group = await Group.findByPk(groupId);
     if (!group) {
-      throw { status: 404, message: "Group not found" };
+      return res.status(404).json({
+        message: "Group couldn't be found",
+        statusCode: 404
+      });
     }
-    const membership = await Membership.findOne({
-      where: {
-        groupId: group.id,
-        userId: req.user.id,
-      },
+    const member = await Membership.findOne({
+      where: { groupId }
     });
-
-    if (membership) {
-      throw { status: 400, message: "User is already a member of the group" };
+    const organizerId = group.organizerId;
+    if (user.id !== organizerId && member.status !== 'co-host') {
+      return res.status(401).json({
+        message: "You're not authorized to perform this action",
+        statusCode: 401
+      });
     }
-    const pendingMembership = await Membership.findOne({
-      where: {
-        groupId: group.id,
-        userId: user.id,
-        status: "pending",
-      },
+    member.status = status;
+    await Membership.update(
+      { status: status },
+      { where: { groupId } });
+    return res.json({
+      id: user.id,
+      groupId: groupId,
+      memberId: member.userId,
+      status: member.status
     });
-    if (pendingMembership) {
-      throw { status: 400, message: "Membership request already submitted" };
-    }
-    // TODO This shouldn't be an 'INSERT INTO blablabla, it should be an 'UPDATE blablabla'
-    const newMembership = await Membership.create({
-      groupId: group.id,
-      userId: user.id,
-      status: "pending",
-    });
-    res.status(200).json({ 
-      groupId: newMembership.groupId,
-      memberId: newMembership.memberId,
-      status: newMembership.status });
   } catch (error) {
-    next(error);
+    console.error(error);
+    return res.status(500).json({
+      message: 'Something went wrong',
+      statusCode: 500
+    });
   }
 });
-
 
 // router.delete("/:groupId/membership", async (req, res, next) => {
 //   const groupId = req.params.groupId;
