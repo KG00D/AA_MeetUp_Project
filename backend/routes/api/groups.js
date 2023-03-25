@@ -625,7 +625,6 @@ router.post('/:groupId/events', requireAuth, [
   }
 });
 
-
 // START OF ALL DELETES
 
 router.delete("/:id", requireAuth, async (req, res, next) => {

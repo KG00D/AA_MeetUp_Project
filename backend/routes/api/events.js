@@ -396,7 +396,7 @@ router.put("/:eventId", async (req, res, next) => {
   });
 
   router.delete('/:eventId/attendance', async (req, res) => {
-    const { eventId } = req.params.eventId;
+    const eventId = req.params.eventId;
     console.log('#########', eventId, '#########')
     const { userId } = req.body;
     console.log('#########', userId, '#########')
