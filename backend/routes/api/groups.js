@@ -8,9 +8,6 @@ const { Op } = require('sequelize');
 
 router.use(restoreUser)
 
-// Start of all my GETs
-// Get All Groups - GH
-// Get All Groups - PM
 router.get('/', async (req, res, next) => {
   try {
     const groups = await Group.findAll({
@@ -87,9 +84,6 @@ router.get('/current', restoreUser, async (req, res, next) => {
   }
 });
 
-// VENUES
-// Get All Venues for a Group by its ID - GH
-// Get all Venues for a Group by its ID - PM
 router.get("/:groupId/venues", async (req, res, next) => {
   try {
     const { groupId } = req.params;
@@ -151,9 +145,6 @@ router.get('/:groupId', async (req, res, next) => {
     return res.json(group)
   })
 
-// TODO This is not working 100% correctly
-// Get details of an Event specified by its id - GH
-// Get details of event by id - PM
 router.get('/:eventId', async (req, res) => {
   try {
     const eventId = req.params.eventId;
@@ -309,16 +300,6 @@ router.get("/:groupId/members", async (req, res, next) => {
 });
 
 
-
-// ####################################################
-//  PPPPPPPPP  UUUU      UUUU  TTTTTTTTTT  SSSSSSSSS
-//  PPP   PPP  UUUU      UUUU    TTTTT      SSSSS
-//  PPPPPPPPP  UUUU      UUUU     TTTT        SSSSS boooreeeed
-//  PPP          UUUUUUUUUU       TTTT    SSSSSSSSS
-// ####################################################
-
-// Edit a Group - PM
-// Edit a Group - GH
 router.put('/:groupId', async (req, res) => {
   try {
     const groupId = req.params.groupId;
@@ -370,8 +351,6 @@ router.put('/:groupId', async (req, res) => {
   }
 });
 
-// Edit a Group - PM
-// Edit a Group - GH
 router.put("/:id", requireAuth, [
   body('name').isLength({ max: 60 }).withMessage('Name must be 60 characters or less'),
   body('about').isLength({ min: 50 }).withMessage('About must be 50 characters or more'),
@@ -439,7 +418,7 @@ router.post('/', requireAuth, [
       organizerId: req.user.id 
     });
     console.log(group);
-    return res.status(201).json({ Group: group });
+    return res.status(201).json(group);
   } catch (error) {
     next(error);
   }
@@ -492,9 +471,6 @@ router.post('/:groupId/images', restoreUser, requireAuth, async (req, res, next)
   }
 });
 
-// Create a new Vanue for a Group specified by its id - GH
-// Create a new Venue for a group by id - PM
-// Create a new Venue for a group by id --error check -- PM
 router.post("/:groupId/venues", requireAuth, [
   body('address').notEmpty().withMessage('Street address is required'),
   body('city').notEmpty().withMessage('City is required'),

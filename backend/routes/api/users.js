@@ -48,9 +48,7 @@ const userEmailExists = async (req, res, next) => {
   next();
 };
 
-// Sign up
 router.post('/', validateSignup, userEmailExists, async (req, res) => {
-    //console.log(req.body)    
     const {email, firstName, lastName, username, password} = req.body;
     const user = await User.signup({ email, firstName, lastName, username, password });
     await setTokenCookie(res, user);
@@ -60,7 +58,6 @@ router.post('/', validateSignup, userEmailExists, async (req, res) => {
   }
 );
 
-// Middle-ware to try and handle the error and return the right response? No idea at this point.
 router.use((err, req, res, next) => {
   if (err.status === 403) {
     return res.status(403).json({

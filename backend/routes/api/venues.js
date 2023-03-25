@@ -6,9 +6,7 @@ const { Group, Membership, groupImage, Venue } = require('../../db/models');
 const router = express.Router();
 
 router.use(restoreUser)
-// Start of PATCHES
-// Edit a Venue specified by its id - GH
-// Edit a Venue specified by its id - PM
+
 router.put('/:venueId', [
     body('address').notEmpty().withMessage('Street address is required'),
     body('city').notEmpty().withMessage('City is required'),

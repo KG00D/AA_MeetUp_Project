@@ -8,8 +8,6 @@ const { Op } = require('sequelize');
 
 router.use(restoreUser)
 
-// PM Get all Events
-// GH -- Need to add it for sanity checks
 router.get('/', async (req, res, next) => {
     try {
       const events = await Event.findAll({
@@ -164,8 +162,6 @@ router.get('/api/events', async (req, res) => {
   });
 
 
-// Add an Image to an Event based on the Event's ID --GH
-// Add an Image to an Event -- PM
 router.post("/:eventId/images", requireAuth, async (req, res, next) => {
     const { eventId } = req.params;
     const { user } = req;
