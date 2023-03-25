@@ -7,6 +7,9 @@ const router = express.Router();
 
 router.use(restoreUser)
 
+
+//TODO Don't love this entire route tbh
+//TODO Actually, I'm not sure if this is right. Going to test.
 router.delete('/:groupImageId', requireAuth, async (req, res) => {
   const imageId = req.params.groupImageId;
   const userId = req.user.id;
@@ -28,7 +31,8 @@ router.delete('/:groupImageId', requireAuth, async (req, res) => {
     }
     await image.destroy();
     return res.json({
-      message: "Successfully deleted group image"
+      message: "Successfully deleted group image",
+      statusCode: 200
     });
   } catch (error) {
     console.error(error);
