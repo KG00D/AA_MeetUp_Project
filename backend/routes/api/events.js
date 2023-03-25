@@ -41,6 +41,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:eventId', async (req, res, next) => {
     const id = req.params.eventId;
+    // TODO should line 45 be in a try/catch block?
     const events = await Event.findByPk(id)
     if (!events) {
       res.status(404).json(
@@ -74,7 +75,7 @@ router.get('/:eventId', async (req, res, next) => {
 
 router.get("/:eventId/attendees", async (req, res) => {
     const id = req.params.eventId;
-  
+    // TODO should line 79 be in a try/catch block?
     const event = await Event.findByPk(id);
     if (!event) {
       return res.status(404).json({
@@ -147,6 +148,7 @@ router.get('/api/events', async (req, res) => {
             model: Venue,
           },
         ],
+        // TODO I don't love this, it's hard to read. Is there a better way to do this?
         where: {
           ...(name && { name }),
           ...(type && { type }),
@@ -165,7 +167,7 @@ router.get('/api/events', async (req, res) => {
 router.post("/:eventId/images", requireAuth, async (req, res, next) => {
     const { eventId } = req.params;
     const { user } = req;
-    console.log(eventId, '#########')
+    // TODO should line 171 be in a try/catch block?
     const event = await Event.findByPk(eventId);
 
     if (!event) {
@@ -175,13 +177,11 @@ router.post("/:eventId/images", requireAuth, async (req, res, next) => {
             statusCode: error.status
     });
     }
-    console.log(eventId, '#########')
     const attend = await Attendance.findAll({
         where: 
         {eventId: event.id, 
          userId: user.id}
     });
-    console.log('#########')
     try {
         if (!user) {
             const error = new Error(`Authentication required`);
@@ -234,7 +234,6 @@ router.post('/:eventId/attendance', async (req, res) => {
       const newAttendance = await Attendance.create({ eventId: eventId, userId: userId, status: 'pending' });
       return res.status(200).json(newAttendance);
     } catch (error) {
-      console.error(error);
       return res.status(500).json({ message: 'Internal server error', statusCode: 500 });
     }
   });
@@ -244,9 +243,7 @@ router.post('/:eventId/attendance', async (req, res) => {
 // PUTS
 router.put("/:eventId", async (req, res, next) => {
     const { eventId } = req.params;
-    console.log('#########', eventId, '#########')
-    const { user } = req; //I think this is the error here?
-    console.log('#########', user, '#########')
+    const { user } = req; 
     const {
       venueId,
       name,
@@ -365,7 +362,6 @@ router.put("/:eventId", async (req, res, next) => {
         message: "Successfully deleted event"
       });
     } catch (error) {
-      console.error(error);
       return next(error);
     }
   });

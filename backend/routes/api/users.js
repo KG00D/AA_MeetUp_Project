@@ -51,13 +51,14 @@ const userEmailExists = async (req, res, next) => {
 router.post('/', validateSignup, userEmailExists, async (req, res) => {
     const {email, firstName, lastName, username, password} = req.body;
     const user = await User.signup({ email, firstName, lastName, username, password });
+    // TODO: Add a try/catch block to handle errors and figure out why I have that on line 55.
     await setTokenCookie(res, user);
     return res.json({
       user: user,
     });
   }
 );
-
+//TODO These two look like shit. Why can't I just combine them.
 router.use((err, req, res, next) => {
   if (err.status === 403) {
     return res.status(403).json({
