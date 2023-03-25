@@ -356,33 +356,24 @@ router.put("/:eventId", async (req, res, next) => {
   // DELETE
   router.delete("/:eventId", requireAuth, async (req, res, next) => {
     const eventId  = req.params.eventId;
-    const event = await Event.findByPk(eventId);
-
     try {
-      if (!event) {
-        const error = new Error(`Authentication required`);
-        error.status = 401;
-        throw error;
-      }
       const event = await Event.findByPk(eventId);
       if (!event) {
         return res.status(404).json({
-            message: "Event couldn't be found",
-            statusCode: 404,
-          });
-      }
-      
-      if (event) {
-        await event.destroy();
-        return res.json({
-          message: "Successfully deleted event"
+          message: "Event couldn't be found",
+          statusCode: 404
         });
       }
-
+      await event.destroy();
+      return res.json({
+        message: "Successfully deleted event"
+      });
     } catch (error) {
+      console.error(error);
       return next(error);
     }
   });
+  
 
   router.delete('/:eventId/attendance', async (req, res) => {
     const eventId = req.params.eventId;
