@@ -29,14 +29,12 @@ router.post('/', validateLogin, async (req, res, next) => {
     }
     await setTokenCookie(res, authenticatedUser);
     return res.status(200).json({
-      user: {
         id: authenticatedUser.id,
         firstName: authenticatedUser.firstName,
         lastName: authenticatedUser.lastName,
         email: authenticatedUser.email,
         username: authenticatedUser.username,
         token: authenticatedUser.token
-      },
     });
   } catch (error) {
     next(error);
