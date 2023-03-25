@@ -398,8 +398,8 @@ router.put("/:eventId", async (req, res, next) => {
   router.delete('/:eventId/attendance', async (req, res) => {
     const eventId = req.params.eventId;
     console.log('#########', eventId, '#########')
-    const { userId } = req.body;
-    console.log('#########', userId, '#########')
+    const {memberId}  = req.body;
+    console.log('#########', memberId, '#########')
   
     try {
       const event = await Event.findByPk(eventId);
@@ -407,11 +407,11 @@ router.put("/:eventId", async (req, res, next) => {
         return res.status(404).json({ message: "Event couldn't be found",
          statusCode: 404 });
       }
-      const attendance = await Attendance.findOne({ where: { eventId, userId } });
+      const attendance = await Attendance.findOne({ where: { eventId, memberId } });
       if (!attendance) {
         return res.status(404).json({ message: 'Attendance does not exist for this User', statusCode: 404 });
       }
-      if (req.user.id !== event.hostId && req.user.id !== userId) {
+      if (req.user.id !== event.hostId && req.user.id !== memberId) {
         return res.status(403).json({ message: 'Only the User or organizer may delete an Attendance', statusCode: 403 });
       }
       await attendance.destroy();
