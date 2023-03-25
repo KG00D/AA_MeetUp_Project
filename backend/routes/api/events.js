@@ -238,8 +238,6 @@ router.post('/:eventId/attendance', async (req, res) => {
     }
   });
   
-
-
 // PUTS
 router.put("/:eventId", async (req, res, next) => {
     const { eventId } = req.params;
@@ -301,51 +299,50 @@ router.put("/:eventId", async (req, res, next) => {
     }
   });
 
-  
   router.put("/:eventId/attendance", requireAuth, async (req, res, next) => {
-    const id = req.params.id;
-    const { userId, status } = req.body;
-    const { user } = req;
-  
-    if (!user) {
-      return res.status(401).json({ message: "Authentication required" });
-    }
-    if (status === "pending") {
-      return res.status(400).json({ message: "Cannot change an attendance status to pending" });
-    }
-    const event = await Event.findByPk(id);
-    if (!event) {
-      return res.status(404).json({ 
-        message: "Event couldn't be found" });
-    }  
-    const group = await Group.findByPk(event.groupId);
-    if (user.id !== group.organizerId) {
-      const coHost = await Membership.findByPk({
-        where: {
-          groupId: group.id,
-          memberId: user.id,
-          status: "co-host"
-        }
+    try {
+      const { status } = req.body;
+      const { user } = req;
+      const { eventId } = req.params;
+      const event = await Event.findByPk(eventId);
+      if (!event) {
+        return res.status(404).json({
+          message: "Event not found",
+          statusCode: 404,
+        });
+      }
+      const group = await Group.findByPk(event.groupId);
+      const organizerId = group.organizerId;
+      const attendingId = await Attendance.findOne({
+        where: { eventId, userId: user.id },
       });
-      if (!coHost) {
-        return res.status(403).json({ message: "Not Co-Host" });
+      if (attendingId && attendingId.status === "pending") {
+        return res.status(400).json({
+          message: "Attendance has already been requested",
+          statusCode: 400,
+        });
       }
-    }
-    const attendance = await Attendance.findByPk({
-      where: {
-        eventId: event.id,
-        userId: userId,
-        status: "pending"
+      if (attendingId && attendingId.status === "accepted") {
+        return res.status(400).json({
+          message: "User is already attending the event",
+          statusCode: 400,
+        });
       }
-    });
-    if (!attendance) {
-      return res.status(404).json({ message: "Attendance not found" });
+      await Attendance.create({
+        userId: user.id,
+        eventId: eventId,
+        status: status || "pending",
+      });
+      res.status(200).json({
+        message: "Attendance request created successfully",
+        statusCode: 200,
+      });
+    } catch (error) {
+      next(error);
     }
-
-    await attendance.update({ status });
-    return res.status(200).json(attendance);
   });
-  
+
+
   // DELETE
   router.delete("/:eventId", requireAuth, async (req, res, next) => {
     const eventId  = req.params.eventId;
