@@ -36,16 +36,4 @@ router.delete('/:groupImageId', requireAuth, async (req, res) => {
   }
 });
 
- 
-  // Delete the image
-  await image.destroy();
-
-  // Return success message
-  return res.status(200).json({
-    message: 'Successfully deleted',
-    statusCode: 200
-  });
-});
-
-
 module.exports = router;
