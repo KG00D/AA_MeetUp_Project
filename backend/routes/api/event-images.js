@@ -9,46 +9,33 @@ router.use(restoreUser)
 
 // Delete an existing image for an Event
 router.delete('/:eventImageId', async (req, res) => {
-  const imageId = req.params.imageId;
+  const imageId = req.params.eventImageId;
   const userId = req.user.id;
-
+  
   try {
-    const eventImage = await eventImage.findByPk(imageId, {
-      include: [{ model: Event }],
-    });
-
-    if (!eventImage) {
+    const image = await groupImage.findOne({ where: { id: imageId } });
+    if (!image) {
       return res.status(404).json({
-        message: 'Event Image couldn\'t be found',
-        statusCode: 404,
+        message: "Event image couldn't be found",
+        statusCode: 404
       });
     }
- 
-    const event = eventImage.Event;
-    const groupId = event.groupId;
-
-    const isOrganizer = event.organizerId === userId;
-    const isCoHost = event.coHostId === userId;
-    if (!isOrganizer && !isCoHost) {
+    const group = await image.getGroup();
+    if (group.organizerId !== userId && group.coHostId !== userId) {
       return res.status(403).json({
-        message: 'Unauthorized access',
-        statusCode: 403,
+        message: "Current user is not authorized to delete the image",
+        statusCode: 403
       });
     }
-
-    await eventImage.destroy();
-
-    return res.status(200).json({
-      message: 'Successfully deleted',
-      statusCode: 200,
+    await image.destroy();
+    return res.json({
+      message: "Successfully deleted group image"
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
-      message: 'Internal server error',
-      statusCode: 500,
-    });
+    throw error;
   }
 });
+
 
 module.exports = router;
