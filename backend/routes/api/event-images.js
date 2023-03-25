@@ -7,29 +7,21 @@ const router = express.Router();
 
 router.use(restoreUser)
 
-// Delete an existing image for an Event
-router.delete('/:eventImageId', async (req, res) => {
+router.delete('/:eventImageId', requireAuth, async (req, res) => {
   const imageId = req.params.eventImageId;
-  const userId = req.user.id;
   
   try {
-    const image = await groupImage.findOne({ where: { id: imageId } });
-    if (!image) {
+    const eventImage = await EventImage.findOne({ where: { id: imageId } });
+
+    if (!eventImage) {
       return res.status(404).json({
         message: "Event image couldn't be found",
         statusCode: 404
       });
     }
-    const group = await image.getGroup();
-    if (group.organizerId !== userId && group.coHostId !== userId) {
-      return res.status(403).json({
-        message: "Current user is not authorized to delete the image",
-        statusCode: 403
-      });
-    }
-    await image.destroy();
+    await eventImage.destroy();
     return res.json({
-      message: "Successfully deleted group image"
+      message: "Successfully deleted event image"
     });
   } catch (error) {
     console.error(error);
