@@ -698,41 +698,41 @@ router.put("/:groupId/membership", async (req, res, next) => {
 });
 
 
-router.delete("/:groupId/membership", async (req, res, next) => {
-  const groupId = req.params.groupId;
-  const { user } = req;
-  const { memberId } = req.body;
+// router.delete("/:groupId/membership", async (req, res, next) => {
+//   const groupId = req.params.groupId;
+//   const { user } = req;
+//   const { memberId } = req.body;
 
-  try {
-    if (!user) {
-      throw new Error("Authentication required");
-    }
-    const group = await Group.findByPk(groupId);
-    if (!group) {
-      throw new Error("Group couldn't be found");
-    }
-    if (group.hostId !== user.id && memberId !== user.id) {
-      throw new Error("Unauthorized");
-    }
-    const membership = await Membership.findOne({
-      where: { groupId, memberId },
-    });
-    if (!membership) {
-      throw new Error("Membership does not exist for this User");
-    }
-    await membership.destroy();
-    return res.status(200).json({ message: "Successfully deleted membership from group" });
-  } catch (error) {
-    if (error.message === "Unauthorized") {
-      error.status = 401;
-    } else if (error.message === "Membership does not exist for this User") {
-      error.status = 404;
-    } else {
-      error.status = 400;
-    }
-    return next(error);
-  }
-});
+//   try {
+//     if (!user) {
+//       throw new Error("Authentication required");
+//     }
+//     const group = await Group.findByPk(groupId);
+//     if (!group) {
+//       throw new Error("Group couldn't be found");
+//     }
+//     if (group.hostId !== user.id && memberId !== user.id) {
+//       throw new Error("Unauthorized");
+//     }
+//     const membership = await Membership.findOne({
+//       where: { groupId, memberId },
+//     });
+//     if (!membership) {
+//       throw new Error("Membership does not exist for this User");
+//     }
+//     await membership.destroy();
+//     return res.status(200).json({ message: "Successfully deleted membership from group" });
+//   } catch (error) {
+//     if (error.message === "Unauthorized") {
+//       error.status = 401;
+//     } else if (error.message === "Membership does not exist for this User") {
+//       error.status = 404;
+//     } else {
+//       error.status = 400;
+//     }
+//     return next(error);
+//   }
+// });
 
 router.delete('/:groupId/membership', requireAuth, async (req, res) => {
   const groupId = req.params.groupId;
@@ -755,9 +755,7 @@ router.delete('/:groupId/membership', requireAuth, async (req, res) => {
         errors: { memberId: "User couldn't be found in the group" }
       });
     }
-
     await membership.destroy();
-  
     return res.json({
       message: "Successfully deleted membership from group"
     });
@@ -769,6 +767,25 @@ router.delete('/:groupId/membership', requireAuth, async (req, res) => {
     });
   }
 });
+
+router.delete('/:groupId', requireAuth, async (req, res) => {
+  const groupId = req.params.groupId;
+
+  if (groupId) {
+    const group = await Group.findByPk({where: {id: groupId}
+    });
+    console.log(group)
+    await groupDel.destroy();
+
+    return res.json(group);
+  } else {
+    return res.status(404).json({
+      message: "Group couldn't be found",
+      statusCode: 404
+    });
+  }
+});
+
 
 
 module.exports = router;
