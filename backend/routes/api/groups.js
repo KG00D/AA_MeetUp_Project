@@ -735,7 +735,7 @@ router.delete("/:groupId/membership", async (req, res, next) => {
 });
 
 router.delete('/:groupId/membership', requireAuth, async (req, res) => {
-  const groupId = Number(req.params.groupId);
+  const groupId = req.params.groupId;
   
   try {
     const membership = await Membership.findOne({ where: { groupId } });
