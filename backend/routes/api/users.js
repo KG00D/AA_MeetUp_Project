@@ -53,9 +53,7 @@ router.post('/', validateSignup, userEmailExists, async (req, res) => {
     const user = await User.signup({ email, firstName, lastName, username, password });
     // TODO: Add a try/catch block to handle errors and figure out why I have that on line 55.
     await setTokenCookie(res, user);
-    return res.json({
-      user: user,
-    });
+    return res.json(user);
   }
 );
 //TODO These two look like shit. Why can't I just combine them.

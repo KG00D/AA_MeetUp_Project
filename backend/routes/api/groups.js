@@ -681,7 +681,6 @@ router.delete("/:id", requireAuth, async (req, res, next) => {
 router.put("/:groupId/membership", async (req, res, next) => {
   const groupId = req.params.groupId;
   const user = req.user;
-  console.log('$$$$$$', user, '$$$$$$')
   
   try {
     if (!user) {
@@ -697,7 +696,7 @@ router.put("/:groupId/membership", async (req, res, next) => {
         userId: req.user.id,
       },
     });
-    console.log('$$$$$$$$$', req.user.id)
+
     if (membership) {
       throw { status: 400, message: "User is already a member of the group" };
     }
@@ -711,6 +710,7 @@ router.put("/:groupId/membership", async (req, res, next) => {
     if (pendingMembership) {
       throw { status: 400, message: "Membership request already submitted" };
     }
+    // TODO This shouldn't be an 'INSERT INTO blablabla, it should be an 'UPDATE blablabla'
     const newMembership = await Membership.create({
       groupId: group.id,
       userId: user.id,
