@@ -52,14 +52,13 @@ router.get('/', restoreUser, (req, res) => {
   const { user } = req;
   if (user) {
     return res.json({
-      user: {
         id: user.dataValues.id,
         firstName: user.dataValues.firstName,
         lastName: user.dataValues.lastName,
         email: user.dataValues.email,
         username: user.dataValues.username
-      }
-    });
+        }  
+    );
   } else {
     return res.json({ user: null });
   }
