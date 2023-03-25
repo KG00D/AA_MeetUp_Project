@@ -601,6 +601,58 @@ router.post('/:groupId/events', requireAuth, [
   }
 });
 
+router.post('/:groupId/membership', requireAuth, async (req, res) => {
+  const { user } = req;
+  const groupId = Number(req.params.groupId);
+
+  try {
+    const group = await Group.findByPk(groupId);
+
+    if (!group) {
+      return res.status(404).json({
+        message: "Group couldn't be found",
+        statusCode: 404
+      });
+    }
+
+    const member = await Membership.findOne({
+      where: { userId: user.id }
+    });
+
+    if (member) {
+      if (member.status === 'pending') {
+        return res.status(400).json({
+          message: "Membership already been requested",
+          statusCode: 400
+        });
+      } else {
+        return res.status(400).json({
+          message: "User already a member of the group",
+          statusCode: 400
+        });
+      }
+    }
+
+    const newMember = await Membership.create({
+      userId: user.id,
+      groupId,
+      status: 'pending'
+    });
+
+    return res.json({
+      memberId: newMember.userId,
+      status: newMember.status
+    });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({
+      message: "Group couldn't be found",
+      statusCode: 404
+    });
+  }
+});
+
 // START OF ALL DELETES
 
 router.delete("/:id", requireAuth, async (req, res, next) => {

@@ -21,7 +21,8 @@ router.delete('/:eventImageId', requireAuth, async (req, res) => {
     }
     await image.destroy();
     return res.json({
-      message: "Successfully deleted event image"
+      message: "Successfully deleted event image",
+      statusCode: 200
     });
   } catch (error) {
     console.error(error);
