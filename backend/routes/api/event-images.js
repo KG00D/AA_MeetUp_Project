@@ -11,15 +11,15 @@ router.delete('/:eventImageId', requireAuth, async (req, res) => {
   const imageId = req.params.eventImageId;
   
   try {
-    const eventImage = await eventImage.findOne({ where: { id: imageId } });
+    const image = await eventImage.findOne({ where: { id: imageId } });
 
-    if (!eventImage) {
+    if (!image) {
       return res.status(404).json({
         message: "Event image couldn't be found",
         statusCode: 404
       });
     }
-    await eventImage.destroy();
+    await image.destroy();
     return res.json({
       message: "Successfully deleted event image"
     });
