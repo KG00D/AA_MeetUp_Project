@@ -56,6 +56,8 @@ router.post('/', validateSignup, userEmailExists, async (req, res) => {
     return res.json(user);
   }
 );
+
+
 //TODO These two look like shit. Why can't I just combine them.
 router.use((err, req, res, next) => {
   if (err.status === 403) {
