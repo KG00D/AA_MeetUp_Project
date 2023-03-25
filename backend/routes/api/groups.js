@@ -734,4 +734,41 @@ router.delete("/:groupId/membership", async (req, res, next) => {
   }
 });
 
+router.delete('/:groupId/membership', requireAuth, async (req, res) => {
+  const groupId = Number(req.params.groupId);
+  
+  try {
+    const membership = await Membership.findOne({ where: { groupId } });
+    const group = await Group.findByPk(groupId);
+  
+    if (!group) {
+      return res.status(404).json({
+        message: "Group couldn't be found",
+        statusCode: 404
+      });
+    }
+  
+    if (!membership) {
+      return res.status(400).json({
+        message: "Validation Error",
+        statusCode: 400,
+        errors: { memberId: "User couldn't be found in the group" }
+      });
+    }
+
+    await membership.destroy();
+  
+    return res.json({
+      message: "Successfully deleted membership from group"
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Internal server error",
+      statusCode: 500
+    });
+  }
+});
+
+
 module.exports = router;
