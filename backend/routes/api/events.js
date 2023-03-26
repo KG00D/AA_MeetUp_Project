@@ -163,50 +163,32 @@ router.get('/api/events', async (req, res) => {
     }
   });
 
-
-router.post("/:eventId/images", requireAuth, async (req, res, next) => {
-    const { eventId } = req.params;
-    const { user } = req;
-    // TODO should line 171 be in a try/catch block?
-    const event = await Event.findByPk(eventId);
-
-    if (!event) {
-        const error = new Error(`Event couldn't be found`);
-        return res.status(404).json({
-            message: "Event couldn't be found",
-            statusCode: error.status
-    });
-    }
-    const attend = await Attendance.findAll({
-        where: 
-        {eventId: event.id, 
-         userId: user.id}
-    });
+  router.post("/:eventId/images", requireAuth, async (req, res, next) => {
+    const eventId = req.params.eventId;
+    const { url, preview } = req.body;
+  
     try {
-        if (!user) {
-            const error = new Error(`Authentication required`);
-            error.status = 401;
-            throw error;
-        }
-        if (!attend) {
-            const error = new Error(`You must be an attendee to add an image`);
-            error.status = 400;
-            throw error;
-        }
-        const { url, preview } = req.body;
-        const newEventImage = await eventImage.create({
-            eventId: event.id,
-            url,
-            preview
+      const event = await Event.findByPk(eventId);
+      if (!event) {
+        return res.status(404).json({
+          message: "Event not found",
+          statusCode: 404,
         });
-        return res.status(200).json({
-            url: newEventImage.url,
-            preview: newEventImage.preview
-        });
+      }
+      const newImage = await eventImage.create({
+        eventId,
+        url,
+        preview,
+      });
+      res.json({
+        id: eventId,
+        url: newImage.url,
+        preview: newImage.preview,
+      });
     } catch (error) {
-        return next(error);
+      next(error);
     }
-});
+  });
 
 router.post('/:eventId/attendance', async (req, res) => {
     const eventId = req.params.eventId;
