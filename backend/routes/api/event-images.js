@@ -7,20 +7,24 @@ const router = express.Router();
 
 router.use(restoreUser)
 
-
-
-router.delete('/:eventImageId', requireAuth, async (req, res) => {
+router.delete('/:eventImageId', requireAuth, async (req, res, next) => {
   const imageId = req.params.eventImageId;
-
-  console.log(req)
   try {
     const image = await eventImage.findByPk(imageId);
-    console.log(image);
-
+    if (!image) {
+      return res.status(404).json({
+        message: "Event image couldn't be found",
+        statusCode: 404,
+      });
+    }
+    await eventImage.destroy({ where: { id: imageId } });
+    return res.json({
+      message: "Successfully deleted event image",
+      statusCode: 200,
+    });
   } catch (error) {
- 
+    next(error);
   }
 });
-
 
 module.exports = router;
