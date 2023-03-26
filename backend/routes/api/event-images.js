@@ -11,7 +11,8 @@ router.use(restoreUser)
 
 router.delete('/:eventImageId', requireAuth, async (req, res) => {
   const imageId = req.params.eventImageId;
-  
+  var str = JSON.stringify(obj, null, 2);
+  console.log(str)
   try {
     const image = await eventImage.findOne({ where: { id: imageId } });
 
