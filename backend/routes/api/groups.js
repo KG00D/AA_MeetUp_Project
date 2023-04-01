@@ -537,69 +537,127 @@ router.post("/:groupId/venues", requireAuth, [
 
 // Create an event for a Group specified by its id - GH
 // Create an event by Group ID - PM
-router.post('/:groupId/events', requireAuth, [
+// router.post('/:groupId/events', requireAuth, [
+//   body('name').trim().isLength({ min: 5 }).withMessage('Name must be at least 5 characters'),
+//   body('type').trim().isIn(['Online', 'In person']).withMessage('Type must be Online or In person'),
+//   body('capacity').trim().isInt().withMessage('Capacity must be a an integer'),
+//   body('price').trim().isFloat({ min: 0 }).withMessage('Price is invalid'),
+//   body('description').trim().notEmpty().withMessage('Description is required'),
+//   body('startDate').isAfter(new Date().toISOString()).withMessage('Start date must be in the future'),
+//   body('endDate').custom((value, { req }) => new Date(value) > 
+//       new Date(req.body.startDate)).withMessage('End date is less than start date'),
+// ], async (req, res) => {
+  
+//   const { groupId } = req.params;
+//   const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+//   const userId = req.user.id; 
+
+//   try {
+//     const group = await Group.findByPk(groupId);
+//     const membership = await Membership.findAll({
+//       where: {groupId: groupId,
+//       status: 'co-host'
+//       }
+//     });
+
+//     if (!group) {
+//       return res.status(404).json({ message: 'Group could not be found', statusCode: 404 });
+//     }
+//     const isOrganizer = group.organizerId === userId;
+//     if (!isOrganizer && !isCoHost) {
+//       return res.status(403).json({ message: 'Forbidden', statusCode: 403 });
+//     }
+//     const venue = await Venue.findByPk(venueId);
+//     if (!venue) {
+//       return res.status(400).json({ message: 'Validation error', statusCode: 400, errors: ['Venue does not exist'] });
+//     }
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       return res.status(400).json({ message: 'Validation error', statusCode: 400, errors: errors.array() });
+//     }
+//     const event = await Event.create({
+//       groupId,
+//       venueId,
+//       name,
+//       type,
+//       capacity,
+//       price,
+//       description,
+//       startDate,
+//       endDate,
+//     });
+//     return res.status(200).json({
+//       id: event.id,
+//       groupId: event.groupId,
+//       venueId: event.venueId,
+//       name: event.name,
+//       type: event.type,
+//       capacity: event.capacity,
+//       price: event.price,
+//       description: event.description,
+//       startDate: event.startDate,
+//       endDate: event.endDate,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
+const eventValidators = [
   body('name').trim().isLength({ min: 5 }).withMessage('Name must be at least 5 characters'),
   body('type').trim().isIn(['Online', 'In person']).withMessage('Type must be Online or In person'),
-  body('capacity').trim().isInt().withMessage('Capacity must be a an integer'),
+  body('capacity').trim().isInt().withMessage('Capacity must be an integer'),
   body('price').trim().isFloat({ min: 0 }).withMessage('Price is invalid'),
   body('description').trim().notEmpty().withMessage('Description is required'),
   body('startDate').isAfter(new Date().toISOString()).withMessage('Start date must be in the future'),
-  body('endDate').custom((value, { req }) => new Date(value) > 
-      new Date(req.body.startDate)).withMessage('End date is less than start date'),
-], async (req, res) => {
-  
-  const { groupId } = req.params;
-  const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
-  const userId = req.user.id; 
+  body('endDate').custom((value, { req }) => new Date(value) > new Date(req.body.startDate)).withMessage('End date is less than start date'),
+];
+
+router.post('/:groupId/events', requireAuth, eventValidators, async (req, res) => {
+  const { user } = req;
+  const { venueId, name, type, capacity, price, description, startDate, endDate, previewImage } = req.body;
+  const groupId = Number(req.params.groupId);
 
   try {
     const group = await Group.findByPk(groupId);
-    const membership = await Membership.findAll({
-      where: {groupId: groupId,
-      status: 'co-host'
-      }
-    });
-
     if (!group) {
-      return res.status(404).json({ message: 'Group could not be found', statusCode: 404 });
+      return res.status(404).json({ message: "Group couldn't be found", statusCode: 404 });
     }
-    const isOrganizer = group.organizerId === userId;
-    if (!isOrganizer && !isCoHost) {
-      return res.status(403).json({ message: 'Forbidden', statusCode: 403 });
+
+    const organizerId = group.organizerId;
+    if (user.id !== organizerId) {
+      return res.status(403).json({ message: "User not authorized to create event", statusCode: 403 });
     }
+
     const venue = await Venue.findByPk(venueId);
     if (!venue) {
       return res.status(400).json({ message: 'Validation error', statusCode: 400, errors: ['Venue does not exist'] });
     }
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ message: 'Validation error', statusCode: 400, errors: errors.array() });
     }
-    const event = await Event.create({
+
+    const newEvent = await Event.create({
+      groupId, venueId, name, type, capacity, price, description, startDate, endDate, previewImage
+    });
+
+    return res.status(201).json({
+      id: newEvent.id,
       groupId,
-      venueId,
-      name,
-      type,
-      capacity,
-      price,
-      description,
-      startDate,
-      endDate,
+      venueId: newEvent.venueId,
+      name: newEvent.name,
+      type: newEvent.type,
+      capacity: newEvent.capacity,
+      price: newEvent.price,
+      description: newEvent.description,
+      previewImage: newEvent.previewImage,
+      startDate: formatDate(newEvent.startDate),
+      endDate: formatDate(newEvent.endDate)
     });
-    return res.status(200).json({
-      id: event.id,
-      groupId: event.groupId,
-      venueId: event.venueId,
-      name: event.name,
-      type: event.type,
-      capacity: event.capacity,
-      price: event.price,
-      description: event.description,
-      startDate: event.startDate,
-      endDate: event.endDate,
-    });
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal server error", statusCode: 500 });
   }
 });
 
