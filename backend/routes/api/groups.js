@@ -77,7 +77,7 @@ router.get('/current', restoreUser, async (req, res, next) => {
         previewImage: group.groupImages.length > 0 ? group.groupImages[0].url : null
       }
     });
-    return res.status(200).json({ groups: formattedGroups });
+    return res.status(200).json({ Groups: formattedGroups });
   } catch (error) {
     console.error(error);
     return next(error);
@@ -588,6 +588,8 @@ router.post('/:groupId/events', requireAuth, [
     });
     return res.status(200).json({
       id: event.id,
+      groupId: event.groupId,
+      venueId: event.venueId,
       name: event.name,
       type: event.type,
       capacity: event.capacity,
