@@ -638,22 +638,22 @@ router.post('/:groupId/events', requireAuth, eventValidators, async (req, res) =
       return res.status(400).json({ message: 'Validation error', statusCode: 400, errors: errors.array() });
     }
 
-    const newEvent = await Event.create({
+    const event = await Event.create({
       groupId, venueId, name, type, capacity, price, description, startDate, endDate, previewImage
     });
 
     return res.status(201).json({
-      id: newEvent.id,
-      groupId,
-      venueId: newEvent.venueId,
-      name: newEvent.name,
-      type: newEvent.type,
-      capacity: newEvent.capacity,
-      price: newEvent.price,
-      description: newEvent.description,
-      previewImage: newEvent.previewImage,
-      startDate: formatDate(newEvent.startDate),
-      endDate: formatDate(newEvent.endDate)
+      id: event.id,
+      groupId: event.groupId,
+      venueId: event.venueId,
+      name: event.name,
+      type: event.type,
+      capacity: event.capacity,
+      price: event.price,
+      description: event.description,
+      previewImage: event.previewImage,
+      startDate: event.startDate,
+      endDate: event.endDate
     });
   } catch (err) {
     console.error(err);
