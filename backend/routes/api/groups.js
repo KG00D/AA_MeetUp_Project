@@ -642,7 +642,7 @@ router.post('/:groupId/events', requireAuth, eventValidators, async (req, res) =
       groupId, venueId, name, type, capacity, price, description, startDate, endDate, previewImage
     });
 
-    return res.status(201).json({
+    return res.status(200).json({
       id: event.id,
       groupId: event.groupId,
       venueId: event.venueId,
