@@ -181,7 +181,7 @@ router.get('/api/events', async (req, res) => {
         preview,
       });
       res.json({
-        id: eventId,
+        id: int(eventId),
         url: newImage.url,
         preview: newImage.preview,
       });
