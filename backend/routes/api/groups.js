@@ -714,70 +714,47 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
 });
 
 // START OF ALL DELETES
+// router.put('/:groupId/membership', requireAuth, async (req, res) => {
+//   const { user, params, body } = req;
+//   const { groupId } = params;
+//   const { status } = body;
 
-router.delete("/:id", requireAuth, async (req, res, next) => {
-  const { user } = req;
-  const id = req.params.id;
-  try {
-    const group = await Group.findByPk(id);
-    if (!group) {
-      return res.status(404).json({ message: "Group couldn't be found", statusCode: 404 });
-    }
-    if (user.id !== group.organizerId) {
-      throw new Error("Only group organizer can delete a group");
-    }
-    await Group.destroy({
-      where: {
-        id: id,
-      },
-    });
-    res.status(200).json({ message: 'Successfully deleted' });
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.put('/:groupId/membership', requireAuth, async (req, res) => {
-  const { user, params, body } = req;
-  const { groupId } = params;
-  const { status } = body;
-
-  try {
-    const group = await Group.findByPk(groupId);
-    if (!group) {
-      return res.status(404).json({
-        message: "Group couldn't be found",
-        statusCode: 404
-      });
-    }
-    const member = await Membership.findOne({
-      where: { groupId }
-    });
-    const organizerId = group.organizerId;
-    if (user.id !== organizerId && member.status !== 'co-host') {
-      return res.status(401).json({
-        message: "You're not authorized to perform this action",
-        statusCode: 401
-      });
-    }
-    member.status = status;
-    await Membership.update(
-      { status: status },
-      { where: { groupId } });
-    return res.json({
-      id: user.id,
-      groupId: groupId,
-      memberId: member.userId,
-      status: member.status
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      message: 'Something went wrong',
-      statusCode: 500
-    });
-  }
-});
+//   try {
+//     const group = await Group.findByPk(groupId);
+//     if (!group) {
+//       return res.status(404).json({
+//         message: "Group couldn't be found",
+//         statusCode: 404
+//       });
+//     }
+//     const member = await Membership.findOne({
+//       where: { groupId }
+//     });
+//     const organizerId = group.organizerId;
+//     if (user.id !== organizerId && member.status !== 'co-host') {
+//       return res.status(401).json({
+//         message: "You're not authorized to perform this action",
+//         statusCode: 401
+//       });
+//     }
+//     member.status = status;
+//     await Membership.update(
+//       { status: status },
+//       { where: { groupId } });
+//     return res.json({
+//       id: user.id,
+//       groupId: groupId,
+//       memberId: member.userId,
+//       status: member.status
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({
+//       message: 'Something went wrong',
+//       statusCode: 500
+//     });
+//   }
+// });
 
 router.delete('/:groupId/membership', requireAuth, async (req, res) => {
   const groupId = req.params.groupId;
@@ -815,7 +792,6 @@ router.delete('/:groupId/membership', requireAuth, async (req, res) => {
 
 router.delete('/:groupId', requireAuth, async (req, res) => {
   const groupId = req.params.groupId;
-
   if (groupId) {
     const group = await Group.findByPk({where: {id: groupId}
     });
@@ -831,6 +807,27 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
   }
 });
 
+// router.delete("/:id", requireAuth, async (req, res, next) => {
+//   const { user } = req;
+//   const id = req.params.id;
+//   try {
+//     const group = await Group.findByPk(id);
+//     if (!group) {
+//       return res.status(404).json({ message: "Group couldn't be found", statusCode: 404 });
+//     }
+//     if (user.id !== group.organizerId) {
+//       throw new Error("Only group organizer can delete a group");
+//     }
+//     await Group.destroy({
+//       where: {
+//         id: id,
+//       },
+//     });
+//     res.status(200).json({ message: 'Successfully deleted' });
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 
 module.exports = router;

@@ -376,26 +376,7 @@ router.put("/:eventId", async (req, res, next) => {
 
 
   // DELETE
-  router.delete("/:eventId", requireAuth, async (req, res, next) => {
-    const eventId  = req.params.eventId;
-    try {
-      const event = await Event.findByPk(eventId);
-      if (!event) {
-        return res.status(404).json({
-          message: "Event couldn't be found",
-          statusCode: 404
-        });
-      }
-      await event.destroy();
-      return res.json({
-        message: "Successfully deleted event"
-      });
-    } catch (error) {
-      return next(error);
-    }
-  });
-  
-  router.delete('/:eventId/attendance', async (req, res) => {
+router.delete('/:eventId/attendance', async (req, res) => {
     const eventId = req.params.eventId;
     const { user } = req;
   
@@ -418,6 +399,25 @@ router.put("/:eventId", async (req, res, next) => {
         message: "Internal server error",
         statusCode: 500
       });
+    }
+  });
+
+router.delete("/:eventId", requireAuth, async (req, res, next) => {
+    const eventId  = req.params.eventId;
+    try {
+      const event = await Event.findByPk(eventId);
+      if (!event) {
+        return res.status(404).json({
+          message: "Event couldn't be found",
+          statusCode: 404
+        });
+      }
+      await event.destroy();
+      return res.json({
+        message: "Successfully deleted event"
+      });
+    } catch (error) {
+      return next(error);
     }
   });
   
