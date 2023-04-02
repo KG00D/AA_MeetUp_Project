@@ -341,17 +341,18 @@ router.put("/:eventId", async (req, res, next) => {
         });
       }
       const group = await Group.findByPk(event.groupId);
+      //TODO Why did I add the organizerId here?
       const organizerId = group.organizerId;
-      const attendingId = await Attendance.findOne({
+      const attendanceId = await Attendance.findOne({
         where: { eventId, userId: user.id },
       });
-      if (attendingId && attendingId.status === "pending") {
+      if (attendanceId && attendanceId.status === "pending") {
         return res.status(400).json({
           message: "Attendance has already been requested",
           statusCode: 400,
         });
       }
-      if (attendingId && attendingId.status === "accepted") {
+      if (attendanceId && attendanceId.status === "accepted") {
         return res.status(400).json({
           message: "User is already attending the event",
           statusCode: 400,
@@ -363,8 +364,10 @@ router.put("/:eventId", async (req, res, next) => {
         status: status || "pending",
       });
       res.status(200).json({
-        message: "Attendance request created successfully",
-        statusCode: 200,
+        id: attendanceId,
+        eventId: eventId,
+        userId: user.id,
+        status: status
       });
     } catch (error) {
       next(error);
