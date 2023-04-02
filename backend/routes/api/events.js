@@ -361,7 +361,7 @@ router.put("/:eventId", async (req, res, next) => {
       await Attendance.create({
         userId: user.id,
         eventId: eventId,
-        status: status || "pending",
+        status: status
       });
       res.status(200).json({
         id: attendanceId,
