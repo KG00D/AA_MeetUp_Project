@@ -349,7 +349,7 @@ router.patch('/events/:eventId/attendance', requireAuth, async (req, res, next) 
           statusCode: 403
         });
       }
-      const attendee = await Attendee.findOne({
+      const attendee = await Attendance.findOne({
         where: {
           eventId: eventId,
           userId: userId
