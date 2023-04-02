@@ -328,7 +328,7 @@ router.put("/:eventId", async (req, res, next) => {
     }
   });
 
-router.patch('/events/:eventId/attendance', requireAuth, async (req, res, next) => {
+router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
     const { user } = req;
     const { status, userId } = req.body;
     const eventId = Number(req.params.eventId);
