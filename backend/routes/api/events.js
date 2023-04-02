@@ -364,7 +364,7 @@ router.put("/:eventId", async (req, res, next) => {
         status: status
       });
       res.status(200).json({
-        id: attendanceId,
+        id: attendanceId.id,
         eventId: eventId,
         userId: user.id,
         status: status
