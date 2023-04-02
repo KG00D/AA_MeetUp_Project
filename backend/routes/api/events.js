@@ -164,7 +164,7 @@ router.get('/api/events', async (req, res) => {
   });
 
   router.post("/:eventId/images", requireAuth, async (req, res, next) => {
-    const eventId = int(req.params.eventId);
+    const eventId = Number(req.params.eventId);
     const { url, preview } = req.body;
   
     try {
