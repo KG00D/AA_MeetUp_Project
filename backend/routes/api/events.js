@@ -328,53 +328,73 @@ router.put("/:eventId", async (req, res, next) => {
     }
   });
 
-  router.put("/:eventId/attendance", requireAuth, async (req, res, next) => {
+router.patch('/events/:eventId/attendance', requireAuth, async (req, res, next) => {
+    const { user } = req;
+    const { status, userId } = req.body;
+    const eventId = Number(req.params.eventId);
     try {
-      const { status } = req.body;
-      const { user } = req;
-      const { eventId } = req.params;
       const event = await Event.findByPk(eventId);
       if (!event) {
         return res.status(404).json({
-          message: "Event not found",
-          statusCode: 404,
+          message: "Event couldn't be found",
+          statusCode: 404
         });
       }
-      const group = await Group.findByPk(event.groupId);
-      //TODO Why did I add the organizerId here?
-      const organizerId = group.organizerId;
-      const attendanceId = await Attendance.findOne({
-        where: { eventId, userId: user.id },
+      const group = await Group.findOne({
+        where: { organizerId: user.id }
       });
-      if (attendanceId && attendanceId.status === "pending") {
-        return res.status(400).json({
-          message: "Attendance has already been requested",
-          statusCode: 400,
+      if (!group) {
+        return res.status(403).json({
+          message: "You do not have permission to modify this event",
+          statusCode: 403
         });
       }
-      if (attendanceId && attendanceId.status === "accepted") {
-        return res.status(400).json({
-          message: "User is already attending the event",
-          statusCode: 400,
-        });
-      }
-      await Attendance.create({
-        userId: user.id,
-        eventId: eventId,
-        status: status
+      const attendee = await Attendee.findOne({
+        where: {
+          eventId: eventId,
+          userId: userId
+        }
       });
-      res.status(200).json({
-        id: attendanceId.eventId,
+      if (!attendee) {
+        return res.status(404).json({
+          message: "Attendance between the user and the event does not exist",
+          statusCode: 404
+        });
+      }
+      if (status === 'pending') {
+        return res.status(400).json({
+          message: "Cannot change an attendance status to pending",
+          statusCode: 400
+        });
+      }
+      const userIsOrganizer = group.organizerId === user.id;
+      const userIsCoHost = await Membership.findOne({
+        where: {
+          groupId: group.id,
+          userId: user.id,
+          status: 'co-host'
+        }
+      });
+      if (!userIsOrganizer && !userIsCoHost) {
+        return res.status(403).json({
+          message: "You do not have permission to modify this event",
+          statusCode: 403
+        });
+      }
+      attendee.status = status;
+      await attendee.save();
+  
+      return res.status(200).json({
+        id: attendee.id,
         eventId: eventId,
-        userId: user.id,
-        status: status
+        userId: attendee.userId,
+        status: attendee.status
       });
     } catch (error) {
-      next(error);
+      return next(error);
     }
   });
-
-
+  
   // DELETE
 router.delete('/:eventId/attendance', async (req, res) => {
     const eventId = req.params.eventId;
