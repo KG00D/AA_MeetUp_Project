@@ -396,34 +396,36 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
   });
   
   // DELETE
-router.delete('/:eventId/attendance', async (req, res) => {
-    const { user } = req;
-    const eventId = req.params.eventId;
-  
+  router.delete("/:eventId/attendance", restoreUser, requireAuth, async (req, res) => {
     try {
-      const attendance = await Attendance.findOne({ where: { eventId } });
-      if (attendance) {
-       Attendance.destroy({
-            where: {eventId: eventId}
-       })
-       return res.json({
-        message: "Successfully deleted attendance from the event"
-       });
+      const { eventId } = req.params;
+      const { id: userId } = req.user;
+      const { memberId } = req.body;
+      const event = await Event.findByPk(eventId);
+      const group = await Group.findByPk(event.groupId);
+  
+      if (!event) {
+        return res.status(404).json({ message: "Event not found" });
       }
-      else {
-        return res.status(404).json({
-          message: "Event couldn't be found",
-          statusCode: 404
-        });
+      const user = await Membership.findOne({ where: { userId, groupId: event.groupId } });
+      const member = await Attendance.findOne({ where: { userId: memberId, eventId } });
+  
+      if (!member) {
+        return res.status(404).json({ message: "Attendance not found for this user" });
       }
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({
-        message: "Internal server error",
-        statusCode: 500
-      });
+  
+      if (member.id === user.id || user.status === "co-host" || userId === group.organizerId) {
+        await member.destroy();
+        return res.status(200).json({ message: "Attendance successfully deleted" });
+      } else {
+        return res.status(403).json({ message: "Forbidden" });
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Internal server error" });
     }
   });
+  
 
   router.delete("/:eventId", requireAuth, async (req, res, next) => {
     const eventId = Number(req.params.eventId);
