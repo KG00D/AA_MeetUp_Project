@@ -799,14 +799,14 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
     const group = await Group.findByPk(id);
 
     if (!group) {
-      return res.status(404).json({ message: "Group not found" });
+      return res.status(404).json({ message: "Group couldn't be found" });
     }
 
     if (userId === group.organizerId) {
       await group.destroy();
-      return res.status(200).json({ message: "Group successfully deleted" });
+      return res.status(200).json({ message: "Successfully deleted" });
     } else {
-      return res.status(403).json({ message: "Forbidden" });
+      return res.status(403).json({ message: "No dice" });
     }
   } catch (err) {
     console.error(err);
