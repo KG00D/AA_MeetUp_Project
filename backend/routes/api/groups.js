@@ -763,7 +763,7 @@ router.delete("/:groupId/membership", async (req,res,next) => {
 
   const {user} = req
   const {memberId} = req.body
-  
+
   console.log('########### MEMBER ID ###########')
   console.log({memberId})
   console.log('########### MEMBER ID ###########')
@@ -785,7 +785,8 @@ router.delete("/:groupId/membership", async (req,res,next) => {
       where: {
           groupId: id,
           id
-      }
+      },
+      order: [['createdAt', 'DESC']]
   })
   if (!member) {
       const err = new Error("Membership does not exist for this User")
