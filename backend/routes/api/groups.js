@@ -713,47 +713,47 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
   }
 });
 
-// router.put('/:groupId/membership', requireAuth, async (req, res) => {
-//   const { user, params, body } = req;
-//   const { groupId } = params;
-//   const { status } = body;
+router.put('/:groupId/membership', requireAuth, async (req, res) => {
+  const { user, params, body } = req;
+  const { groupId } = params;
+  const { status } = body;
 
-//   try {
-//     const group = await Group.findByPk(groupId);
-//     if (!group) {
-//       return res.status(404).json({
-//         message: "Group couldn't be found",
-//         statusCode: 404
-//       });
-//     }
-//     const member = await Membership.findOne({
-//       where: { groupId }
-//     });
-//     const organizerId = group.organizerId;
-//     if (user.id !== organizerId && member.status !== 'co-host') {
-//       return res.status(401).json({
-//         message: "You're not authorized to perform this action",
-//         statusCode: 401
-//       });
-//     }
-//     member.status = status;
-//     await Membership.update(
-//       { status: status },
-//       { where: { groupId } });
-//     return res.json({
-//       id: user.id,
-//       groupId: groupId,
-//       memberId: member.userId,
-//       status: member.status
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({
-//       message: 'Something went wrong',
-//       statusCode: 500
-//     });
-//   }
-// });
+  try {
+    const group = await Group.findByPk(groupId);
+    if (!group) {
+      return res.status(404).json({
+        message: "Group couldn't be found",
+        statusCode: 404
+      });
+    }
+    const member = await Membership.findOne({
+      where: { groupId }
+    });
+    const organizerId = group.organizerId;
+    if (user.id !== organizerId && member.status !== 'co-host') {
+      return res.status(401).json({
+        message: "You're not authorized to perform this action",
+        statusCode: 401
+      });
+    }
+    member.status = status;
+    await Membership.update(
+      { status: status },
+      { where: { groupId } });
+    return res.json({
+      id: user.id,
+      groupId: groupId,
+      memberId: member.userId,
+      status: member.status
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: 'Something went wrong',
+      statusCode: 500
+    });
+  }
+});
 
 router.delete("/:groupdId/membership", async (req,res,next) => {
   const id = req.params.id
