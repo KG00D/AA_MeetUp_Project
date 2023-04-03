@@ -398,7 +398,7 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
   // DELETE
   router.delete("/:eventId/attendance", restoreUser, requireAuth, async (req, res) => {
     try {
-      const { eventId } = req.params;
+      const eventId = req.params.eventId;
       const { id: userId } = req.user;
       const { memberId } = req.body;
       const event = await Event.findByPk(eventId);
