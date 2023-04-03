@@ -756,30 +756,33 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 });
 
 router.delete('/:groupId/membership', requireAuth, async (req, res) => {
-  const groupId = req.params.groupId;
-  
+  const { user } = req;
+  const groupId = Number(req.params.groupId);
+
   try {
-    const membership = await Membership.findOne({ where: { groupId } });
+    const membership = await Membership.findByPk(groupId);
     const group = await Group.findByPk(groupId);
-  
+
     if (!group) {
       return res.status(404).json({
         message: "Group couldn't be found",
         statusCode: 404
       });
     }
-  
-    if (!membership) {
+    if (membership) {
+      await Membership.destroy({
+        where: { groupId: groupId }
+      })
+      return res.json({
+        message: "Successfully deleted membership from group"
+      });
+    } else {
       return res.status(400).json({
         message: "Validation Error",
         statusCode: 400,
-        errors: { memberId: "User couldn't be found in the group" }
+        errors: { memberId: "User couldn't be found" }
       });
     }
-    await membership.destroy();
-    return res.json({
-      message: "Successfully deleted membership from group"
-    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -805,28 +808,5 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
     });
   }
 });
-
-// router.delete("/:id", requireAuth, async (req, res, next) => {
-//   const { user } = req;
-//   const id = req.params.id;
-//   try {
-//     const group = await Group.findByPk(id);
-//     if (!group) {
-//       return res.status(404).json({ message: "Group couldn't be found", statusCode: 404 });
-//     }
-//     if (user.id !== group.organizerId) {
-//       throw new Error("Only group organizer can delete a group");
-//     }
-//     await Group.destroy({
-//       where: {
-//         id: id,
-//       },
-//     });
-//     res.status(200).json({ message: 'Successfully deleted' });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
 
 module.exports = router;
