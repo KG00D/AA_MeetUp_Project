@@ -401,7 +401,7 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
       const { memberId } = req.body;
       const { user } = req;
       const event = await Event.findByPk(id);
-      const group = event.Group;
+      const group = await Group.findOne({ where: { id: event.groupId } });
 
       if (!event) {
         return res.status(404).json({ message: "Event couldn't be found" });
