@@ -400,7 +400,7 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
       const id = req.params.id;
       const { memberId } = req.body;
       const { user } = req;
-      const event = await Event.findByPk(id, { include: Group });
+      const event = await Event.findByPk(id);
       const group = event.Group;
 
       if (!event) {
