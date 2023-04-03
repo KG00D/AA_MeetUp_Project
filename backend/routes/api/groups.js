@@ -860,8 +860,6 @@ router.delete("/:groupId/membership", restoreUser, requireAuth, async (req, res)
   }
 });
 
-
-
 router.delete('/:groupId', requireAuth, async (req, res) => {
   try {
     const id = req.params.groupId;
