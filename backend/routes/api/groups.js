@@ -756,7 +756,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 });
 
 router.delete("/:groupId/membership", async (req,res,next) => {
-  const id = req.params.id
+  const id = req.params.groupId
   const {user} = req
   const {memberId} = req.body
   const userMemberId = await User.findByPk(memberId)
