@@ -397,22 +397,25 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
   
   // DELETE
 router.delete('/:eventId/attendance', async (req, res) => {
-    const eventId = req.params.eventId;
     const { user } = req;
+    const eventId = req.params.eventId;
   
     try {
       const attendance = await Attendance.findOne({ where: { eventId } });
-      if (!attendance) {
+      if (attendance) {
+       Attendance.destroy({
+            where: {eventId: eventId}
+       })
+       return res.json({
+        message: "Successfully deleted attendance from the event"
+       });
+      }
+      else {
         return res.status(404).json({
-          message: "Attendance couldn't be found for this event",
+          message: "Event couldn't be found",
           statusCode: 404
         });
       }
-  
-      await attendance.destroy();
-      return res.json({
-        message: "Successfully deleted attendance from event"
-      });
     } catch (error) {
       console.error(error);
       return res.status(500).json({
@@ -422,25 +425,32 @@ router.delete('/:eventId/attendance', async (req, res) => {
     }
   });
 
-router.delete("/:eventId", requireAuth, async (req, res, next) => {
-    const eventId  = req.params.eventId;
+  router.delete("/:eventId", requireAuth, async (req, res, next) => {
+    const eventId = Number(req.params.eventId);
+    const event = await Event.findByPk(eventId);
+
     try {
-      const event = await Event.findByPk(eventId);
-      if (!event) {
-        return res.status(404).json({
-          message: "Event couldn't be found",
-          statusCode: 404
-        });
-      }
-      await event.destroy();
-      return res.json({
-        message: "Successfully deleted event"
-      });
+        if (event) {
+            await Event.destroy({
+                where: { id: eventId }
+            });
+            return res.json({
+                message: "Successfully deleted event"
+            });
+        } else {
+            return res.status(404).json({
+                message: "Event couldn't be found",
+                statusCode: 404
+            });
+        }
     } catch (error) {
-      return next(error);
+        console.error(error);
+        return res.status(500).json({
+            message: "Internal server error",
+            statusCode: 500
+        });
     }
-  });
-  
+});
 
 module.exports = router;
 
