@@ -404,7 +404,7 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
       const group = event.Group;
 
       if (!event) {
-        return res.status(404).json({ message: "Event not found" });
+        return res.status(404).json({ message: "Event couldn't be found" });
       }
       if (!group) {
         return res.status(404).json({ message: "Group not found" });
@@ -412,14 +412,14 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
   
       const attend = await Attendance.findOne({ where: { eventId: event.id, userId: memberId } });
       if (!attend) {
-        return res.status(404).json({ message: "Attendance not found for this user" });
+        return res.status(404).json({ message: "Attendance does not exist for this User" });
       }
   
       if (user.id !== group.organizerId && user.id !== memberId) {
         return res.status(403).json({ message: "Only the user or organizer may delete an attendance" });
       }
       await attend.destroy();
-      return res.status(200).json({ message: "Attendance successfully deleted" });
+      return res.status(200).json({ message: "Successfully deleted attendance from event" });
     } catch (err) {
       console.error(err);
       return res.status(500).json({ message: "Internal server error" });
