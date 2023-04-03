@@ -395,44 +395,37 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
     }
   });
   
-  // DELETE
-  router.delete("/:eventId/attendance", restoreUser, requireAuth, async (req, res) => {
+  router.delete("/:eventId/attendance", requireAuth, async (req, res, next) => {
     try {
-      const eventId = req.params.eventId;
-      const userId = req.user.id;
+      const id = req.params.id;
       const { memberId } = req.body;
-      const event = await Event.findByPk(eventId);
-      const group = await Group.findByPk(event.groupId);
-      const user = await Membership.findOne({ 
-        where: { userId: userId,
-                 groupId: event.groupId } 
-        });
-    
-      const member = await Attendance.findOne({ 
-        where: { userId: memberId, 
-                 eventId } });
+      const { user } = req;
+      const event = await Event.findByPk(id, { include: Group });
+      const group = event.Group;
 
       if (!event) {
-        return res.status(404).json({ message: "Event not found" });
+        return res.status(404).json({ message: "Event couldn't be found" });
+      }
+      if (!group) {
+        return res.status(404).json({ message: "Group not found" });
       }
   
-      if (!member) {
+      const attend = await Attendance.findOne({ where: { eventId: event.id, userId: memberId } });
+      if (!attend) {
         return res.status(404).json({ message: "Attendance does not exist for this User" });
       }
   
-      if (member.id === user.id || user.status === "co-host" || userId === group.organizerId) {
-        await member.destroy();
-        return res.status(200).json({ message: "Attendance successfully deleted" });
-      } else {
-        return res.status(403).json({ message: "Only the User or organizer may delete an Attendance" });
+      if (user.id !== group.organizerId && user.id !== memberId) {
+        return res.status(403).json({ message: "Only the user or organizer may delete an attendance" });
       }
+      await attend.destroy();
+      return res.status(200).json({ message: "Successfully deleted attendance from event" });
     } catch (err) {
       console.error(err);
       return res.status(500).json({ message: "Internal server error" });
     }
   });
   
-
   router.delete("/:eventId", requireAuth, async (req, res, next) => {
     const eventId = Number(req.params.eventId);
     const event = await Event.findByPk(eventId);
