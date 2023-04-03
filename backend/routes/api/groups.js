@@ -763,6 +763,11 @@ router.delete("/:groupId/membership", async (req,res,next) => {
 
   const {user} = req
   const {memberId} = req.body
+  
+  console.log('########### MEMBER ID ###########')
+  console.log({memberId})
+  console.log('########### MEMBER ID ###########')
+
   const userMemberId = await User.findByPk(memberId)
 
   if (!user) {
@@ -779,7 +784,7 @@ router.delete("/:groupId/membership", async (req,res,next) => {
   const member = await Membership.findOne({
       where: {
           groupId: id,
-          memberId
+          id
       }
   })
   if (!member) {
