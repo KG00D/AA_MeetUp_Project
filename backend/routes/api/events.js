@@ -397,7 +397,7 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
   
   router.delete("/:eventId/attendance", requireAuth, async (req, res, next) => {
     try {
-      const id = req.params.id;
+      const id = req.params.eventId;
       console.log('################### ID')
       console.log(id)
       console.log('################### ID')
@@ -405,7 +405,6 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
       const { memberId } = req.body;
       console.log({memberId});
       console.log('################### memberID')
-
       const { user } = req;
       const event = await Event.findByPk(id);
       console.log('################### EVENT')
