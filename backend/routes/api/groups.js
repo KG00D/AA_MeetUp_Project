@@ -755,7 +755,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
   }
 });
 
-router.delete("/:groupdId/membership", async (req,res,next) => {
+router.delete("/:groupId/membership", async (req,res,next) => {
   const id = req.params.id
   const {user} = req
   const {memberId} = req.body
