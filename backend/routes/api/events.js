@@ -399,16 +399,22 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
   router.delete("/:eventId/attendance", restoreUser, requireAuth, async (req, res) => {
     try {
       const eventId = req.params.eventId;
-      const { id: userId } = req.user;
+      const userId = req.user.id;
       const { memberId } = req.body;
       const event = await Event.findByPk(eventId);
       const group = await Group.findByPk(event.groupId);
-  
+      const user = await Membership.findOne({ 
+        where: { userId: userId,
+                 groupId: event.groupId } 
+        });
+    
+      const member = await Attendance.findOne({ 
+        where: { userId: memberId, 
+                 eventId } });
+
       if (!event) {
         return res.status(404).json({ message: "Event not found" });
       }
-      const user = await Membership.findOne({ where: { userId, groupId: event.groupId } });
-      const member = await Attendance.findOne({ where: { userId: memberId, eventId } });
   
       if (!member) {
         return res.status(404).json({ message: "Attendance does not exist for this User" });
