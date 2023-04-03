@@ -409,12 +409,10 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
       if (!group) {
         return res.status(404).json({ message: "Group not found" });
       }
-  
       const attend = await Attendance.findOne({ where: { eventId: event.id, userId: memberId } });
       if (!attend) {
         return res.status(404).json({ message: "Attendance does not exist for this User" });
       }
-  
       if (user.id !== group.organizerId && user.id !== memberId) {
         return res.status(403).json({ message: "Only the user or organizer may delete an attendance" });
       }
