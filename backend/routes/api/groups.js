@@ -755,59 +755,111 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
   }
 });
 
-router.delete("/:groupId/membership", async (req,res,next) => {
-  const id = req.params.groupId
-  console.log('########### ID ###########')
-  console.log(id)
-  console.log('########### ID ###########')
+// router.delete("/:groupId/membership", async (req,res,next) => {
+//   const id = req.params.groupId
+//   console.log('########### ID ###########')
+//   console.log(id)
+//   console.log('########### ID ###########')
 
-  const {user} = req
-  const {memberId} = req.body
+//   const {user} = req
+//   const {memberId} = req.body
 
-  console.log('########### MEMBER ID ###########')
-  console.log({memberId})
-  console.log('########### MEMBER ID ###########')
+//   console.log('########### MEMBER ID ###########')
+//   console.log({memberId})
+//   console.log('########### MEMBER ID ###########')
 
-  const userMemberId = await User.findByPk(memberId)
+//   const userMemberId = await User.findByPk(memberId)
 
-  if (!user) {
-      const err = new Error("You're not authorized to perform this action")
-      err.status = 401
-      return next(err)
-  }
+//   if (!user) {
+//       const err = new Error("You're not authorized to perform this action")
+//       err.status = 401
+//       return next(err)
+//   }
 
-  if (!userMemberId) {
-      const err = new Error("User couldn't be found")
-      err.status = 404
-      return next(err)
-  }
-  const member = await Membership.findOne({
+//   if (!userMemberId) {
+//       const err = new Error("User couldn't be found")
+//       err.status = 404
+//       return next(err)
+//   }
+//   const member = await Membership.findOne({
+//       where: {
+//           groupId: id,
+//           id
+//       },
+//       order: [['createdAt', 'DESC']]
+//   })
+//   if (!member) {
+//       const err = new Error("Membership does not exist for this User")
+//       err.status = 404
+//       return next(err)
+//   }
+//   const group = await Group.findByPk(id)
+//   if (!group) {
+//       const err = new Error("Group couldn't be found")
+//       err.status = 404
+//       return next(err)
+//   }
+//   if (user.id !== group.organizerId && 
+//       user.id !== memberId) {
+//       const err = new Error("Forbidden")
+//       err.status = 403
+//       return next(err)
+//   }
+//   await member.destroy()
+
+//   return res.status(200).json({message: "Successfully deleted membership from group"})
+// })
+
+router.delete("/:groupId/membership", restoreUser, requireAuth, async (req, res) => {
+  const returnMsg = {};
+  try {
+    const groupId = req.params.groupId;
+    const userId = req.user.id;
+    const { memberId } = req.body;
+    const group = await Group.findByPk(groupId);
+
+    if (!group) {
+      returnMsg.message = "Group couldn't be found";
+      returnMsg.statusCode = 404;
+      return res.status(404).json(returnMsg);
+    }
+
+    const user = await Membership.findOne({
       where: {
-          groupId: id,
-          id
+        userId,
+        groupId,
       },
-      order: [['createdAt', 'DESC']]
-  })
-  if (!member) {
-      const err = new Error("Membership does not exist for this User")
-      err.status = 404
-      return next(err)
-  }
-  const group = await Group.findByPk(id)
-  if (!group) {
-      const err = new Error("Group couldn't be found")
-      err.status = 404
-      return next(err)
-  }
-  if (user.id !== group.organizerId && user.id !== memberId) {
-      const err = new Error("Forbidden")
-      err.status = 403
-      return next(err)
-  }
-  await member.destroy()
+    });
+    const member = await Membership.findOne({
+      where: {
+        userId: memberId,
+        groupId,
+      },
+    });
 
-  return res.status(200).json({message: "Successfully deleted membership from group"})
-})
+    if (!member) {
+      returnMsg.message = "Membership does not exist for this User";
+      returnMsg.statusCode = 404;
+      return res.status(403).json(returnMsg);
+    }
+
+    if (member.id === user.id || user.status === "co-host" || userId === group.organizerId) {
+      await member.destroy();
+
+      returnMsg.message = "successfully deleted membership from group";
+      return res.status(403).json(returnMsg);
+    } else {
+      returnMsg.message = "Forbidden";
+      returnMsg.statusCode = 403;
+      return res.status(403).json(returnMsg);
+    }
+  } catch (error) {
+    returnMsg.message = "Something went wrong";
+    returnMsg.statusCode = 500;
+    return res.status(500).json(returnMsg);
+  }
+});
+
 
 
 router.delete('/:groupId', requireAuth, async (req, res) => {
