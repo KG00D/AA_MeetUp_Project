@@ -793,19 +793,24 @@ router.delete('/:groupId/membership', requireAuth, async (req, res) => {
 });
 
 router.delete('/:groupId', requireAuth, async (req, res) => {
-  const groupId = req.params.groupId;
-  if (groupId) {
-    const group = await Group.findByPk({where: {id: groupId}
-    });
-    console.log(group)
-    await groupDel.destroy();
+  try {
+    const id = req.params.groupId;
+    const userId = req.user.id;
+    const group = await Group.findByPk(id);
 
-    return res.json(group);
-  } else {
-    return res.status(404).json({
-      message: "Group couldn't be found",
-      statusCode: 404
-    });
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    if (userId === group.organizerId) {
+      await group.destroy();
+      return res.status(200).json({ message: "Group successfully deleted" });
+    } else {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
