@@ -1,0 +1,25 @@
+.signupPageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+  
+.signupNavbar {
+    align-self: flex-end; 
+    padding: 10px; 
+}
+  
+.signupText {
+    white-space: nowrap;
+    background-color: teal; 
+    border-radius: 5px;      
+    color: white;            
+    padding: 5px 10px;       
+    cursor: pointer;
+    transition: background-color 0.3s ease;  
+}
+
+.signupText:hover {
+    background-color: #1B9C86; 
+}

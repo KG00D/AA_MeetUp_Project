@@ -1,0 +1,38 @@
+.loginPageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+.login-btn {
+    border: none; 
+    background: transparent; 
+    color: black; 
+    cursor: pointer; 
+    transition: color 0.3s; 
+}
+
+.login-btn:hover {
+    color: teal; 
+}
+
+.login-btn:focus {
+    outline: none;
+}
+  
+  .navbar {
+    align-self: flex-end; 
+    padding: 10px; 
+  }
+  
+  .loginText {
+    color: black;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .loginText:hover {
+    color: #20C997; 
+  }
+  
