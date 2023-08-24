@@ -6,18 +6,17 @@
   }
 
 .login-btn {
-    border: none; /* Removes the border */
-    background: transparent; /* Ensures there's no background color */
-    color: black; /* Makes the text color black */
-    cursor: pointer; /* Changes the cursor to a hand pointer, signaling a clickable element */
-    transition: color 0.3s; /* Smooth transition for color changes */
+    border: none; 
+    background: transparent; 
+    color: black; 
+    cursor: pointer; 
+    transition: color 0.3s; 
 }
 
 .login-btn:hover {
-    color: teal; /* Change this to your specific shade of teal if needed */
+    color: teal; 
 }
 
-/* To ensure there's no outline when the button is focused (clicked) */
 .login-btn:focus {
     outline: none;
 }
