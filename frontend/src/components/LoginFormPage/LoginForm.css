@@ -1,0 +1,39 @@
+.loginPageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+.login-btn {
+    border: none; /* Removes the border */
+    background: transparent; /* Ensures there's no background color */
+    color: black; /* Makes the text color black */
+    cursor: pointer; /* Changes the cursor to a hand pointer, signaling a clickable element */
+    transition: color 0.3s; /* Smooth transition for color changes */
+}
+
+.login-btn:hover {
+    color: teal; /* Change this to your specific shade of teal if needed */
+}
+
+/* To ensure there's no outline when the button is focused (clicked) */
+.login-btn:focus {
+    outline: none;
+}
+  
+  .navbar {
+    align-self: flex-end; 
+    padding: 10px; 
+  }
+  
+  .loginText {
+    color: black;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .loginText:hover {
+    color: #20C997; 
+  }
+  

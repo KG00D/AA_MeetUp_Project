@@ -22,5 +22,15 @@
   "bugs": {
     "url": "https://github.com/KWGood1980/AA_MeetUp_Project/issues"
   },
-  "homepage": "https://github.com/KWGood1980/AA_MeetUp_Project#readme"
+  "homepage": "https://github.com/KWGood1980/AA_MeetUp_Project#readme",
+  "dependencies": {
+    "js-cookie": "^3.0.5",
+    "react-redux": "^8.1.2",
+    "react-router-dom": "^5.3.4",
+    "redux": "^4.2.1",
+    "redux-thunk": "^2.4.2"
+  },
+  "devDependencies": {
+    "redux-logger": "^3.0.6"
+  }
 }
