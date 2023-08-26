@@ -4,7 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import LoginFormPage from "./components/LoginFormPage/LoginFormPage";
 import SignupFormPage from "./components/SignupFormPage/SignupFormPage";
 import NavBar from "./components/NavBar/NavBar"; 
-import Hooray from "./components/Hooray";
+import Hooray from "./components/Hooray/Hooray";
 import * as sessionActions from "./store/session";
 
 function App() {
