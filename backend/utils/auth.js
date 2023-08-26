@@ -11,6 +11,7 @@ const setTokenCookie = (res, user) => {
       { expiresIn: parseInt(expiresIn) }
     );
 
+    console.log("Generated Token:", token);
     const isProduction = process.env.NODE_ENV === "production";
 
     res.cookie('token', token, {
