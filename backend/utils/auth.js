@@ -10,58 +10,59 @@ const setTokenCookie = (res, user) => {
       secret,
       { expiresIn: parseInt(expiresIn) }
     );
-  
+
     const isProduction = process.env.NODE_ENV === "production";
-  
+
     res.cookie('token', token, {
-      maxAge: expiresIn * 1000, 
+      maxAge: expiresIn * 1000,
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction && "Lax"
     });
-  
+
     return token;
 };
 
 const restoreUser = (req, res, next) => {
-    res.setHeader('Cache-Control', 'no-store');
-    
     const { token } = req.cookies;
-    req.user = null;
-  
-    return jwt.verify(token, secret, null, async (err, jwtPayload) => {
-      if (err) {
-        console.error("JWT verification failed:", err);
+
+    if (!token) {
+        console.log("JWT token not provided.");
         return next();
-      }
-  
-      try {
-        const { id } = jwtPayload.data;
-        req.user = await User.scope('currentUser').findByPk(id);
+    }
+
+    return jwt.verify(token, secret, null, async (err, jwtPayload) => {
+        if (err) {
+            console.log("JWT verification failed:", err.message);
+            return next();
+        }
+
+        try {
+            const { id } = jwtPayload.data;
+            req.user = await User.scope('currentUser').findByPk(id);
+        } catch (e) {
+            console.error("Error retrieving user:", e.message);
+            res.clearCookie('token');
+            return next();
+        }
 
         if (!req.user) {
-            console.error("User not found for ID:", id);
+            console.log("User not found or invalid.");
             res.clearCookie('token');
         }
 
-      } catch (e) {
-        console.error("Error fetching user:", e);
-        res.clearCookie('token');
         return next();
-      }
-  
-      return next();
     });
 };
 
 const requireAuth = function (req, res, next) {
     if (req.user) {
-      return next();
+        return next();
     } else {
-      return res.status(401).json({
-        message: "Unauthorized",
-        statusCode: 401
-      })
+        return res.status(401).json({
+            message: "Unauthorized",
+            statusCode: 401
+        });
     }
 };
 
