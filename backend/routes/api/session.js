@@ -1,5 +1,3 @@
-// backend/routes/api/session.js
-
 const express = require('express');
 const router = express.Router();
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
@@ -28,14 +26,9 @@ router.post('/', validateLogin, async (req, res, next) => {
       });
     }
     await setTokenCookie(res, authenticatedUser);
-    return res.status(200).json({
-        id: authenticatedUser.id,
-        firstName: authenticatedUser.firstName,
-        lastName: authenticatedUser.lastName,
-        email: authenticatedUser.email,
-        username: authenticatedUser.username,
-        token: authenticatedUser.token
-    });
+    return res.json({
+      user: authenticatedUser.toSafeObject(),
+    })
   } catch (error) {
     next(error);
   }
@@ -49,15 +42,9 @@ router.delete('/', (_req, res) => {
 router.get('/', restoreUser, (req, res) => {
   const { user } = req;
   if (user) {
-    return res.json({
-        id: user.dataValues.id,
-        firstName: user.dataValues.firstName,
-        lastName: user.dataValues.lastName,
-        email: user.dataValues.email,
-        username: user.dataValues.username
-        }  
-    );
-  } else {
+    return res.json({ user: user.toSafeObject(),})
+        }
+  else {
     return res.json({ user: null });
   }
 });
