@@ -6,19 +6,18 @@ const { secret, expiresIn } = jwtConfig;
 
 const setTokenCookie = (res, user) => {
     const token = jwt.sign(
-      { data: user.toSafeObject() },
-      secret,
-      { expiresIn: parseInt(expiresIn) }
+        { data: user.toSafeObject() },
+        secret,
+        { expiresIn: parseInt(expiresIn) } 
     );
 
-    console.log("Generated Token:", token);
-    const isProduction = process.env.NODE_ENV === "production";
+    const isProduction = process.env.NODE_ENV === 'production';
 
     res.cookie('token', token, {
-      maxAge: expiresIn * 1000,
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction && "Lax"
+        maxAge: expiresIn * 1000, 
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction && 'Lax',
     });
 
     return token;
@@ -26,15 +25,10 @@ const setTokenCookie = (res, user) => {
 
 const restoreUser = (req, res, next) => {
     const { token } = req.cookies;
-
-    if (!token) {
-        console.log("JWT token not provided.");
-        return next();
-    }
+    req.user = null;
 
     return jwt.verify(token, secret, null, async (err, jwtPayload) => {
         if (err) {
-            console.log("JWT verification failed:", err.message);
             return next();
         }
 
@@ -42,29 +36,24 @@ const restoreUser = (req, res, next) => {
             const { id } = jwtPayload.data;
             req.user = await User.scope('currentUser').findByPk(id);
         } catch (e) {
-            console.error("Error retrieving user:", e.message);
             res.clearCookie('token');
             return next();
         }
 
-        if (!req.user) {
-            console.log("User not found or invalid.");
-            res.clearCookie('token');
-        }
+        if (!req.user) res.clearCookie('token');
 
         return next();
     });
 };
 
-const requireAuth = function (req, res, next) {
-    if (req.user) {
-        return next();
-    } else {
-        return res.status(401).json({
-            message: "Unauthorized",
-            statusCode: 401
-        });
-    }
+const requireAuth = function (req, _res, next) {
+    if (req.user) return next();
+
+    const err = new Error('Authentication required');
+    err.title = 'Authentication required';
+    err.errors = ['Authentication required'];
+    err.status = 401;
+    return next(err);
 };
 
 module.exports = { setTokenCookie, restoreUser, requireAuth };
