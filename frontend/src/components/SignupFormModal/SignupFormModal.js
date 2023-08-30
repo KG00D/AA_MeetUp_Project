@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
-import "./SignupForm.css";
+import "./SignupModal.css";
 
-function SignupFormPage() {
+function SignupFormModal() {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
@@ -42,7 +42,7 @@ function SignupFormPage() {
   };
 
   return (
-    <>
+    <div className="signupPageContainer">
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -105,10 +105,10 @@ function SignupFormPage() {
           />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        <button className="signupText" type="submit">Sign Up</button>
       </form>
-    </>
+    </div>
   );
 }
 
-export default SignupFormPage;
+export default SignupFormModal;

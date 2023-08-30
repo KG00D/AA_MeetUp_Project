@@ -1,35 +1,35 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
-import "./LoginForm.css";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 
-function LoginFormPage() {
+function LoginFormPage({onClose}) {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
-  if (sessionUser) return <Redirect to="/hooray" />;
+  if (sessionUser) return <Redirect to="/" />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    return dispatch(sessionActions.login({ credential, password })).catch(
-      async (res) => {
+    return dispatch(sessionActions.login({ credential, password }))
+      .then(() => {
+        if (onClose) {
+          onClose(); // Close the modal if login is successful
+        }
+      })
+      .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) setErrors(data.errors);
-      }
-    );
+      });
   };
 
+
   return (
-    <div className="loginPageContainer">
-      <div className="navbar">
-        <Link to="/login" className="loginText">Log In</Link>
-      </div>
-      <h1>Log In</h1>
+    <>
       <form onSubmit={handleSubmit}>
         <label>
           Username or Email
@@ -52,7 +52,7 @@ function LoginFormPage() {
         {errors.credential && <p>{errors.credential}</p>}
         <button type="submit">Log In</button>
       </form>
-    </div>
+    </>
   );
 }
 

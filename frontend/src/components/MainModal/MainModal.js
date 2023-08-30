@@ -1,7 +1,7 @@
 import React from 'react';
-import './Modal.css';
+import './MainModal.css';
 
-const Modal = ({ children, show, onClose }) => {
+const MainModal = ({ children, show, onClose }) => {
   if (!show) {
     return null;
   }
@@ -16,4 +16,4 @@ const Modal = ({ children, show, onClose }) => {
   );
 };
 
-export default Modal;
+export default MainModal;
