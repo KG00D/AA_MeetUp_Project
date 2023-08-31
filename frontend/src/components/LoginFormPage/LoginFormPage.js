@@ -18,7 +18,7 @@ function LoginFormPage({onClose}) {
     return dispatch(sessionActions.login({ credential, password }))
       .then(() => {
         if (onClose) {
-          onClose(); // Close the modal if login is successful
+          onClose(); {/* fix this crap */}
         }
       })
       .catch(async (res) => {

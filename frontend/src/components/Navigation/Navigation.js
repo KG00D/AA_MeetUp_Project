@@ -40,9 +40,9 @@ function Navigation({ isLoaded }) {
     return (
         <div> 
             <ul className="navbar">
-                <li>
-                <Link to="/">
-                        <img src="AA_MeetUp_Project/frontend/public/logo.svg" alt="Logo" className="logo" />
+                <li className="navbar-content">
+                    <Link to="/">
+                        <img src="/logo.png" alt="Logo" className="logo" />
                     </Link>
                     <div className="search-container">
                         <input type="text" placeholder="Search events" />
