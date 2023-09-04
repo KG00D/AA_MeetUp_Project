@@ -63,13 +63,6 @@
     font-size: 2rem;
     margin-top: 1rem;
 }
-  
-  .geo-location {
-    position: absolute;
-    bottom: 10px; 
-    left: 10px;  
-    z-index: 2;
-    color: white; 
-    font-size: 16px;
-  }
+
+
   

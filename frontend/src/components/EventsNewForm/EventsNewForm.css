@@ -1,0 +1,40 @@
+h1 {
+    font-weight: 500;
+  }
+  
+  .main-new-event-container {
+    width: 50%;
+    margin: auto;
+    padding-top: 100px;
+  }
+  
+  .border-div {
+    border-bottom: lightgray solid 3px;
+    padding-bottom: 30px;
+  }
+  
+  .form-container h3 {
+    color: black;
+    font-size: 18px;
+    font-weight: 400;
+  }
+  
+  #dollarDiv input {
+    width: 100px;
+  }
+  
+  .date-input {
+    width: 200px;
+  }
+  
+  .newEventSubmitButton {
+    background-color: rgb(207, 42, 39);
+    border: rgb(207, 42, 39) solid 1px;
+    box-shadow: 1px 2px 2px black;
+    color: white;
+    padding: 5px 8px 5px 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: .5rem 0 1rem 0;
+    cursor: pointer;
+  }

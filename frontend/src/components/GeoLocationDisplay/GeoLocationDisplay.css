@@ -1,0 +1,8 @@
+.geo-location {
+    position: absolute;
+    bottom: 10px; 
+    left: 10px;  
+    z-index: 2;
+    color: black; 
+    font-size: 16px;
+  }

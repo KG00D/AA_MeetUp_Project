@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import GeoLocationDisplay from '../GeoLocationDisplay/GeoLocationDisplay';
 import './LandingPage.css';
 
 function LandingPage() {
@@ -18,13 +19,13 @@ function LandingPage() {
 
   return (
     <div className="image-container">
-      <div className="animated-background" id="bg1"></div>
-      <div className="text-box">
-        <h1>The people platform—</h1>
-        <p>Where interests become friendships</p>
-        <h2>Join Meetup</h2>
-        {ipLocation && <p className="geo-location">Events near you: {ipLocation.city}, {ipLocation.region}</p>}
+    <div className="animated-background" id="bg1"></div>
+    <div className="text-box">
+      <h1>The people platform—</h1>
+      <p>Where interests become friendships</p>
+      <h2>Join Meetup</h2>
       </div>
+      <GeoLocationDisplay ipLocation={ipLocation} />  {/* TODO DEBUG LATERRRRR */}
     </div>
   );
 }

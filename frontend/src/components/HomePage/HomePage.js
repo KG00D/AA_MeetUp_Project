@@ -1,8 +1,7 @@
 import React from 'react';
 //import LocalEvents from './LocalEvents';
 //import UpcomingOnlineEvents from './UpcomingOnlineEvents';
-import 
-
+ 
 const HomePage = () => {
   return (
     <div>
