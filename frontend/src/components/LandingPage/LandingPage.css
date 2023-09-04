@@ -23,11 +23,6 @@
     z-index: 1;
 }
 
-/* #bg2 {
-    animation: bgfade2 16s infinite;
-    z-index: 1;
-} */
-
 @keyframes bgfade1 {
     0%, 100% {
         background-image: url(https://www.berkeleychessschool.org/wp-content/uploads/2016/08/all-ages-tournament-e1515289643774.jpg);
@@ -37,17 +32,6 @@
     }
 }
 
-/* @keyframes bgfade2 {
-    0%, 100% {
-        background-image: url(https://picsum.photos/1200/800?image=1071);
-        opacity: 0;
-    }
-    47.5%, 52.5% {
-        background-image: url(https://picsum.photos/1200/800?image=1074);
-        opacity: 1;
-    }
-} */
-
 .text-box {
     position: absolute;
     top: 50%;
@@ -55,7 +39,7 @@
     transform: translate(-50%, -50%);
     text-align: center;
     color: white;
-    z-index: 3; /* Make sure this is above the z-index of your background layers */
+    z-index: 3; 
 }
 
 .text-box h1,
@@ -79,3 +63,6 @@
     font-size: 2rem;
     margin-top: 1rem;
 }
+
+
+  

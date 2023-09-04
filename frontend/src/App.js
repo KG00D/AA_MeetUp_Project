@@ -5,6 +5,9 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation/Navigation";
 import LandingPage from "./components/LandingPage/LandingPage";
 import SplashPage from "./components/SplashPage/SplashPage";
+import EventsPage from "./components/EventsPage/EventsPage";
+import EventsDetails from "./components/EventsDetails/EventsDetails";
+import EventsNewForm from "./components/EventsNewForm/EventsNewForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -29,6 +32,9 @@ function App() {
           <>
           </>
         )}
+        <Route exact path='/groups/:groupId/events'>
+            <EventsNewForm />
+          </Route>
       </Switch>
     </>
   );

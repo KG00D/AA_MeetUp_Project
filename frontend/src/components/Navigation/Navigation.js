@@ -40,8 +40,10 @@ function Navigation({ isLoaded }) {
     return (
         <div> 
             <ul className="navbar">
-                <li>
-                    <Link to="/"> {/* MeetUP Logo here TODO */} </Link>
+                <li className="navbar-content">
+                    <Link to="/">
+                        <img src="/logo.png" alt="Logo" className="logo" />
+                    </Link>
                     <div className="search-container">
                         <input type="text" placeholder="Search events" />
                         <input type="text" placeholder="Neighborhood, city, or zip" />

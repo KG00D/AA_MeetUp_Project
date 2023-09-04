@@ -1,0 +1,11 @@
+export const ALL_EVENTS = 'events/ALL_EVENTS';
+export const EVENT_DETAIL = 'events/EVENT_DETAIL';
+export const NEW_EVENT = 'events/NEW_EVENT';
+export const DELETE_EVENT = 'events/DELETE_EVENT';
+export const FETCH_ERROR = 'events/FETCH_ERROR';
+export const GET_GROUPS = 'GET_GROUPS';
+export const GROUP_DETAIL = 'GROUP_DETAIL';
+export const ADD_NEW_GROUP = 'ADD_NEW_GROUP';
+export const UPDATE_GROUP = 'UPDATE_GROUP';
+export const DELETE_GROUP = 'DELETE_GROUP';
+export const GROUP_EVENTS = 'GROUP_EVENTS';
