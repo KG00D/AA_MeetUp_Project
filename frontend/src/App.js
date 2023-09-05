@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";  // <- added useSelector
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation/Navigation";
 import LandingPage from "./components/LandingPage/LandingPage";
 import SplashPage from "./components/SplashPage/SplashPage";
-import EventsPage from "./components/EventsPage/EventsPage";
+import EventsMain from "./components/EventsMain/EventsMain";
 import EventsDetails from "./components/EventsDetails/EventsDetails";
-import EventsNewForm from "./components/EventsNewForm/EventsNewForm";
+import EventsCreateNew from "./components/EventsCreateNew/EventsCreateNew";
+import GroupsMain from "./components/GroupsMain/GroupsMain";
+import GroupsDetails from "./components/GroupsDetails/GroupsDetails";
+import GroupsCreateNew from "./components/GroupsCreateNew/GroupsCreateNew";
+import GroupsUpdates from "./components/GroupsUpdates/GroupsUpdates";
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const sessionUser = useSelector((state) => state.session.user);  // <- added this line
+  const sessionUser = useSelector((state) => state.session.user);
 
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
@@ -21,21 +25,37 @@ function App() {
   return (
     <>
       <Navigation isLoaded={isLoaded} />
-      <Switch>
-        <Route exact path="/">
-          {sessionUser ? <Redirect to="/splash" /> : <LandingPage />}
-        </Route>
-        <Route path="/splash">
-          <SplashPage />
-        </Route>
-        {isLoaded && (
-          <>
-          </>
-        )}
-        <Route exact path='/groups/:groupId/events'>
-            <EventsNewForm />
+      {isLoaded && (
+        <Switch>
+          <Route exact exact path="/">
+           <LandingPage />
           </Route>
-      </Switch>
+          <Route exact path="/splash">
+            <SplashPage />
+          </Route>
+          <Route exact path="/groups/new">
+            <GroupsCreateNew />
+          </Route>
+          <Route exact path="/groups/:groupId">
+            <GroupsDetails />
+          </Route>
+          <Route exact path="/groups">
+            <GroupsMain />
+          </Route>
+          <Route exact path="/groups/:groupId/edit">
+            <GroupsUpdates />
+          </Route>
+          <Route exact path="/events">
+            <EventsMain />
+          </Route>
+          <Route exact path="/events/:eventId">
+            <EventsDetails />
+          </Route>
+          <Route exact path="/groups/:groupId/events">
+            <EventsCreateNew />
+          </Route>
+        </Switch>
+      )}
     </>
   );
 }

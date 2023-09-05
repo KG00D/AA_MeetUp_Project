@@ -27,7 +27,7 @@ h1 {
     width: 200px;
   }
   
-  .newEventSubmitButton {
+.newEventSubmit {
     background-color: rgb(207, 42, 39);
     border: rgb(207, 42, 39) solid 1px;
     box-shadow: 1px 2px 2px black;
@@ -37,4 +37,19 @@ h1 {
     font-weight: 500;
     margin: .5rem 0 1rem 0;
     cursor: pointer;
-  }
+}
+
+.errors {
+    color: red;
+    margin-top: -90px;
+}
+
+.field-error-placeholder {
+    height: 20px;  
+}
+  
+.field-error {
+    color: red;
+    font-size: 12px;
+    margin-top: 2px;
+}
