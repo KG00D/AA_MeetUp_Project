@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-  }
+}
 
 .login-btn {
     border: none; 
@@ -21,18 +21,30 @@
     outline: none;
 }
   
-  .navbar {
+.navbar {
     align-self: flex-end; 
     padding: 10px; 
-  }
+}
   
-  .loginText {
+.loginText {
     color: black;
     cursor: pointer;
     transition: color 0.3s ease;
-  }
+}
   
-  .loginText:hover {
+.loginText:hover {
     color: #20C997; 
-  }
+}
   
+.equal-width {
+    width: 100%; 
+}
+
+.submit-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-top: 20px;
+  font-size: 18px;
+  cursor: pointer;
+}

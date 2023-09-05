@@ -1,0 +1,95 @@
+* {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+  }
+  
+  h4 {
+    font-size: 15pt;
+    font-weight: lighter;
+    color: #999999;
+  }
+  
+  .events-list-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    position: absolute;
+    top: 150px;
+  }
+  
+  .events-list-header {
+    position: relative;
+    right: 70px;
+  }
+  
+  .group-link {
+    display: inline-block;
+    align-items: center;
+    margin: auto 20px;
+    font-size: 24pt;
+    font-weight: bold;
+    text-decoration: none;
+    color: gray;
+  }
+  
+  .events-list-header h1 {
+    display: inline-block;
+    align-items: center;
+    margin: auto 20px;
+    font-size: 24pt;
+    font-weight: bold;
+    text-decoration: underline;
+    color: teal;
+  }
+  
+  .events-list-header-2 {
+    position: relative;
+    right: 121px;
+  }
+  
+  .main-event-container {
+    width: 50%;
+    position: relative;
+    left: 255px;
+  }
+  
+  .event-card {
+    cursor: pointer;
+    border-top: lightgray solid 3px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: inline-block;
+    /* flex-direction: row; */
+    /* align-items: flex-start; */
+  }
+  
+  .event-card-2 {
+    cursor: pointer;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: inline-block;
+    /* flex-direction: row; */
+    /* align-items: flex-start; */
+  }
+  
+  .event-card-container {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .event-card-image img {
+    min-width: 300px;
+    max-height: 200px;
+    max-width: 300px;
+    height: fit-content;
+    object-fit: cover;
+    margin-right: 1rem;
+    border-radius: 5px;
+  }
+  
+  .event-details {
+    display: inline-block;
+    max-height: 200px;
+    position: relative;
+    bottom: 20px;
+  }

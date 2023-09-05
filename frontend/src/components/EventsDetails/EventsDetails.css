@@ -1,0 +1,136 @@
+.main-event-detail-container {
+    position: relative;
+    top: 150px;
+    max-width: 70%;
+    margin: auto;
+  }
+  
+  .event-detail-header div {
+    display: inline-flex;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-left: 5px;
+    font-weight: bold;
+  }
+  
+  .img-div img {
+    width: 100%;
+  }
+  
+  .event-detail-main {
+    display: flex;
+    flex-direction: row;
+    margin-top: 100px;
+  }
+  
+  .event-detail-sub {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .event-detail-group-crumb {
+    display: flex;
+    flex-direction: row;
+    margin-left: 100px;
+    align-items: center;
+  }
+  
+  .group-crumb {
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+  }
+  
+  .group-crumb h2 {
+    position: relative;
+    bottom: -10px;
+  }
+  
+  .event-detail-info {
+    margin-top: 40px;
+  }
+  
+  .event-detail-group-crumb img {
+    max-width: 20%;
+  }
+  
+  .event-date {
+    display: flex;
+    flex-direction: row;
+    margin-left: 90px;
+  }
+  
+  .date-icon {
+    width: auto;
+    height: 50px;
+    margin: auto 0 auto 0;
+  }
+  
+  .timeSubDiv {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .timeSubDiv div {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .startDiv {
+    position: relative;
+    bottom: -25px;
+  }
+  
+  .endDiv {
+    position: relative;
+    top: -25px;
+  }
+  
+  .endDiv h5 {
+    margin-left: 10px;
+  }
+  
+  .timeSubDiv h5 {
+    position: relative;
+    top: 12px;
+    margin-left: 10px;
+  }
+  
+  .event-price {
+    display: flex;
+    flex-direction: row;
+    margin-left: 90px;
+    margin-top: -30px;
+  }
+  
+  .event-price h4 {
+    margin-left: 5px;
+  }
+  
+  .price-icon {
+    width: auto;
+    height: 70px;
+    margin: auto 0 auto 0;
+  }
+  
+  .event-type {
+    display: flex;
+    flex-direction: row;
+    margin-left: 100px;
+  }
+  
+  .event-type h4 {
+    margin-left: 20px;
+  }
+  
+  .type-icon {
+    width: auto;
+    height: 45px;
+    margin: auto 0 auto 0;
+  }
+  
+  .delete-button {
+    position: relative;
+    bottom: -110px;
+    left: 100px;
+  }

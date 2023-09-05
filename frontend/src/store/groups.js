@@ -17,7 +17,7 @@ export const getGroupDetail = (groupId) => async (dispatch) => {
     const data = await res.json();
     dispatch({ type: GROUP_DETAIL, group: data });
   } else {
-    console.log('Error getting Group Detail')
+    console.log('Error getting Group Details')
   }
 };
 
@@ -29,8 +29,10 @@ export const createNewGroup = (group) => async (dispatch) => {
   if (res.ok) {
     const data = await res.json();
     dispatch({ type: ADD_NEW_GROUP, group: data });
+    return data;
   } else {
     console.log('Error Creating New Group')
+    return null;
   }
 };
 

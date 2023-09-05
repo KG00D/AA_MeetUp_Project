@@ -5,9 +5,11 @@ import * as eventActions from '../../store/events';
 
 import './EventsDetails.css';
 
-const EventDetails = () => {
+const EventsDetails = () => {
+  console.log("EventsDetails component rendered");
   const dispatch = useDispatch();
   const history = useHistory();
+  
   const { eventId } = useParams();
   
   const event = useSelector((state) => state.events?.currentEvent);
@@ -52,12 +54,13 @@ const EventDetails = () => {
 
       <div className='event-detail-main'>
         <div className='img-div'>
-          <img src={event.previewImage} alt='event'></img>
+          <img src={event.previewImage || 'https://via.placeholder.com/600x400'} alt={event} />
         </div>
 
         <div className='event-detail-sub'>
           <div className='event-detail-group-crumb' onClick={handleGroupCrumb}>
-            <img src={event.Group?.previewImage} alt='group'></img>
+            <img src={event.Group?.previewImage || 'https://via.placeholder.com/400x300'} alt={'group'} />
+
             <div className='group-crumb'>
               <h2>{event.Group?.name}</h2>
               {event.Group?.private ? <h4>Private</h4> : <h4>Public</h4>}
@@ -66,7 +69,7 @@ const EventDetails = () => {
 
           <div className='event-detail-info'>
             <div className='event-date'>
-              <img className='date-icon' src='your_image_url_here' alt='date icon'></img>
+              <img className='date-icon' src='https://img.icons8.com/color/96/calendar--v1.png' alt='date icon'></img>
               <div className='timeSubDiv'>
                 <div className='startDiv'>
                   <h4>Start:</h4>
@@ -80,14 +83,18 @@ const EventDetails = () => {
             </div>
 
             <div className='event-price'>
-              <img className='price-icon' src='your_image_url_here' alt='price icon'></img>
+              <img className='price-icon' src='https://img.icons8.com/color/96/us-dollar-circled--v1.png' alt='price icon'></img>
               <h4>${event.price}</h4>
             </div>
 
             <div className='event-type'>
-              <img className='type-icon' src='your_image_url_here' alt='type icon'></img>
-              <h4>{event.type}</h4>
-            </div>
+                {event.type === 'online' ? (
+                  <img className='type-icon' src='https://img.icons8.com/color/96/pc-on-desk.png' alt='online type icon'></img>
+                ) : event.type === 'group' ? (
+                  <img className='type-icon' src='https://img.icons8.com/fluency/48/map-pin.png' alt='group type icon'></img>
+                ) : null}
+                <h4>{event.type}</h4>
+              </div>
 
             {sessionUser?.id === event?.Organizer?.id && <button className='delete-button' onClick={handleDelete}>Delete</button>}
           </div>
@@ -102,4 +109,4 @@ const EventDetails = () => {
   );
 };
 
-export default EventDetails;
+export default EventsDetails;
