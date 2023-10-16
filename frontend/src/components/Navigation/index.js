@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './Navigation.css';
-import MainModal from '../MainModal/MainModal';
-import LoginFormModal from "../LoginFormModal/LoginFormModal";
-import SignupFormModal from "../SignupFormModal/SignupFormModal";
+import MainModal from '../MainModal';
+import LoginFormModal from "../LoginFormModal";
+import SignupFormModal from "../SignupFormModal";
 import { useHistory } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 
@@ -63,16 +63,16 @@ function Navigation({ isLoaded }) {
 return (
     <div> 
         <div className="navbar">
-            <div className="left-section">
+            <div className="nav-left-section">
+                <div className="search-container">
                 <Link to="/">
                     <img src="/logo.png" alt="Logo" className="logo" />
                 </Link>
-                <div className="search-container">
                     <input type="text" placeholder="Search events" />
                     <input type="text" placeholder="Neighborhood, city, or zip" />
                 </div>
             </div>
-            <div className="right-section">
+            <div className="nav-right-section">
                 {sessionLinks}
             </div>
         </div>

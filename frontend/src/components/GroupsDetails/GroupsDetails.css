@@ -67,17 +67,7 @@
     width: 10%;
   }
 
-  /* .group-info {
-    display: flex;
-    align-items: flex-start;
-  }
-  
-.group-info-buttons {
-    margin-left: auto;
-    align-self: center;
-  } */
-
-  .group-info {
+.group-info {
     position: relative;
   }
   

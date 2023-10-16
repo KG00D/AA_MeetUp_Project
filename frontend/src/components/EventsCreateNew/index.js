@@ -36,13 +36,14 @@ const SelectField = ({ label, value, onChange, name, options, error }) => (
   </div>
 );
 
-const NewEventForm = () => {
+const EventsCreateNew = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { groupId } = useParams();
-  const [errors, setErrors] = useState([]);
+
   const currentGroup = useSelector((state) => state.groups.currentGroup);
 
+  const [errors, setErrors] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
     type: '',
@@ -59,21 +60,17 @@ const NewEventForm = () => {
     dispatch(groupActions.getGroupDetail(groupId));
   }, [dispatch, groupId]);
 
-  console.log("Current Group: ", currentGroup);
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
   
     if (!currentGroup || !currentGroup.length || !currentGroup[0].id) {
-      console.log("Current Group or Group ID is invalid");
       return;
     }
   
-    const groupId = currentGroup[0].id;  
+    const groupId = currentGroup[0].id;
     const { name, type, description, price, startDate, endDate, imgUrl } = formData;
     const event = {
-      groupId,  
+      groupId,
       name,
       type,
       description,
@@ -85,13 +82,16 @@ const NewEventForm = () => {
   
     try {
       const res = await dispatch(eventActions.createNewEvent(groupId, event));
-      history.push(`/events/${res.id}`);
-    } catch (res) {
-      const data = await res.json();
-      if (data && data.errors) setErrors(data.errors);
+      
+      if (res && res.id) {
+        history.push(`/events/${res.id}`);
+      } else {
+        console.log("Debug: Dispatch returned an unexpected result:", res);
+      }
+    } catch (error) {
+      console.error("Debug: An error occurred during dispatch:", error);
     }
-  };
-
+  }    
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -115,4 +115,4 @@ const NewEventForm = () => {
   );
 };
 
-export default NewEventForm;
+export default EventsCreateNew;

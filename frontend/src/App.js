@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import * as sessionActions from "./store/session";
-import Navigation from "./components/Navigation/Navigation";
-import LandingPage from "./components/LandingPage/LandingPage";
-import SplashPage from "./components/SplashPage/SplashPage";
-import EventsMain from "./components/EventsMain/EventsMain";
-import EventsDetails from "./components/EventsDetails/EventsDetails";
-import EventsCreateNew from "./components/EventsCreateNew/EventsCreateNew";
-import GroupsMain from "./components/GroupsMain/GroupsMain";
-import GroupsDetails from "./components/GroupsDetails/GroupsDetails";
-import GroupsCreateNew from "./components/GroupsCreateNew/GroupsCreateNew";
-import GroupsUpdates from "./components/GroupsUpdates/GroupsUpdates";
+import Navigation from "./components/Navigation";
+import HomePage from "./components/Home";
+import SplashPage from "./components/SplashPage";
+import EventsMain from "./components/EventsMain";
+import EventsDetails from "./components/EventsDetails";
+import EventsCreateNew from "./components/EventsCreateNew";
+import GroupsMain from "./components/GroupsMain";
+import GroupsDetails from "./components/GroupsDetails";
+import GroupsCreateNew from "./components/GroupsCreateNew";
+import GroupsUpdates from "./components/GroupsUpdates";
 
 function App() {
   const dispatch = useDispatch();
@@ -27,8 +27,8 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route exact exact path="/">
-           <LandingPage />
+          <Route exact path="/">
+           <HomePage />
           </Route>
           <Route exact path="/splash">
             <SplashPage />

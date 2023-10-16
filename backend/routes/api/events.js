@@ -235,37 +235,6 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
       status: newAttendee.status
     });
   });
-
-
-// router.post('/:eventId/attendance', async (req, res) => {
-//     const eventId = req.params.eventId;
-//     const userId = req.user.id;
-  
-//     try {
-//       const event = await Event.findByPk(eventId);
-//       if (!event) {
-//         return res.status(404).json({ 
-//             message: 'Event couldn\'t be found', 
-//             statusCode: 404 });
-//       }  
-//       const attendance = await Attendance.findOne({
-//         where: { eventId: eventId, userId: userId }
-//       });
-//       if (attendance && attendance.status === 'pending') {
-//         return res.status(400).json({ message: 'Attendance has already been requested', statusCode: 400 });
-//       }  
-//       const attendee = await Attendance.findOne({
-//         where: { eventId: eventId, userId: userId, status: { [Op.ne]: 'pending' } }
-//       });
-//       if (attendee) {
-//         return res.status(400).json({ message: 'User is already an attendee of the event', statusCode: 400 });
-//       }  
-//       const newAttendance = await Attendance.create({ eventId: eventId, userId: userId, status: 'pending' });
-//       return res.status(200).json(newAttendance);
-//     } catch (error) {
-//       return res.status(500).json({ message: 'Internal server error', statusCode: 500 });
-//     }
-//   });
   
 // PUTS
 router.put("/:eventId", async (req, res, next) => {
@@ -398,20 +367,10 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
   router.delete("/:eventId/attendance", requireAuth, async (req, res, next) => {
     try {
       const id = req.params.eventId;
-      console.log('################### ID')
-      console.log(id)
-      console.log('################### ID')
-      console.log('################### memberID')
       const { memberId } = req.body;
-      console.log({memberId});
-      console.log('################### memberID')
       const { user } = req;
       const event = await Event.findByPk(id);
-      console.log('################### EVENT')
-      console.log(event);
-      console.log('################### EVENT')
-
-
+      
       if (!event) {
         return res.status(404).json({ message: "Event couldn't be found" });
       }

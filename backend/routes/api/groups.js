@@ -386,42 +386,12 @@ router.put("/:id", requireAuth, [
   }
 });
 
-// Start of all my posts
-// Create a Group
-router.post('/', requireAuth, [
-  body('name').isLength({ max: 60 }).withMessage('Name must be 60 characters or less'),
-  body('about').isLength({ min: 50 }).withMessage('About must be 50 characters or more'),
-  body('type').isIn(['Online', 'In person']).withMessage("Type must be 'Online' or 'In person'"),
-  body('private').isBoolean().withMessage('Private must be a boolean'),
-  body('city').notEmpty().withMessage('City is required'),
-  body('state').notEmpty().withMessage('State is required'),
-], async (req, res, next) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const eMessages = [];
-      errors.array().forEach(error => eMessages.push(error.msg));
-      return res.status(400).json({
-        message: 'Validation Error',
-        statusCode: 400,
-        errors: eMessages,
-      });
-    }
-    const { name, about, type, private, city, state } = req.body;
-    const group = await Group.create({
-      name,
-      about,
-      type,
-      private,
-      city,
-      state,
-      organizerId: req.user.id 
-    });
-    console.log(group);
-    return res.status(201).json(group);
-  } catch (error) {
-    next(error);
-  }
+router.post('/', requireAuth, async (req, res) => {
+  const { name, about, type, private, city, state, previewImage } = req.body;
+  const newGroup = await Group.create({
+    organizerId: req.user.id, name, about, type, private, city, state, previewImage
+  });
+  return res.json({ groupId: newGroup.id });
 });
 
 // Add an Image to a Group - PM
@@ -535,73 +505,6 @@ router.post("/:groupId/venues", requireAuth, [
   }
 });
 
-// Create an event for a Group specified by its id - GH
-// Create an event by Group ID - PM
-// router.post('/:groupId/events', requireAuth, [
-//   body('name').trim().isLength({ min: 5 }).withMessage('Name must be at least 5 characters'),
-//   body('type').trim().isIn(['Online', 'In person']).withMessage('Type must be Online or In person'),
-//   body('capacity').trim().isInt().withMessage('Capacity must be a an integer'),
-//   body('price').trim().isFloat({ min: 0 }).withMessage('Price is invalid'),
-//   body('description').trim().notEmpty().withMessage('Description is required'),
-//   body('startDate').isAfter(new Date().toISOString()).withMessage('Start date must be in the future'),
-//   body('endDate').custom((value, { req }) => new Date(value) > 
-//       new Date(req.body.startDate)).withMessage('End date is less than start date'),
-// ], async (req, res) => {
-  
-//   const { groupId } = req.params;
-//   const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
-//   const userId = req.user.id; 
-
-//   try {
-//     const group = await Group.findByPk(groupId);
-//     const membership = await Membership.findAll({
-//       where: {groupId: groupId,
-//       status: 'co-host'
-//       }
-//     });
-
-//     if (!group) {
-//       return res.status(404).json({ message: 'Group could not be found', statusCode: 404 });
-//     }
-//     const isOrganizer = group.organizerId === userId;
-//     if (!isOrganizer && !isCoHost) {
-//       return res.status(403).json({ message: 'Forbidden', statusCode: 403 });
-//     }
-//     const venue = await Venue.findByPk(venueId);
-//     if (!venue) {
-//       return res.status(400).json({ message: 'Validation error', statusCode: 400, errors: ['Venue does not exist'] });
-//     }
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       return res.status(400).json({ message: 'Validation error', statusCode: 400, errors: errors.array() });
-//     }
-//     const event = await Event.create({
-//       groupId,
-//       venueId,
-//       name,
-//       type,
-//       capacity,
-//       price,
-//       description,
-//       startDate,
-//       endDate,
-//     });
-//     return res.status(200).json({
-//       id: event.id,
-//       groupId: event.groupId,
-//       venueId: event.venueId,
-//       name: event.name,
-//       type: event.type,
-//       capacity: event.capacity,
-//       price: event.price,
-//       description: event.description,
-//       startDate: event.startDate,
-//       endDate: event.endDate,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//   }
-// });
 const eventValidators = [
   body('name').trim().isLength({ min: 5 }).withMessage('Name must be at least 5 characters'),
   body('type').trim().isIn(['Online', 'In person']).withMessage('Type must be Online or In person'),
@@ -754,61 +657,6 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
     });
   }
 });
-
-// router.delete("/:groupId/membership", async (req,res,next) => {
-//   const id = req.params.groupId
-//   console.log('########### ID ###########')
-//   console.log(id)
-//   console.log('########### ID ###########')
-
-//   const {user} = req
-//   const {memberId} = req.body
-
-//   console.log('########### MEMBER ID ###########')
-//   console.log({memberId})
-//   console.log('########### MEMBER ID ###########')
-
-//   const userMemberId = await User.findByPk(memberId)
-
-//   if (!user) {
-//       const err = new Error("You're not authorized to perform this action")
-//       err.status = 401
-//       return next(err)
-//   }
-
-//   if (!userMemberId) {
-//       const err = new Error("User couldn't be found")
-//       err.status = 404
-//       return next(err)
-//   }
-//   const member = await Membership.findOne({
-//       where: {
-//           groupId: id,
-//           id
-//       },
-//       order: [['createdAt', 'DESC']]
-//   })
-//   if (!member) {
-//       const err = new Error("Membership does not exist for this User")
-//       err.status = 404
-//       return next(err)
-//   }
-//   const group = await Group.findByPk(id)
-//   if (!group) {
-//       const err = new Error("Group couldn't be found")
-//       err.status = 404
-//       return next(err)
-//   }
-//   if (user.id !== group.organizerId && 
-//       user.id !== memberId) {
-//       const err = new Error("Forbidden")
-//       err.status = 403
-//       return next(err)
-//   }
-//   await member.destroy()
-
-//   return res.status(200).json({message: "Successfully deleted membership from group"})
-// })
 
 router.delete("/:groupId/membership", restoreUser, requireAuth, async (req, res) => {
   const returnMsg = {};
