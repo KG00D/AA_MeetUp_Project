@@ -71,9 +71,21 @@
     position: relative;
   }
   
-  .group-info-buttons {
+  /* .group-info-buttons {
     position: absolute;
     top: 50%;
     left: calc(100% + 5px);
     transform: translateY(-50%);
-  }
+  } */
+
+.group-info-buttons {
+  background-color: rgb(207, 42, 39);
+  border: rgb(207, 42, 39) solid 1px;
+  box-shadow: 3px 4px 4px black;
+  color: white;
+  padding: 5px 8px 5px 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: .5rem 0 1rem 0;
+  cursor: pointer;
+}
