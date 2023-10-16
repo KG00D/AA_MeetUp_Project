@@ -1,8 +1,8 @@
 .image-container {
   display: grid;
-  grid-template-rows: 1fr auto; /* 1fr for top-section, auto for tile-container */
+  grid-template-rows: 1fr auto;
   height: 100vh;
-  border-top: 1px solid black; 
+  border-top: 1px solid black;
 }
 
 .top-section {
@@ -33,10 +33,10 @@
 
 .right-section img {
   position: absolute;
-  top: 75px;       
-  left: 5px;      
-  width: 80%;     
-  height: 80%;    
+  top: 75px;
+  left: 5px;
+  width: 80%;
+  height: 80%;
   object-fit: cover;
 }
 
@@ -64,7 +64,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: calc(22% - 6px); 
+  width: calc(22% - 6px);
   margin: 5px;
   padding: 5px;
   text-align: center;
@@ -72,17 +72,26 @@
 }
 
 .tile img {
-  width: 200px;  /* Adjust as needed */
-  height: 200px; /* Adjust as needed */
+  width: 200px;
+  height: 200px;
   object-fit: cover;
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
 }
 
 .tile a, .tile span {
   text-decoration: none;
-  color: #24657d;
+  color: black;
   font-size: 24px;
-  text-shadow: 55px black; 
+  text-shadow: 55px black;  /* Note: The value '55px black' might not be correct for text-shadow. You might want to adjust this. */
+}
+
+.tile a {
+  transition: color 0.3s ease; /* Smooth transition for the color change */
+}
+
+.tile a:hover {
+  color: #24657d; /* Color turns teal on hover */
+  text-decoration: underline; /* Underline on hover */
 }
 
 @media only screen and (max-width: 768px) {
@@ -96,10 +105,12 @@
   }
 }
 
-/* @font-face {
+/* Uncomment if you have a font to load
+@font-face {
   font-family: 'Graphik Meetup';
   src: url('path-to-your-font/GraphikMeetup.woff2') format('woff2'),
        url('path-to-your-font/GraphikMeetup.woff') format('woff');
   font-weight: normal;
   font-style: normal;
-} */
+} 
+*/
