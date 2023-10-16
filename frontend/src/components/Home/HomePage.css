@@ -72,8 +72,8 @@
 }
 
 .tile img {
-  width: 200px;
-  height: 200px;
+  width: 200px;  
+  height: 200px; 
   object-fit: cover;
   margin-bottom: 10px;
 }
@@ -82,16 +82,16 @@
   text-decoration: none;
   color: black;
   font-size: 24px;
-  text-shadow: 55px black;  /* Note: The value '55px black' might not be correct for text-shadow. You might want to adjust this. */
+  text-shadow: 55px black; 
 }
 
 .tile a {
-  transition: color 0.3s ease; /* Smooth transition for the color change */
+  transition: color 0.3s ease;
 }
 
 .tile a:hover {
-  color: #24657d; /* Color turns teal on hover */
-  text-decoration: underline; /* Underline on hover */
+  color: #24657d; 
+  text-decoration: underline;
 }
 
 @media only screen and (max-width: 768px) {
