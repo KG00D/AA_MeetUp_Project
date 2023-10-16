@@ -38,6 +38,7 @@ export const createNewEvent = (groupId, event) => async (dispatch) => {
     if (res.ok) {
       const data = await res.json();
       dispatch({ type: NEW_EVENT, event: data });
+      return data
     } else {
       dispatch({ type: FETCH_ERROR, error: 'Failed to create new event' });
     }

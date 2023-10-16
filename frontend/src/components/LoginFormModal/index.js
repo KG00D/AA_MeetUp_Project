@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginFormPage from "../LoginFormPage/LoginFormPage";
+import LoginFormPage from "../LoginFormPage";
 
 function LoginFormModal() {
     return (

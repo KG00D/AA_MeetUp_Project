@@ -4,6 +4,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import * as groupActions from '../../store/groups';
 
 const GroupsUpdates = () => {
+  
   const dispatch = useDispatch();
   const history = useHistory();
   const group = useSelector(state => state.groups.currentGroup);
@@ -49,7 +50,9 @@ const GroupsUpdates = () => {
       console.log('Group updated successfully');
       history.goBack();
     } catch (error) {
-      const data = error.response?.data;
+      console.log('Error response:', error);
+      const data = await error.response?.json();
+      //const data = error.response?.data;
       if (data && data.errors) {
         console.error('Update error:', data.errors);
         setErrors(data.errors);
