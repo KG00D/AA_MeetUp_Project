@@ -72,7 +72,7 @@ const GroupsDetails = () => {
                 {group?.city}, {group?.state}
               </h4>
               <h4>
-                {events.length} events &#8226; {group?.private ? 'Private' : 'Public'}
+                {events?.length} events &#8226; {group?.private ? 'Private' : 'Public'}
               </h4>
               <h4>
                 Organized by {group?.Organizer?.firstName} {group?.Organizer?.lastName}

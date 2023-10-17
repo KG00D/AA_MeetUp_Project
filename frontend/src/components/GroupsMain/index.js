@@ -11,6 +11,7 @@ const GroupsMain = () => {
   const history = useHistory();
 
   const allGroups = useSelector((state) => state.groups.allGroups);
+  const events = useSelector((state) => state.groups.currentGroupEvents);
 
   useEffect(() => {
     dispatch(getAllGroups());
@@ -41,9 +42,10 @@ const GroupsMain = () => {
               <p>{about}</p>
 
               <div className='group-card-events'>
-                {Events && <h4>{Events?.length} events</h4>}
+                {events && <h4>{events?.length} events</h4>}
                 <span>&#8226;</span>
-                {allGroups[id]?.private ? <h4>Private</h4> : <h4>Public</h4>}
+                {allGroups.private && <h4>Private</h4>}
+                {!allGroups.private && <h4>Public</h4>}
               </div>
             </div>
           </div>

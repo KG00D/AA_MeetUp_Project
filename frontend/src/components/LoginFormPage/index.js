@@ -28,7 +28,7 @@ function LoginFormPage({onClose}) {
     return dispatch(sessionActions.login({ credential, password }))
       .then(() => {
         if (onClose) {
-          onClose(); // {/* fix this crap */}
+          onClose(); 
         }
       })
       .catch(async (res) => {
