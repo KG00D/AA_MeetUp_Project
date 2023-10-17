@@ -105,6 +105,12 @@
   }
 }
 
+.tile .disabled-message {
+  color: rgb(132, 132, 132);
+  cursor: default;     
+  pointer-events: none;
+}
+
 /* Uncomment if you have a font to load
 @font-face {
   font-family: 'Graphik Meetup';

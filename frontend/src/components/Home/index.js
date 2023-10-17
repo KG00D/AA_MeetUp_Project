@@ -45,7 +45,7 @@ function HomePage() {
                 {sessionUser ? (
                     <Link to="/groups/new">Start a new Group</Link>
                 ) : (
-                    <span>Please log in to start a new group</span>
+                    <span className="disabled-message">Please log in to start a new group</span>
                 )}
             </div>
         </div>
