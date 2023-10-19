@@ -32,13 +32,7 @@
     margin-left: 25px;
     margin-top: -20px;
   }
-  
-  .group-info-buttons {
-    position: relative;
-    top: 565px;
-    left: -320px;
-  }
-  
+    
   .group-sub-details {
     display: flex;
     flex-direction: column;
@@ -70,13 +64,6 @@
 .group-info {
     position: relative;
   }
-  
-  /* .group-info-buttons {
-    position: absolute;
-    top: 50%;
-    left: calc(100% + 5px);
-    transform: translateY(-50%);
-  } */
 
 .group-info-buttons {
   background-color: rgb(207, 42, 39);
@@ -88,4 +75,7 @@
   font-weight: 500;
   margin: .5rem 0 1rem 0;
   cursor: pointer;
+  position: relative;
+  top: 146px;
+  left: -233px;
 }

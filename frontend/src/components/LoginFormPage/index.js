@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
+import './LoginFormPage.css';
 
 function LoginFormPage({onClose}) {
   const dispatch = useDispatch();
@@ -34,7 +35,9 @@ function LoginFormPage({onClose}) {
       .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) {
-          setErrors({ credential: data.errors[0] });  
+          setErrors({ credential: data.errors[0] });
+        } else {
+          setErrors({ credential: "The provided credentials were invalid." });
         }
       });
   };
@@ -42,9 +45,13 @@ function LoginFormPage({onClose}) {
   return (
     <>
       <form onSubmit={handleSubmit}>
+        <h2 className="login-title">Log In</h2>
+        
+        {errors.credential && <p className="error-message">{errors.credential}</p>} 
+        
         <label>
           <input
-            className="equal-width"  
+            className="login-form"  
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
@@ -54,7 +61,7 @@ function LoginFormPage({onClose}) {
         </label>
         <label>
           <input
-            className="equal-width"  
+            className="login-form"  
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -62,7 +69,6 @@ function LoginFormPage({onClose}) {
             required
           />
         </label>
-        {errors.credential && <p className="error-message">{errors.credential}</p>}
         <button type="submit" className="submit-btn" disabled={isButtonDisabled}>Log In</button>
       </form>
     </>
