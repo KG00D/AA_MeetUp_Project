@@ -1,20 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react'; 
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useModal } from '../../context';
+import { Link, useHistory } from 'react-router-dom';
+
 import './Navigation.css';
-import MainModal from '../MainModal';
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
-import { useHistory } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 
 function Navigation({ isLoaded }) {  
+const { setModalContent, closeModal } = useModal();
     const [showLogin, setShowLogin] = useState(false);
     const [showSignUp, setShowSignUp] = useState(false);
-    const [showDropdown, setShowDropdown] = useState(false); 
+    const [showDropdown, setShowDropdown] = useState(false);
 
     const dropdownRef = useRef(null);
-    const sessionUser = useSelector((state) => state.session.user);
+    const sessionUser = useSelector((state) => state?.session?.user);
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -30,6 +31,12 @@ function Navigation({ isLoaded }) {
             setShowDropdown(false);
         }
     };
+
+    useEffect(() => {
+        console.log("showLogin state:", showLogin);
+        console.log("showSignUp state:", showSignUp);
+    }, [showLogin, showSignUp]);
+
     useEffect(() => {  
         if (showDropdown) {
             document.addEventListener("mousedown", handleClickOutside);
@@ -40,56 +47,59 @@ function Navigation({ isLoaded }) {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [showDropdown]);
+
     let sessionLinks;
     if (sessionUser) {
         sessionLinks = (
-            <>
-                <li>
-                    <Link to="/groups/new">Start New Group</Link> 
-                </li>
-                <li className="icon-container"> 
+            <div className='loggedin-in-buttons'>
+                <Link to="/groups/new">Start New Group</Link>
+                <div className="user-dropdown-container">
                     <button onClick={toggleDropdown} className="icon-button">
                         <img src="https://img.icons8.com/fluency/48/person-male.png" alt="Profile" />
                     </button>
                     {showDropdown && (
                         <div className="dropdown" ref={dropdownRef}>
-                            <div>Hello, {sessionUser.username}</div>
-                            <div>{sessionUser.email}</div>
-                            <button onClick={handleLogout}>Logout</button>
+                            <div className="dropdown-greeting">Hello, {sessionUser.firstName}</div>
+                            <div className="dropdown-greeting">{sessionUser.email}</div>
+                            <Link to="/your-groups">Your Groups</Link>
+                            <div>
+                                <button className="logout-btn" onClick={handleLogout}>Logout</button>
+                            </div>
                         </div>
                     )}
-                </li> 
-            </>
+                </div>
+            </div>
         );
     } else {
         sessionLinks = (
-            <li className="auth-buttons">
-                <button className="login-btn" onClick={() => setShowLogin(true)}>Log In</button>
-                <button className="signup-btn" onClick={() => setShowSignUp(true)}>Sign Up</button>
-            </li>
+            <div className='auth-buttons'>
+                <button className="login-btn" onClick={() => {
+                    setModalContent(<LoginFormModal onClose={() => setShowLogin(false)} />);
+                }}>Log In</button>
+
+                <button className="signup-btn" onClick={() => {
+                    setModalContent(<SignupFormModal onClose={() => setShowSignUp(false)} />);
+                    console.log('Signup clicked');
+                }}>Sign Up</button>
+            </div>
         );
     }
+
     return (
         <div> 
             <div className="navbar">
-                    <div className="search-container">
-                        <Link to="/">
-                            <img src="/logo.png" alt="Logo" className="logo" />
-                        </Link>
-                        <input className='event-search-input' type="text" placeholder="Search events" />
-                        <input className='area-input' type="text" placeholder="City, or zip" />
-                    </div>
+                <div className="search-container">
+                    <Link to="/">
+                        <img src="/logo.png" alt="Logo" className="logo" />
+                    </Link>
+                    <input className='event-search-input' type="text" placeholder="Search events" />
+                    <input className='area-input' type="text" placeholder="City, or zip" />
+                </div>
                 <div className="nav-right-section">
-                    {sessionLinks}
+                    {isLoaded && sessionLinks}
                 </div>
             </div>
-            <MainModal show={showLogin} onClose={() => setShowLogin(false)}>
-                <LoginFormModal onClose={() => setShowLogin(false)} />
-            </MainModal>
-            <MainModal show={showSignUp} onClose={() => setShowSignUp(false)}>
-                <SignupFormModal />
-            </MainModal>
-       </div>
+        </div>
     );
 }
 

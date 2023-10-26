@@ -44,10 +44,11 @@ const EventsCreateNew = () => {
   const currentGroup = useSelector((state) => state.groups.currentGroup);
 
   const [errors, setErrors] = useState([]);
+
   const [formData, setFormData] = useState({
     name: '',
     type: '',
-    privacy: null,
+    privacy: '',
     description: '',
     price: 0,
     startDate: '',
@@ -61,7 +62,24 @@ const EventsCreateNew = () => {
   }, [dispatch, groupId]);
 
   const handleSubmit = async (e) => {
+    console.log("Debug: Event data being sent", event);
     e.preventDefault();
+
+    let formErrors = {};
+
+    if (!formData.name) formErrors.name = "Event name is required";
+    if (!formData.type) formErrors.type = "Event type is required";
+    if (formData.privacy === '') formErrors.privacy = "Please specify if the event is private or public";
+    if (!formData.price) formErrors.price = "Event price is required";
+    if (!formData.startDate) formErrors.startDate = "Event start date is required";
+    if (!formData.endDate) formErrors.endDate = "Event end date is required";
+    if (!formData.imgUrl) formErrors.imgUrl = "Image URL is required";
+    if (formData.description.length < 30) formErrors.description = "Description must be at least 30 characters long";
+  
+    if (Object.keys(formErrors).length > 0) {
+      setFieldErrors(formErrors);
+      return;
+    }
   
     if (!currentGroup || !currentGroup.length || !currentGroup[0].id) {
       return;
@@ -91,9 +109,17 @@ const EventsCreateNew = () => {
     } catch (error) {
       console.error("Debug: An error occurred during dispatch:", error);
     }
-  }    
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    setFieldErrors(prevErrors => {
+      const newErrors = { ...prevErrors };
+      delete newErrors[name];
+      return newErrors;
+    });
+
     setFormData({ ...formData, [name]: value });
   };
 
@@ -108,7 +134,7 @@ const EventsCreateNew = () => {
         <InputField label='When does your event start?' type='datetime-local' value={formData.startDate} onChange={handleChange} name='startDate' placeholder='Event Start Time' error={fieldErrors.startDate} />
         <InputField label='When does your event end?' type='datetime-local' value={formData.endDate} onChange={handleChange} name='endDate' placeholder='Event End Time' error={fieldErrors.endDate} />
         <InputField label='Please add an image URL for the event below:' type='text' value={formData.imgUrl} onChange={handleChange} name='imgUrl' placeholder='Image URL' error={fieldErrors.imgUrl} />
-        <TextAreaField label='Please describe your event:' value={formData.description} onChange={handleChange} name='description' placeholder='Event Description' error={fieldErrors.description} />
+        <TextAreaField label='Please describe your event:' value={formData.description} onChange={handleChange} name='description' placeholder='Please include at least 30 characters.' error={fieldErrors.description} />
         <button type='submit' className='newEventSubmit'>Create Event</button>
       </form>
     </div>

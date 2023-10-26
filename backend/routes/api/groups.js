@@ -121,6 +121,8 @@ router.get('/:groupId', async (req, res, next) => {
       res.status(404).json({ message: "Group couldn't be found", status: 404 })
     }
     const group = await Group.findAll({
+    //const group = await Group.findOne({
+
       where: {
         id: id
       },

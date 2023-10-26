@@ -1,190 +1,177 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
-import "./SignupModal.css";
+import { useModal } from "../../context";
+import './SignupFormModal.css';
 
 function SignupFormModal() {
   const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
+
   const [email, setEmail] = useState("");
+  const [emailInputState, setEmailInputState] = useState("default");
+  
   const [username, setUsername] = useState("");
+  const [usernameInputState, setUsernameInputState] = useState("default");
+  
   const [firstName, setFirstName] = useState("");
+  const [firstNameInputState, setFirstNameInputState] = useState("default");
+  
   const [lastName, setLastName] = useState("");
+  const [lastNameInputState, setLastNameInputState] = useState("default");
+  
   const [password, setPassword] = useState("");
+  const [passwordInputState, setPasswordInputState] = useState("default");
+  
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordInputState, setConfirmPasswordInputState] = useState("default");
+  
   const [errors, setErrors] = useState([]);
-  const [customErrors, setCustomErrors] = useState({
-    usernameError: "",
-    passwordError: "",
-  });
-  const [isSignUpSuccess, setIsSignUpSuccess] = useState(false);
+  const [isButtonDisabled, setButtonDisabled] = useState(true);
 
-  const isFormIncomplete =
-    !email ||
-    email.length < 1 ||
-    !username ||
-    username.length < 4 ||
-    !firstName ||
-    !lastName ||
-    !password ||
-    password.length < 6 ||
-    !confirmPassword;
+  const { closeModal } = useModal();
 
-  if (sessionUser) return <Redirect to="/" />;
+  useEffect(() => {
+    if (
+      email.length > 0 &&
+      username.length >= 4 &&
+      firstName.length > 0 &&
+      lastName.length > 0 &&
+      password.length >= 6 &&
+      confirmPassword.length > 0
+    ) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [email, username, firstName, lastName, password, confirmPassword]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === confirmPassword) {
-      setErrors([]);
-      setCustomErrors({
-        usernameError: "",
-        passwordError: "",
-      });
+    
+    let newErrors = [];
+    if (password !== confirmPassword) {
+      newErrors.push("Confirm Password field must be the same as the Password field");
+    }
+    if (username.length < 4) {
+      newErrors.push("Username must be at least 4 characters long");
+    }
+    if (password.length < 6) {
+      newErrors.push("Password must be at least 6 characters long");
+    }
 
-      if (username.length < 4) {
-        setCustomErrors({
-          ...customErrors,
-          usernameError: "Username must be at least 4 characters long",
-        });
-      }
-
-      if (password.length < 6) {
-        setCustomErrors({
-          ...customErrors,
-          passwordError: "Password must be at least 6 characters long",
-        });
-      }
-
-      const response = await dispatch(
-        sessionActions.signup({
-          email,
-          username,
-          firstName,
-          lastName,
-          password,
+    if (newErrors.length === 0) {
+      dispatch(sessionActions.signup({ email, username, firstName, lastName, password }))
+        .then(() => {
+          closeModal();
         })
-      );
-
-      if (response.data && response.data.errors) {
-        setErrors(response.data.errors);
-      } else {
-        setIsSignUpSuccess(true);
-        }
-      } else {
-          setErrors([
-        "Confirm Password field must be the same as the Password field",
-      ]);
+        .catch(async (res) => {
+          const data = await res.json();
+          if (data && data.errors) {
+            setErrors(data.errors);
+          }
+        });
+    } else {
+      setErrors(newErrors);
     }
   };
 
-    if (sessionUser) {
-      return <Redirect to="/" />;
-    }
-
-    if (isSignUpSuccess) {
-      return (
-        <div className="signupSuccessMessage">
-          <h2>Sign up successful!</h2>
-          <p>Your account has been created.</p>
-        </div>
-      );
-    } 
-
   return (
-    <div className="signupPageContainer">
-      <h1>Sign Up</h1>
-      {errors.length > 0 && (
-        <div className="error-container">
-          <ul>
-            {errors.map((error, index) => (
-              <li key={index}>{error}</li>
-            ))}
-          </ul>
+    <div className="signup-form-container">
+      <div className="signup-form-sub-container">
+        <div className="signup-header">
+          <h2 className="signup-title">Sign up</h2>
         </div>
-      )}
-      <form onSubmit={handleSubmit}>
-        <label>
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder="First Name"
-            required
-          />
-        </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
 
-        <label>
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder="Last Name"
-            required
-          />
-        </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+        <form onSubmit={handleSubmit}>
+          <ul className='signup-errors-labels'>
+            {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+          </ul>
+          
+          {/* Following your input structure and repeating for each field... */}
+          
+          <label className='login-labels'>
+            <input className={`login-inputs ${firstNameInputState}`}
+              type="text"
+              value={firstName}
+              onChange={(e) => {
+                setFirstName(e.target.value);
+                setFirstNameInputState(e.target.value ? "filled" : "default");
+              }}
+              placeholder={firstNameInputState === "default" ? "First Name" : ""}
+              required
+            />
+          </label>
 
-        <label>
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-          />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
+          <label className='login-labels'>
+            <input className={`login-inputs ${lastNameInputState}`}
+              type="text"
+              value={lastName}
+              onChange={(e) => {
+                setLastName(e.target.value);
+                setLastNameInputState(e.target.value ? "filled" : "default");
+              }}
+              placeholder={lastNameInputState === "default" ? "Last Name" : ""}
+              required
+            />
+          </label>
 
-        <label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Username"
-            required
-          />
-        </label>
-        {errors.username && <p>{errors.username}</p>}
+          <label className='login-labels'>
+            <input className={`login-inputs ${emailInputState}`}
+              type="text"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setEmailInputState(e.target.value ? "filled" : "default");
+              }}
+              placeholder={emailInputState === "default" ? "Email" : ""}
+              required
+            />
+          </label>
 
-        <label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-          />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
+          <label className='login-labels'>
+            <input className={`login-inputs ${usernameInputState}`}
+              type="text"
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+                setUsernameInputState(e.target.value ? "filled" : "default");
+              }}
+              placeholder={usernameInputState === "default" ? "Username" : ""}
+              required
+            />
+          </label>
 
-        <label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirm Password"
-            required
-          />
-        </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+          <label className='login-labels'>
+            <input className={`login-inputs ${passwordInputState}`}
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setPasswordInputState(e.target.value ? "filled" : "default");
+              }}
+              placeholder={passwordInputState === "default" ? "Password" : ""}
+              required
+            />
+          </label>
 
-        <button
-          className="sign-up-btn"
-          type="submit"
-          disabled={isFormIncomplete}
-          style={{ backgroundColor: isFormIncomplete ? "grey" : "" }}
-        >
-          Sign Up
-        </button>
-      </form>
-      {customErrors.usernameError && (
-        <p className="custom-error-message">{customErrors.usernameError}</p>
-      )}
-      {customErrors.passwordError && (
-        <p className="custom-error-message">{customErrors.passwordError}</p>
-      )}
+          <label className='login-labels'>
+            <input className={`login-inputs ${confirmPasswordInputState}`}
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                setConfirmPasswordInputState(e.target.value ? "filled" : "default");
+              }}
+              placeholder={confirmPasswordInputState === "default" ? "Confirm Password" : ""}
+              required
+            />
+          </label>
+
+          <div className="login-btns-container">
+            <button className="sign-up-btn" type="submit" disabled={isButtonDisabled}>Sign Up</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

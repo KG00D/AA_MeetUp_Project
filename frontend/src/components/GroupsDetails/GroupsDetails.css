@@ -39,6 +39,7 @@
     position: relative;
     top: 150px;
     left: 400px;
+    background-color: #f0f0f0;
   }
   
   .events {
@@ -47,6 +48,7 @@
     position: relative;
     top: 200px;
     left: 400px;
+    background-color: #f0f0f0;
   }
   
   .group-info img {
@@ -61,11 +63,36 @@
     width: 10%;
   }
 
-.group-info {
-    position: relative;
+  .group-info {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .group-info-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+  
+  .group-action-buttons {
+    display: flex;
+    gap: 10px;
   }
 
-.group-info-buttons {
+  .create, .delete, .update {
+    width: 120px;  /* Adjust this width as required */
+    padding: 5px 15px;
+  }
+  
+
+  .group-action-buttons button {
+    padding: 5px 20px; 
+  }
+  
+
+/* .group-info-buttons {
+  box-sizing: border-box;
   background-color: rgb(207, 42, 39);
   border: rgb(207, 42, 39) solid 1px;
   box-shadow: 3px 4px 4px black;
@@ -78,4 +105,37 @@
   position: relative;
   top: 146px;
   left: -233px;
+} */
+
+.group-action-buttons {
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-between; 
+  gap: 10px; 
+}
+
+.group-action-buttons .create, .group-action-buttons .delete, .group-action-buttons .update {
+  background-color: grey;  
+  border: grey solid 1px;
+  box-shadow: 2px 3px 3px black;
+  color: white;
+  padding: 5px 8px 5px 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: .5rem 0 1rem 0;
+  cursor: pointer;
+  width: 100%
+}
+
+.join-group-info-buttons {
+  background-color: rgb(207, 42, 39);
+  border: rgb(207, 42, 39) solid 1px;
+  box-shadow: 3px 4px 4px black;
+  color: white;
+  padding: 5px 8px 5px 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: .5rem 0 1rem 0;
+  cursor: pointer;
+  width: 100%
 }

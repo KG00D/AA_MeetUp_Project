@@ -29,18 +29,41 @@ export const getEventDetail = (eventId) => async (dispatch) => {
   }
 };
 
+// export const createNewEvent = (groupId, event) => async (dispatch) => {
+//   try {
+//     const res = await csrfFetch(`/api/groups/${groupId}/events`, {
+//       method: 'POST',
+//       body: JSON.stringify(event)
+//     });
+//     if (res.ok) {
+//       const data = await res.json();
+//       dispatch({ type: NEW_EVENT, event: data });
+//       return data
+//     } else {
+//       dispatch({ type: FETCH_ERROR, error: 'Failed to create new event' });
+//     }
+//   } catch (error) {
+//     dispatch({ type: FETCH_ERROR, error });
+//   }
+// };
+
 export const createNewEvent = (groupId, event) => async (dispatch) => {
   try {
     const res = await csrfFetch(`/api/groups/${groupId}/events`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(event)
     });
+
     if (res.ok) {
       const data = await res.json();
       dispatch({ type: NEW_EVENT, event: data });
-      return data
+      return data;
     } else {
-      dispatch({ type: FETCH_ERROR, error: 'Failed to create new event' });
+      const errorData = await res.json();  // try to get more detailed error from server response
+      dispatch({ type: FETCH_ERROR, error: errorData.message || 'Failed to create new event' });
     }
   } catch (error) {
     dispatch({ type: FETCH_ERROR, error });

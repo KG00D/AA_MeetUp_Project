@@ -15,24 +15,50 @@ const validateLogin = [
   handleValidationErrors,
 ];
 
-router.post('/', validateLogin, async (req, res, next) => {
-  try {
+// router.post('/', validateLogin, async (req, res, next) => {
+//   try {
+//     const { credential, password } = req.body;
+//     const authenticatedUser = await User.login({ credential, password});
+//     if (!authenticatedUser) {
+//       return res.status(401).json({
+//         message: 'Invalid Credentials',
+//         statusCode: 401,
+//       });
+//     }
+//     await setTokenCookie(res, authenticatedUser);
+//     return res.json({
+//       // user: authenticatedUser.toSafeObject(),
+//       user
+//     })
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+router.post(
+  '/',
+  validateLogin,
+  async (req, res, next) => {
     const { credential, password } = req.body;
-    const authenticatedUser = await User.login({ credential, password});
-    if (!authenticatedUser) {
-      return res.status(401).json({
-        message: 'Invalid Credentials',
-        statusCode: 401,
-      });
+
+    const user = await User.login({ credential, password });
+
+    if (!user) {
+      const errorObj = {
+        message: 'Invalid credentials',
+        statusCode: 401
+      }
+      return res.status(401).json(errorObj);
     }
-    await setTokenCookie(res, authenticatedUser);
+
+    await setTokenCookie(res, user);
+    console.log('Response Data:', user);
+
     return res.json({
-      user: authenticatedUser.toSafeObject(),
-    })
-  } catch (error) {
-    next(error);
+      user
+    });
   }
-});
+);
 
 router.delete('/', (_req, res) => {
   res.clearCookie('token');

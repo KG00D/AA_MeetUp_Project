@@ -1,8 +1,4 @@
-* {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
-  }
-  
-  h4 {
+h4 {
     font-size: 15pt;
     font-weight: lighter;
     color: #999999;
@@ -30,9 +26,10 @@
     font-weight: bold;
     text-decoration: none;
     color: gray;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   
-  .events-list-header h1 {
+.events-list-header h1 {
     display: inline-block;
     align-items: center;
     margin: auto 20px;
@@ -40,6 +37,7 @@
     font-weight: bold;
     text-decoration: underline;
     color: teal;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   
   .events-list-header-2 {
@@ -59,8 +57,6 @@
     padding-top: 20px;
     padding-bottom: 20px;
     display: inline-block;
-    /* flex-direction: row; */
-    /* align-items: flex-start; */
   }
   
   .event-card-2 {
@@ -68,8 +64,6 @@
     padding-top: 20px;
     padding-bottom: 20px;
     display: inline-block;
-    /* flex-direction: row; */
-    /* align-items: flex-start; */
   }
   
   .event-card-container {

@@ -2,7 +2,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 100%;
+    border-bottom: 0.5px solid grey;
 }
+
+.top-section {
+    display: flex;
+    height: 100%;
+    border-top: 0.5px solid grey;
+  }
 
 .navbar-content {
     display: flex;
@@ -29,8 +37,7 @@ input[type="text"] {
 }
 
 .login-btn{
-
-font-family: Roboto, sans-serif;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 font-weight: 0;
 font-size: 14px;
 color: #fff;
@@ -66,6 +73,7 @@ border: solid 2px #2a9d8f;
     margin: 0;
     text-decoration: none;
     margin-left: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .signup-btn:hover {
@@ -86,13 +94,8 @@ border: solid 2px #2a9d8f;
     list-style-type: none;
   }
 
-  /* .navbar li {
-    display: flex;
-    justify-content: space-between;
-    list-style-type: none; 
-  } */
 
-  .auth-buttons {
+.auth-buttons {
     display: flex;
     justify-content: space-between;
     list-style-type: none;
@@ -103,9 +106,18 @@ border: solid 2px #2a9d8f;
     border: none;
   }
 
-.icon-container {
+.user-dropdown-container {
     position: relative;
+    font-family: 'Roboto', sans-serif;
   }
+
+.user-dropdown-container a {
+font-family: 'Roboto', sans-serif;
+}
+
+.logout-btn {
+    font-family: 'Roboto', sans-serif;
+}
     
 .dropdown {
     position: absolute;
@@ -118,3 +130,32 @@ border: solid 2px #2a9d8f;
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
+
+.dropdown-greeting {
+    font-family: 'Roboto', sans-serif;
+}
+
+.start-a-new-group {
+    font-family: 'Roboto', sans-serif;
+}
+
+.logout-btn {
+    background-color: rgb(207, 42, 39);
+    border: rgb(207, 42, 39) solid 1px;
+    box-shadow: 3px 4px 4px black;
+    color: white;
+    padding: 5px 8px 5px 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: .5rem 0 1rem 0;
+    cursor: pointer;
+    width: 100%;
+}
+
+.loggedin-in-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    width: 100%;
+    flex-wrap: nowrap; 
+}

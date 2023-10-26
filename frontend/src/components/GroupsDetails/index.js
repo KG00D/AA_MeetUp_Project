@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import GroupsEvents from '../GroupsEvents/GroupsEvents';
+import ConfirmationModal from './ConfirmationModal';
 import * as groupActions from '../../store/groups';
 
 import './GroupsDetails.css';
@@ -13,9 +14,12 @@ const GroupsDetails = () => {
 
   const group = useSelector((state) => state.groups.currentGroup)[0]; 
   const events = useSelector((state) => state.groups.currentGroupEvents);
+  
   const sessionUser = useSelector(state => state.session?.user);
 
   const [loaded, setLoaded] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+
   const [userIsOrganizer, setUserIsOrganizer] = useState(false);
 
   useEffect(() => {
@@ -33,8 +37,8 @@ const GroupsDetails = () => {
   }, [dispatch, groupId]);
 
   const handleJoinGroup = () => {
-
-  };
+    alert("Feature Coming Soon");
+};
 
   const handleBreadCrumb = () => {
     history.push(`/groups`);
@@ -44,11 +48,26 @@ const GroupsDetails = () => {
     history.push(`/groups/${groupId}/events`);
   };
 
+  // const handleDelete = async () => {
+  //   if (window.confirm('Are you sure you want to remove this group?')) {
+  //     dispatch(groupActions.removeGroup(groupId));
+  //     history.push(`/groups`);
+  //   }
+  // };
+
   const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to remove this group?')) {
-      dispatch(groupActions.removeGroup(groupId));
-      history.push(`/groups`);
-    }
+    console.log("Opening modal");
+    setModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    await dispatch(groupActions.removeGroup(groupId));
+    history.push(`/groups`);
+    setModalOpen(false); 
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   const handleUpdate = () => {
@@ -63,37 +82,31 @@ const GroupsDetails = () => {
             &lt;
             <div onClick={handleBreadCrumb}>Groups</div>
           </div>
-          
           <div className='group-info'>
-            <img src={group?.previewImage || 'https://via.placeholder.com/600x400'} alt='group' />
+          <img src={group?.previewImage || 'https://via.placeholder.com/600x400'} alt='group' />
+          <div className='group-info-content'>
             <div className='group-main-text'>
               <h1>{group?.name}</h1>
-              <h4>
-                {group?.city}, {group?.state}
-              </h4>
-              <h4>
-                {events?.length} events &#8226; {group?.private ? 'Private' : 'Public'}
-              </h4>
-              <h4>
-                Organized by {group?.Organizer?.firstName} {group?.Organizer?.lastName}
-              </h4>
+              <h4>{group?.city}, {group?.state}</h4>
+              <h4>{events?.length} events &#8226; {group?.private ? 'Private' : 'Public'}</h4>
+              <h4>Organized by {group?.Organizer?.firstName} {group?.Organizer?.lastName}</h4>
             </div>
-            {
-            userIsOrganizer ? (
-              <div className='group-info-buttons'>
-                <button onClick={handleCreateEvent}>Create event</button>
-                <button onClick={handleDelete}>Delete</button>
-                <button onClick={handleUpdate}>Update</button>
+            {userIsOrganizer ? (
+              <div className='group-action-buttons'>
+                <button className='create' onClick={handleCreateEvent}>Create event</button>
+                <button className='delete' onClick={handleDelete}>Delete</button>
+                <button className='update' onClick={handleUpdate}>Update</button>
               </div>
-            ) : (
-              <div className='group-info-buttons'>
-                <button onClick={handleJoinGroup}>Join this Group</button>
+            ) : sessionUser && (
+              <div className='group-action-buttons'>
+                <button className='join-group-info-buttons' onClick={handleJoinGroup}>Join this Group</button>
               </div>
-            )
-          }
+            )}
           </div>
         </div>
 
+        </div>
+  
         <div className='group-sub-details'>
           <h2>Organizer</h2>
           <h4>
@@ -102,13 +115,19 @@ const GroupsDetails = () => {
           <h2>What we're about</h2>
           <p>{group?.about}</p>
         </div>
-
+  
         <div className='events'>
           <GroupsEvents events={events} />
         </div>
+        <ConfirmationModal 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal} 
+        onConfirm={handleConfirmDelete} 
+      />
       </div>
     )
   );
+  
 };
 
 export default GroupsDetails;

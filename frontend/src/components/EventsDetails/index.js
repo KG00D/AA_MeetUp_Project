@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import * as eventActions from '../../store/events';
+import ConfirmationModal from './ConfirmationModal';
 
 import './EventsDetails.css';
 
@@ -14,6 +16,7 @@ const EventsDetails = () => {
   
   const event = useSelector((state) => state.events?.currentEvent);
   const sessionUser = useSelector((state) => state.session?.user);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   useEffect(() => {
     dispatch(eventActions.getEventDetail(eventId));
@@ -32,12 +35,26 @@ const EventsDetails = () => {
     history.push(`/groups/${groupId}`);
   };
 
-  const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to remove this event?')) {
-      dispatch(eventActions.removeEvent(eventId));
-      history.push('/events');
-    }
+  const handleDelete = () => {
+    setIsModalOpen(true);
   };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  
+  const confirmDelete = async () => {
+    dispatch(eventActions.removeEvent(eventId));
+    history.push('/events');
+    setIsModalOpen(false);
+  };
+
+  // const handleDelete = async () => {
+  //   if (window.confirm('Are you sure you want to remove this event?')) {
+  //     dispatch(eventActions.removeEvent(eventId));
+  //     history.push('/events');
+  //   }
+  // };
 
   const eventStart = new Date(event.startDate);
   const eventEnd = new Date(event.endDate);
@@ -105,7 +122,13 @@ const EventsDetails = () => {
         <h2>Details</h2>
         <p>{event.description}</p>
       </div>
+      <ConfirmationModal
+      isOpen={isModalOpen}
+      onClose={closeModal}
+      onConfirm={confirmDelete}
+    />
     </div>
+    
   );
 };
 

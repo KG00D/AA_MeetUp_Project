@@ -2,7 +2,6 @@
   display: flex;
   height: 100%;
   border-top: 0.5px solid grey;
-
 }
 
 .left-section {
@@ -44,41 +43,47 @@
   height: 100%;
 }
 
-
-.bottom-section {
-  display: flex; 
+.middle-section {
+  display: flex;
   justify-content: center; 
   align-items: center; 
-  width: 100%;
-  margin-top: 5px;
-  margin-bottom: 25px;
+  padding: 2px; 
   border-bottom: 0.25px solid grey;
 }
 
 .how-meetup-works {
   text-align: center;
-  margin-top: 3rem;
+  margin-top: 0.25rem;
   position: static;
   bottom:30%;
   left: 45.0%;
   border-top: 0.5px  grey;
-  
 }
 
 .how-meetup-works h3{
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
   font-size: 34px;
-  
+  margin: 0.25rem;
 }
 
 .how-meetup-works p {
   font-family: 'Roboto', sans-serif;
-  font-size: 18px;
+  font-size: 22px;
+}
+
+.bottom-section {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  width: 100%;
+  margin-top: 2px;
+  margin-bottom: 50px;
+  border-bottom: 0.25px solid grey;
 }
 
 .navigation-tile img {
-  width: 300px;
+  width: 200px;
   height: auto;
   justify-content: center;
   margin-bottom: 10px;
@@ -94,6 +99,25 @@
 
 .navigation-tile a {
   margin-top: 10px;
+  font-family: 'Roboto', sans-serif;
+  color: black;
+  text-decoration: none; 
+  transition: color 0.3s, text-decoration 0.3s;
+}
+
+.navigation-tile a:hover {
+  color: #2a9d8f; 
+  text-decoration: underline;
+}
+
+.navigation-tile .disabled-message {
+  color: rgb(132, 132, 132);
+  cursor: default;     
+  pointer-events: none;
+} 
+
+.navigation-tile:last-child {
+  margin-right: 0; 
 }
 
 .tile-container {
@@ -102,12 +126,6 @@
   width: 100%;
   margin-top: 100;
 }
-
-.navigation-tile .disabled-message {
-  color: rgb(132, 132, 132);
-  cursor: default;     
-  pointer-events: none;
-} 
 
 .tile-container {
   display: flex;
@@ -121,16 +139,4 @@
 .tile a {
   margin-top: 10px;
   text-align: center;
-}
-
-.middle-section {
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
-  padding: 20px; 
-  border-bottom: 0.25px solid grey;
-}
-
-.navigation-tile:last-child {
-  margin-right: 0; 
 }

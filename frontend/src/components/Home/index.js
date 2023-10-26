@@ -37,28 +37,32 @@ function HomePage() {
             </div>
         </div>
 
-          <div className="bottom-section">
-            <div className="navigation-tile" onClick={handleSeeAllGroups}>
-              <img src={process.env.PUBLIC_URL + '/heart.png'} alt="Groups Icon" />
-              <Link to="/groups">See All Groups</Link>
-              <p>Find a group, local or online to find like-minded individuals</p>
-            </div>
-            <div className="navigation-tile" onClick={handleFindAnEvent}>
-              <img src={process.env.PUBLIC_URL + '/heart.png'} alt="Events Icon" />
-              <Link to="/events">Find an Event</Link>
-              <p>See who's hosting local events for all the things you love</p>
-            </div>
-            <div className="navigation-tile">
-              <img src={process.env.PUBLIC_URL + '/heart.png'} alt="New Group Icon" />
-              {sessionUser ? (
-                <Link to="/groups/new">Start a new Group</Link>
-              ) : (
-                <span className="disabled-message">Please log in to start a new group</span>
-              )}
-                              <p>Create your own Meetup group, and draw from a community of millions</p>
-            </div>
+        <div className="bottom-section">
+                    <div className="navigation-tile">
+                        <div onClick={handleSeeAllGroups}>
+                        <img src={process.env.PUBLIC_URL + '/heart.png'} alt="Groups Icon" />
+                        </div>
+                        <Link to="/groups">See All Groups</Link>
+                        <p>Find a group, local or online to find like-minded individuals</p>
+                    </div>
+                    <div className="navigation-tile">
+                        <div onClick={handleFindAnEvent}>
+                        <img src={process.env.PUBLIC_URL + '/heart.png'} alt="Events Icon" />
+                        </div>
+                        <Link to="/events">Find an Event</Link>
+                        <p>See who's hosting local events for all the things you love</p>
+                    </div>
+                    <div className="navigation-tile">
+                        <img src={process.env.PUBLIC_URL + '/heart.png'} alt="New Group Icon" />
+                        {sessionUser ? (
+                        <Link to="/groups/new">Start a new Group</Link>
+                        ) : (
+                        <span className="disabled-message">Please log in to start a new group</span>
+                        )}
+                        <p>Create your own Meetup group, and draw from a community of millions</p>
+                     </div>
+                </div>
           </div>
-        </div>
     );
   }
   
