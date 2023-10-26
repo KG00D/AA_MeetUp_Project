@@ -86,9 +86,7 @@ function SignupFormModal() {
           <ul className='signup-errors-labels'>
             {errors.map((error, idx) => <li key={idx}>{error}</li>)}
           </ul>
-          
-          {/* Following your input structure and repeating for each field... */}
-          
+                    
           <label className='login-labels'>
             <input className={`login-inputs ${firstNameInputState}`}
               type="text"

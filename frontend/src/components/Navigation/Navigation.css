@@ -159,3 +159,7 @@ font-family: 'Roboto', sans-serif;
     width: 100%;
     flex-wrap: nowrap; 
 }
+
+.dropdown a {
+    display: block;
+}

@@ -61,7 +61,8 @@ const { setModalContent, closeModal } = useModal();
                         <div className="dropdown" ref={dropdownRef}>
                             <div className="dropdown-greeting">Hello, {sessionUser.firstName}</div>
                             <div className="dropdown-greeting">{sessionUser.email}</div>
-                            <Link to="/your-groups">Your Groups</Link>
+                            <Link to="/groups">Your Groups</Link>
+                            <Link to="/events">Your Events</Link>
                             <div>
                                 <button className="logout-btn" onClick={handleLogout}>Logout</button>
                             </div>

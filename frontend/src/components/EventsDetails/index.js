@@ -15,8 +15,14 @@ const EventsDetails = () => {
   const { eventId } = useParams();
   
   const event = useSelector((state) => state.events?.currentEvent);
+
+  console.log(event, 'event here')
+
   const sessionUser = useSelector((state) => state.session?.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  console.log('Session User:', sessionUser);
+  console.log('Event Organizer:', event.Organizer);
   
   useEffect(() => {
     dispatch(eventActions.getEventDetail(eventId));

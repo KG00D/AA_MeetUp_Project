@@ -62,7 +62,6 @@ const EventsCreateNew = () => {
   }, [dispatch, groupId]);
 
   const handleSubmit = async (e) => {
-    console.log("Debug: Event data being sent", event);
     e.preventDefault();
 
     let formErrors = {};
