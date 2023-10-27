@@ -26,6 +26,9 @@ function SignupFormModal() {
   const [confirmPasswordInputState, setConfirmPasswordInputState] = useState("default");
   
   const [errors, setErrors] = useState([]);
+  console.log("Initial errors state:", errors);
+
+
   const [isButtonDisabled, setButtonDisabled] = useState(true);
 
   const { closeModal } = useModal();
@@ -47,8 +50,12 @@ function SignupFormModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
     let newErrors = [];
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.push("Please provide a proper email");
+    }
+    
     if (password !== confirmPassword) {
       newErrors.push("Confirm Password field must be the same as the Password field");
     }
