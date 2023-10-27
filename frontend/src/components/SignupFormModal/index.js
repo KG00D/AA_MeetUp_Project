@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as sessionActions from "../../store/session";
 import { useModal } from "../../context";
 import './SignupFormModal.css';
 
 function SignupFormModal() {
   const dispatch = useDispatch();
+  const sessionState = useSelector((state) => state.session);
+
+  useEffect(() => {
+    console.log("Current session state:", sessionState);
+  }, [sessionState]); 
 
   const [email, setEmail] = useState("");
   const [emailInputState, setEmailInputState] = useState("default");
@@ -26,9 +31,6 @@ function SignupFormModal() {
   const [confirmPasswordInputState, setConfirmPasswordInputState] = useState("default");
   
   const [errors, setErrors] = useState([]);
-  console.log("Initial errors state:", errors);
-
-
   const [isButtonDisabled, setButtonDisabled] = useState(true);
 
   const { closeModal } = useModal();
@@ -69,10 +71,13 @@ function SignupFormModal() {
     if (newErrors.length === 0) {
       dispatch(sessionActions.signup({ email, username, firstName, lastName, password }))
         .then(() => {
+          console.log('Sign up successful!');
+          console.log("Session state after signup:", sessionState);
           closeModal();
         })
         .catch(async (res) => {
           const data = await res.json();
+          console.log("Signup failed:", data);
           if (data && data.errors) {
             setErrors(data.errors);
           }
