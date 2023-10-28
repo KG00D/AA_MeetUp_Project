@@ -62,7 +62,7 @@ return (
     <>
     {upcomingEvents.length > 0 ? (
       <>
-        <h1>Upcoming Events</h1>
+        <h1>Upcoming Events ({upcomingEvents.length})</h1>
         {upcomingEvents}
       </>
     ) : (
