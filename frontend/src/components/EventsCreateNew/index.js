@@ -76,10 +76,10 @@ const EventsCreateNew = () => {
     if (!formData.imgUrl) formErrors.imgUrl = "Image URL is required";
     if (formData.description.length < 30) formErrors.description = "Description must be at least 30 characters long";
   
-    // if (Object.keys(formErrors).length > 0) {
-    //   setFieldErrors(formErrors);
-    //   return;
-    // }
+    if (Object.keys(formErrors).length > 0) {
+      setFieldErrors(formErrors);
+      return;
+    }
   
     if (!currentGroup || !currentGroup.length || !currentGroup[0].id) {
       return;
