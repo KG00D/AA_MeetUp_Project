@@ -525,7 +525,7 @@ router.post("/:groupId/venues", requireAuth, [
 
 const eventValidators = [
   body('name').trim().isLength({ min: 5 }).withMessage('Name must be at least 5 characters'),
-  body('type').trim().isIn(['Online', 'In person']).withMessage('Type must be Online or In person'),
+  body('type').trim().isIn(['Online', 'In Person']).withMessage('Type must be Online or In person'),
   body('capacity').trim().isInt().withMessage('Capacity must be an integer'),
   body('price').trim().isFloat({ min: 0 }).withMessage('Price is invalid'),
   body('description').trim().notEmpty().withMessage('Description is required'),
