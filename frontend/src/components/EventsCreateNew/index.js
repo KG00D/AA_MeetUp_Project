@@ -69,7 +69,7 @@ const EventsCreateNew = () => {
     if (!formData.name) formErrors.name = "Event name is required";
     if (!formData.type) formErrors.type = "Event type is required";
     if (formData.privacy === '') formErrors.privacy = "Please specify if the event is private or public";
-    if (!formData.price) formErrors.price = "Event price is required";
+    if (formData.price === null || formData.price === undefined) formErrors.price = "Event price is required";
     if (!formData.startDate) formErrors.startDate = "Event start date is required";
     if (!formData.endDate) formErrors.endDate = "Event end date is required";
     if (!formData.imgUrl) formErrors.imgUrl = "Image URL is required";

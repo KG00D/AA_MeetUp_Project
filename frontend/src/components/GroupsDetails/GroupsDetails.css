@@ -5,8 +5,8 @@
   
   .group-main-details {
     position: relative;
-    top: 150px;
-    left: 400px;
+    margin-top: 70px;
+    margin-left: 200px;
   }
   
   .group-breadcrumb {
@@ -37,19 +37,56 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    top: 150px;
-    left: 400px;
+    margin-top: 70px;
+    margin-left: 0px; /* Set margin-left to 0 */
+    margin-right: 0px; /* Set margin-right to 0 to remove the gap */
     background-color: #f0f0f0;
+    min-height: 150px;
+    overflow: auto;
+    word-wrap: break-word;
+    padding: 10px;
+    padding-left: 210px; /* Add padding to keep content in place */
   }
   
-  .events {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    top: 200px;
-    left: 400px;
+  .group-sub-details::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -200px;
+    right: 0;
+    bottom: 0;
     background-color: #f0f0f0;
+    z-index: -1; 
   }
+  
+  .group-sub-details p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  
+.events {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-top: 0px;
+  margin-left: 200px;
+  background-color: #f0f0f0;
+}
+
+.events::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -200px; 
+  right: 0;
+  bottom: 0;
+  background-color: #f0f0f0;
+  z-index: -1; 
+}
   
   .group-info img {
     max-width: 35%;
@@ -81,32 +118,14 @@
   }
 
   .create, .delete, .update {
-    width: 120px;  /* Adjust this width as required */
+    width: 120px;  
     padding: 5px 15px;
   }
   
-
-  .group-action-buttons button {
+.group-action-buttons button {
     padding: 5px 20px; 
   }
   
-
-/* .group-info-buttons {
-  box-sizing: border-box;
-  background-color: rgb(207, 42, 39);
-  border: rgb(207, 42, 39) solid 1px;
-  box-shadow: 3px 4px 4px black;
-  color: white;
-  padding: 5px 8px 5px 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  margin: .5rem 0 1rem 0;
-  cursor: pointer;
-  position: relative;
-  top: 146px;
-  left: -233px;
-} */
-
 .group-action-buttons {
   display: flex;
   flex-direction: row; 

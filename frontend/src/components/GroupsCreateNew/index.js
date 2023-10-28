@@ -28,7 +28,9 @@ const GroupsCreateNew = () => {
       if (formData.about.length < 30) loadErrors.push('Description must be at least 30 characters long');
       if (!formData.type) loadErrors.push('Group type is required');
       if (!formData.privacy) loadErrors.push('Visibility Type is required');
-      if (formData.imgUrl && !formData.imgUrl.match(/\.(jpg|jpeg|png)$/)) {
+      if (!formData.imgUrl) {
+        loadErrors.push('Image URL is required');
+      } else if (!formData.imgUrl.match(/\.(jpg|jpeg|png)$/)) {
         loadErrors.push('Image URL must end in .jpg, .jpeg, or .png');
       }
       setErrors(loadErrors);
@@ -42,11 +44,18 @@ const GroupsCreateNew = () => {
 
   const handleSubmit = async e => {
     console.log("handleSubmit triggered");
-
     e.preventDefault();
     setSubmissionAttempt(true);
     
     const loadErrors = [];
+
+    setErrors(loadErrors);
+    
+    if (loadErrors.length > 0) {
+      console.log("Form has errors, not submitting")
+      return;
+    }
+ 
     if (!formData.location) loadErrors.push('City and State is required');
     if (!formData.name) loadErrors.push('Group name is required');
     if (formData.about.length < 30) loadErrors.push('Description must be at least 30 characters long');
@@ -199,7 +208,7 @@ const GroupsCreateNew = () => {
               </div>
           </div>
 
-          <button type='submit' className='newGroupSubmitButton'>
+          <button type='submit' className='newGroupSubmitButton' disabled={errors.length > 0}>
             Create group
           </button>
         </form>

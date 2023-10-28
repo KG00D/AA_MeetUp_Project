@@ -15,6 +15,8 @@ const EventsDetails = () => {
   const { eventId } = useParams();
   
   const event = useSelector((state) => state.events?.currentEvent);
+  console.log("Event Data:", event);
+
 
   console.log(event, 'event here')
 

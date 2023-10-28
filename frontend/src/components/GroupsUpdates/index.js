@@ -36,13 +36,6 @@ const GroupsUpdates = () => {
     }
   }, [dispatch, groupId]);
 
-  // useEffect(() => {
-  //   if (!group || group.id !== groupId) { 
-  //     dispatch(getGroupDetail(groupId));
-  //   }
-  // }, [groupId, dispatch, group]);
-
-
   useEffect(() => {
     console.log('Group Changes' ,group)
     if (group) {

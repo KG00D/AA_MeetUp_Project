@@ -60,9 +60,14 @@ function HomePage() {
                         <span className="disabled-message">Please log in to start a new group</span>
                         )}
                         <p>Create your own Meetup group, and draw from a community of millions</p>
-                     </div>
-                </div>
-          </div>
+                    </div>
+            </div>
+            <div className='join-meetup-section'>
+            {!sessionUser && (
+            <button className="join-meetup-btn">Join MeetUp</button>
+            )}
+            </div>
+      </div>
     );
   }
   
