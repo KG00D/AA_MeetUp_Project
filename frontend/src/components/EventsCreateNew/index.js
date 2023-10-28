@@ -71,11 +71,24 @@ const EventsCreateNew = () => {
     if (!formData.type) formErrors.type = "Event type is required";
     if (formData.privacy === '') formErrors.privacy = "Please specify if the event is private or public";
     if (formData.price === null || formData.price === undefined) formErrors.price = "Event price is required";
+    
+    const currentDate = new Date();
+    const selectedStartDate = new Date(formData.startDate);
+    const selectedEndDate = new Date(formData.endDate);
+    
+    if (!formData.startDate || selectedStartDate < currentDate) {
+      formErrors.startDate = "Event start date must be in the future";
+    }
+  
+    if (!formData.endDate || selectedEndDate < currentDate || selectedEndDate < selectedStartDate) {
+      formErrors.endDate = "Event end date must be in the future and after the start date";
+    }
+    
     if (!formData.startDate) formErrors.startDate = "Event start date is required";
     if (!formData.endDate) formErrors.endDate = "Event end date is required";
     if (!formData.imgUrl) formErrors.imgUrl = "Image URL is required";
     if (formData.description.length < 30) formErrors.description = "Description must be at least 30 characters long";
-  
+      
     if (Object.keys(formErrors).length > 0) {
       setFieldErrors(formErrors);
       return;
