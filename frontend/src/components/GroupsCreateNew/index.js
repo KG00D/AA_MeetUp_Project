@@ -125,9 +125,10 @@ const GroupsCreateNew = () => {
               value={formData.location}
               onChange={handleChange}
               placeholder='City, STATE' 
-              name='location'></input>
+              name='location'
+              className='location-input'></input>
               <div className="field-error-placeholder">
-              {submissionAttempt && !formData.location && <p className='field-error'>City is required</p>}
+              {submissionAttempt && !formData.location && <p className='field-error'>Location is required</p>}
               </div>
           </div>
           <div className='border-div'>

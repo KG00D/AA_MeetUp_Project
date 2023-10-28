@@ -21,6 +21,7 @@ textarea {
   .border-div {
     border-bottom: lightgray solid 3px;
     padding-bottom: 30px;
+    width: 50%;
   }
   
   .sub-form-container h3 {
@@ -29,6 +30,7 @@ textarea {
   
   .img-div {
     margin-bottom: 20px;
+    width: 50%;
   }
   
   ol {
