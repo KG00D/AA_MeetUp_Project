@@ -29,12 +29,10 @@ const GroupsDetails = () => {
   }, [sessionUser, group]);
 
   useEffect(() => {
-    dispatch(groupActions.getGroupDetail(groupId)).then(() => {
-      setLoaded(true);
-    });
-    dispatch(groupActions.getGroupEvents(groupId));
-    setLoaded(true);
-  }, [dispatch, groupId]);
+    dispatch(groupActions.getGroupDetail(groupId))
+    dispatch(groupActions.getGroupEvents(groupId))
+    setLoaded(true)
+  }, [dispatch, groupId])
 
   const handleJoinGroup = () => {
     alert("Feature Coming Soon");

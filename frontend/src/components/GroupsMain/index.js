@@ -12,10 +12,16 @@ const GroupsMain = () => {
 
   const allGroups = useSelector((state) => state.groups.allGroups);
   const events = useSelector((state) => state.groups.currentGroupEvents);
+  console.log('allGroups ===', allGroups)
+  console.log('events ===', events)
 
   useEffect(() => {
     dispatch(getAllGroups());
   }, [dispatch]);
+
+  const filterEvents = (data, id) => {
+    return data.filter((v) => v.groupId === id).length
+  }
 
   return (
     <div className='groups-list-card'>
@@ -42,7 +48,7 @@ const GroupsMain = () => {
               <p>{about}</p>
 
               <div className='group-card-events'>
-                {events && <h4>{events?.length} events</h4>}
+                {events && <h4>{filterEvents(events, id)} events</h4>}
                 <span>&#8226;</span>
                 {allGroups.private && <h4>Private</h4>}
                 {!allGroups.private && <h4>Public</h4>}

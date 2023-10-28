@@ -6,6 +6,7 @@ export const getAllGroups = () => async (dispatch) => {
   if (res.ok) {
     const data = await res.json();
     dispatch({ type: GET_GROUPS, groups: data.Groups });
+    dispatch({type: GROUP_EVENTS, events: data.Events});
   } else {
     console.log('Error getting All Groups')
   }
@@ -66,7 +67,7 @@ export const getGroupEvents = (groupId) => async (dispatch) => {
     const data = await res.json();
     dispatch({ type: GROUP_EVENTS, events: data.Events });
   } else {
-    console.log('Error Getting Group')
+    console.log('Error Getting Group Events')
   }
 };
 
@@ -77,6 +78,7 @@ const initialState = {
 };
 
 const groupsReducer = (state = initialState, action) => {
+  console.log('action check ===', action)
   switch (action.type) {
     case GET_GROUPS:
       return { ...state, allGroups: action.groups };

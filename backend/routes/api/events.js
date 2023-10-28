@@ -40,38 +40,50 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/:eventId', async (req, res, next) => {
-    const id = req.params.eventId;
-    // TODO should line 45 be in a try/catch block?
-    const events = await Event.findByPk(id)
-    if (!events) {
-      res.status(404).json(
-        { message: "Event couldn't be found", 
-          status: 404 })
-    }
-    const event = await Event.findByPk( id, {
-      where: {
-        id: id
+  const id = req.params.eventId;
+  const event = await Event.findByPk(id, {
+    include: [
+      {
+        model: Group,
+        attributes: ["id", "name", "private" , "city", "state"],
       },
-      include: [
-        {
-          model: Group,
-          attributes: ["id", "name", "private" , "city", "state"],
-          subQuery: false,
-        },
-        {
-          model: Venue,
-          attributes: ["id", "address", "city", "state" , "lat", "lng"],
-          subQuery: false,
-        },
-        {
-          model: eventImage,
-          attributes: ["id", "url", "preview"],
-          subQuery: false,
-        },
-      ]
-    })
-    return res.json(event)
-  })
+      {
+        model: Venue,
+        attributes: ["id", "address", "city", "state" , "lat", "lng"],
+      },
+      {
+        model: eventImage,
+        attributes: ["id", "url", "preview"],
+      },
+    ]
+  });
+
+  if (!event) {
+    return res.status(404).json({
+      message: "Event couldn't be found", 
+      status: 404 
+    });
+  }
+
+  const groupId = event.groupId;
+  const group = await Group.findByPk(groupId, {
+    include: {
+      model: User, as: "Organizer",
+      attributes: ["id", "firstName", "lastName"],
+    }
+  });
+
+  if (!group) {
+    return res.status(404).json({
+      message: "Group couldn't be found", 
+      status: 404 
+    });
+  }
+  console.log("Group Details: ", group.toJSON());
+  console.log("Organizer Details: ", group.Organizer);
+
+  return res.json({ event: event, Organizer: group.Organizer });
+});
 
 router.get("/:eventId/attendees", async (req, res) => {
     const id = req.params.eventId;

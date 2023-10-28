@@ -62,6 +62,7 @@ const EventsCreateNew = () => {
   }, [dispatch, groupId]);
 
   const handleSubmit = async (e) => {
+    console.log('Clicking submit button')
     e.preventDefault();
 
     let formErrors = {};
@@ -75,10 +76,10 @@ const EventsCreateNew = () => {
     if (!formData.imgUrl) formErrors.imgUrl = "Image URL is required";
     if (formData.description.length < 30) formErrors.description = "Description must be at least 30 characters long";
   
-    if (Object.keys(formErrors).length > 0) {
-      setFieldErrors(formErrors);
-      return;
-    }
+    // if (Object.keys(formErrors).length > 0) {
+    //   setFieldErrors(formErrors);
+    //   return;
+    // }
   
     if (!currentGroup || !currentGroup.length || !currentGroup[0].id) {
       return;
@@ -99,6 +100,7 @@ const EventsCreateNew = () => {
   
     try {
       const res = await dispatch(eventActions.createNewEvent(groupId, event));
+      console.log(res, 'HERE IS THE CREATE RESPONSE:')
       
       if (res && res.id) {
         history.push(`/events/${res.id}`);

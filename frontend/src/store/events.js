@@ -18,9 +18,18 @@ export const getAllEvents = () => async (dispatch) => {
 export const getEventDetail = (eventId) => async (dispatch) => {
   try {
     const res = await csrfFetch(`/api/events/${eventId}`);
+    const data = await res.json();
+    console.log("Fetched Event Details KWG TEST: ", data);
     if (res.ok) {
-      const data = await res.json();
-      dispatch({ type: EVENT_DETAIL, event: data });
+      const structuredData = {
+        ...data.event,
+        Organizer: {
+          id: data.Organizer.id,
+          firstName: data.Organizer.firstName,
+          lastName: data.Organizer.lastName
+        }
+      };
+      dispatch({ type: EVENT_DETAIL, event: structuredData });
     } else {
       dispatch({ type: FETCH_ERROR, error: 'Failed to fetch event detail' });
     }

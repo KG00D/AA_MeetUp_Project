@@ -50,7 +50,7 @@ const setSessionUser = (user) => ({
       }),
     });
     const data = await response.json();
-    dispatch(setSessionUser(data));
+    dispatch(setSessionUser(data.user));
     return response;
   };
 

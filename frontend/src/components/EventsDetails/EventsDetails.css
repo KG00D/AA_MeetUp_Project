@@ -1,136 +1,155 @@
 .main-event-detail-container {
-    position: relative;
-    top: 150px;
-    max-width: 70%;
-    margin: auto;
-  }
-  
-  .event-detail-header div {
-    display: inline-flex;
-    text-decoration: underline;
-    cursor: pointer;
-    margin-left: 5px;
-    font-weight: bold;
-  }
-  
-  .img-div img {
-    width: 100%;
-  }
-  
-  .event-detail-main {
-    display: flex;
-    flex-direction: row;
-    margin-top: 100px;
-  }
-  
-  .event-detail-sub {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .event-detail-group-crumb {
-    display: flex;
-    flex-direction: row;
-    margin-left: 100px;
-    align-items: center;
-  }
-  
-  .group-crumb {
-    display: flex;
-    flex-direction: column;
-    padding-left: 20px;
-  }
-  
-  .group-crumb h2 {
-    position: relative;
-    bottom: -10px;
-  }
-  
-  .event-detail-info {
-    margin-top: 40px;
-  }
-  
-  .event-detail-group-crumb img {
-    max-width: 20%;
-  }
-  
-  .event-date {
-    display: flex;
-    flex-direction: row;
-    margin-left: 90px;
-  }
-  
-  .date-icon {
-    width: auto;
-    height: 50px;
-    margin: auto 0 auto 0;
-  }
-  
-  .timeSubDiv {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .timeSubDiv div {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .startDiv {
-    position: relative;
-    bottom: -25px;
-  }
-  
-  .endDiv {
-    position: relative;
-    top: -25px;
-  }
-  
-  .endDiv h5 {
-    margin-left: 10px;
-  }
-  
-  .timeSubDiv h5 {
-    position: relative;
-    top: 12px;
-    margin-left: 10px;
-  }
-  
-  .event-price {
-    display: flex;
-    flex-direction: row;
-    margin-left: 90px;
-    margin-top: -30px;
-  }
-  
-  .event-price h4 {
-    margin-left: 5px;
-  }
-  
-  .price-icon {
-    width: auto;
-    height: 70px;
-    margin: auto 0 auto 0;
-  }
-  
-  .event-type {
-    display: flex;
-    flex-direction: row;
-    margin-left: 100px;
-  }
-  
-  .event-type h4 {
-    margin-left: 20px;
-  }
-  
-  .type-icon {
-    width: auto;
-    height: 45px;
-    margin: auto 0 auto 0;
-  }
-  
-  .delete-button {
-    position: relative;
-    bottom: -110px;
-    left: 100px;
-  }
+  position: relative;
+  top: 150px;
+  max-width: 90%;
+  margin: auto;
+  left: 130px;
+}
+
+.event-detail-header div {
+  display: inline-flex;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 5px;
+  font-weight: bold;
+  position: relative;
+  top: -80px;
+}
+
+.event-detail-top-information {
+  margin-top: -70px;
+}
+
+.img-div img {
+  width: 100%;
+}
+
+.event-detail-main {
+  display: flex;
+  flex-direction: row;
+  margin-top: 100px;
+}
+
+.event-detail-sub {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-detail-group-crumb {
+  display: flex;
+  width: 800px;
+  height: auto;
+  flex-direction: row;
+  margin-left: 100px;
+  align-items: center;
+}
+
+.group-crumb {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+}
+
+.group-crumb h2 {
+  position: relative;
+  bottom: -10px;
+}
+
+.event-detail-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-detail-group-crumb img {
+  max-width: 20%;
+}
+
+.event-date {
+  display: flex;
+  flex-direction: row;
+  margin-left: 90px;
+}
+
+.date-icon {
+  width: auto;
+  height: 50px;
+  margin: auto 0 auto 0;
+}
+
+.timeSubDiv {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeSubDiv div {
+  display: flex;
+  flex-direction: row;
+}
+
+.startDiv {
+  position: relative;
+  bottom: -25px;
+}
+
+.endDiv {
+  position: relative;
+  top: -25px;
+}
+
+.endDiv h5 {
+  margin-left: 10px;
+}
+
+.timeSubDiv h5 {
+  position: relative;
+  top: 12px;
+  margin-left: 10px;
+}
+
+.event-price {
+  display: flex;
+  flex-direction: row;
+  margin-left: 90px;
+}
+
+.event-price h4 {
+  margin-left: 5px;
+}
+
+.price-icon {
+  width: auto;
+  height: 70px;
+  margin: auto 0 auto 0;
+}
+
+.event-type-delete-wrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 90px;
+}
+
+.event-type h4 {
+  margin-left: 20px;
+}
+
+.type-icon {
+  width: auto;
+  height: 45px;
+  margin: auto 0 auto 0;
+}
+
+.events-grey-container {
+  background-color: #f0f0f0;
+}
+
+.delete-button {
+  background-color: rgb(207, 42, 39);
+  border: rgb(207, 42, 39) solid 1px;
+  box-shadow: 3px 4px 4px black;
+  color: white;
+  padding: 5px 8px 5px 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: 150px; /* Adjust this value as needed */
+}
