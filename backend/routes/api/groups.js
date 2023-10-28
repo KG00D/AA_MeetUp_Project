@@ -43,7 +43,23 @@ router.get('/', async (req, res, next) => {
       previewImage: group.groupImages.length > 0 && group.groupImages[0].url
     }));
 
-    return res.status(200).json({ Groups: formattedResponse });
+    const events = await Event.findAll({
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'capacity', 'price']
+      },
+      include: [
+        {
+          model: Group,
+          attributes: ['id', 'name', 'city', 'state']
+        },
+        {
+          model: Venue,
+          attributes: ['id', 'city', 'state']
+        }
+      ]
+    });
+
+    return res.status(200).json({ Groups: formattedResponse, Events: events });
   } catch (error) {
     next(error);
   }
@@ -545,6 +561,8 @@ router.post('/:groupId/events', requireAuth, eventValidators, async (req, res) =
 
     const event = await Event.create({
       groupId, venueId, name, type, capacity, price, description, startDate, endDate, previewImage
+      // groupId, name, type, price, description, startDate, endDate, previewImage
+
     });
 
     return res.status(200).json({
