@@ -19,13 +19,16 @@ const { setModalContent, closeModal } = useModal();
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const handleLogout = async () => {  
+    const handleLogout = async () => { 
+        console.log('logout button being clicked....') 
         await dispatch(sessionActions.logout());
         history.push('/'); 
     };
-    const toggleDropdown = () => { 
-        setShowDropdown(!showDropdown); 
+    const toggleDropdown = (event) => {
+        event.stopPropagation();
+        setShowDropdown(!showDropdown);
     };
+
     const handleClickOutside = (event) => {  
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
             setShowDropdown(false);
@@ -37,16 +40,23 @@ const { setModalContent, closeModal } = useModal();
         console.log("showSignUp state:", showSignUp);
     }, [showLogin, showSignUp]);
 
-    useEffect(() => {  
-        if (showDropdown) {
-            document.addEventListener("mousedown", handleClickOutside);
-        } else {
-            document.removeEventListener("mousedown", handleClickOutside);
-        }
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
+    useEffect(() => {
+        const handleDocumentClick = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowDropdown(false);
+            }
         };
-    }, [showDropdown]);
+
+    if (showDropdown) {
+        document.addEventListener("click", handleDocumentClick);
+    } else {
+        document.removeEventListener("click", handleDocumentClick);
+    }
+
+    return () => {
+        document.removeEventListener("click", handleDocumentClick);
+    };
+}, [showDropdown]);
 
     let sessionLinks;
     if (sessionUser) {
@@ -54,7 +64,7 @@ const { setModalContent, closeModal } = useModal();
             <div className='loggedin-in-buttons'>
                 <Link to="/groups/new">Start New Group</Link>
                 <div className="user-dropdown-container">
-                    <button onClick={toggleDropdown} className="icon-button">
+                <button onClick={toggleDropdown} className="icon-button">
                         <img src="https://img.icons8.com/fluency/48/person-male.png" alt="Profile" />
                     </button>
                     {showDropdown && (
