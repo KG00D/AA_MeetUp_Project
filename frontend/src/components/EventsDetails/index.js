@@ -50,7 +50,10 @@ const EventsDetails = () => {
   const confirmDelete = async () => {
     dispatch(eventActions.removeEvent(eventId));
     history.push('/events');
+    const groupId = event.Group?.id
+    history.push(`/groups/${groupId}`);
     setIsModalOpen(false);
+
   };
 
   return (
