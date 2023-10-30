@@ -87,7 +87,6 @@ const { setModalContent, closeModal } = useModal();
 
                 <button className="signup-btn" onClick={() => {
                     setModalContent(<SignupFormModal onClose={() => setShowSignUp(false)} />);
-                    // console.log('Signup clicked');
                 }}>Sign Up</button>
             </div>
         );

@@ -10,4 +10,3 @@ export const EVENT_DETAIL = 'events/EVENT_DETAIL';
 export const NEW_EVENT = 'events/NEW_EVENT';
 export const DELETE_EVENT = 'events/DELETE_EVENT';
 export const FETCH_ERROR = 'events/FETCH_ERROR';
-// export const GROUP_DETAILS_BY_EVENT = 'events/GROUP_DETAILS_BY_EVENT';
