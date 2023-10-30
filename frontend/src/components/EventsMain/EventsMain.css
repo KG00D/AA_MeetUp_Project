@@ -60,18 +60,26 @@ h4 {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.event-card-top {
   display: flex;
-  width: 100%;
-}
-
-.event-card-image {
-  display: flex;
-  justify-content: center;
+  gap: 20px;
   align-items: flex-start;
+  padding-left: 0%;
+  padding-top: 0%;
+  padding-bottom: 0%;
 }
+
+.event-card-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 300px;
+}
+
+/* .event-card-image {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+} */
 
 .event-card-image img {
   min-width: 300px;
@@ -83,16 +91,17 @@ h4 {
   border-radius: 5px;
 }
 
+.event-card-description {
+  margin-top: 1rem;
+  align-self: flex-start;
+}
+
 .event-details {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   max-height: 200px;
   margin-left: 15px;
-}
-
-.event-description {
-  margin-top: 1rem;
 }
 
 .event-details h4, .event-details h2 {
@@ -106,26 +115,33 @@ h4 {
   margin-bottom: 20px;
   cursor: pointer;
   transition: transform 0.2s;
-  display: flex; /* Align image and text side by side */
-  align-items: center; /* Center items vertically */
+  display: flex; 
+  align-items: center; 
 }
 
-/* .event-card-container {
+.event-card-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.event-card-container {
   display: flex;
   gap: 20px;
   padding: 20px;
-  align-items: flex-start; 
-} */
-
-/* event-card-image {
-  flex-shrink: 0; 
+  align-items: start;
 }
 
-.event-details {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; 
+/* .event-card-image {
+  flex-shrink: 0; 
 } */
 
+.event-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
 
+.event-details h4 {
+  margin-top: 0;
+}

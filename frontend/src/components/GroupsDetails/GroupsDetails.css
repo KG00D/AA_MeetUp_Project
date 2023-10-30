@@ -45,7 +45,7 @@
     overflow: auto;
     word-wrap: break-word;
     padding: 10px;
-    padding-left: 210px; /* Add padding to keep content in place */
+    padding-left: 210px; 
   }
   
   .group-sub-details::before {

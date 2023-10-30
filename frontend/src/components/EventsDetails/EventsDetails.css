@@ -151,7 +151,7 @@
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  margin-left: 150px; /* Adjust this value as needed */
+  margin-left: 150px;
 }
 
 
@@ -164,7 +164,7 @@
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  margin-left: 150px; /* Adjust this value as needed */
+  margin-left: 150px;
 }
 
 .event-detail-about {

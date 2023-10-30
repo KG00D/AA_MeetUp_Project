@@ -49,7 +49,7 @@ h4 {
 }
 
 .main-group-container {
-  width: 80%; /* Increased the width */
+  width: 80%;
   position: relative;
   left: 255px;
 }
@@ -61,7 +61,7 @@ h4 {
   padding-bottom: 20px;
   display: flex;
   flex-direction: row;
-  align-items: center; /* Center align content */
+  align-items: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -79,7 +79,7 @@ h4 {
 
 .group-card-info {
   display: inline-block;
-  flex: 1; /* Fill remaining space */
+  flex: 1;
 }
 
 .group-card-info h4, .group-card-info p {

@@ -1,7 +1,5 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { getEventDetail } from '../../store/events';
-import { useSelector } from 'react-redux';
 import '../EventsMain/EventsMain.css';
 
 function EventCard({ event, onClick }) {
@@ -12,8 +10,13 @@ function EventCard({ event, onClick }) {
   return (
     <div className='event-card-2' onClick={onClick}>
       <div className='event-card-container'>
-        <div className='event-card-image'>
-          <img src={eventImageUrl} alt='event' />
+        <div className='event-image-description'>
+          <div className='event-card-image'>
+            <img src={eventImageUrl} alt='event' />
+          </div>
+          <div className='event-description'>
+            <p>{event.description}</p>
+          </div>
         </div>
         <div className='event-details'>
           <h4 className='event-date-time'>
@@ -29,11 +32,9 @@ function EventCard({ event, onClick }) {
           </h4>
         </div>
       </div>
-      <div className='event-about'>
-        <p>{event.description}</p>
-      </div>
     </div>
   );
+  
 }
 
 function GroupsEvents({ events }) {
