@@ -248,7 +248,7 @@ router.get('/:groupId/events', async (req, res) => {
 
     const group = await Group.findByPk(groupId);
     const groupImages = await groupImage.findByPk(groupId);
-    if (group && groupImages) {
+    if (group) {
       return res.json({ Events: events });
     } else {
       return res.status(404).json({

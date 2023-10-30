@@ -1,27 +1,32 @@
-.main-event-detail-container {
-  position: relative;
-  top: 150px;
-  max-width: 90%;
-  margin: auto;
-  left: 130px;
+ .main-event-detail-container {
+  max-width: 1200px; 
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9; 
 }
 
-.event-detail-header div {
-  display: inline-flex;
-  text-decoration: underline;
+.event-detail-header {
+  margin-bottom: 20px;
+  color: red;
   cursor: pointer;
-  margin-left: 5px;
+}
+
+.event-name {
+  font-size: 24px; 
   font-weight: bold;
-  position: relative;
-  top: -80px;
+  margin-bottom: 10px;
 }
 
-.event-detail-top-information {
-  margin-top: -70px;
+.event-host {
+  font-size: 18px; 
+  margin-bottom: 30px;
 }
 
-.img-div img {
-  width: 100%;
+.events-grey-container {
+  display: flex;
+  background-color: #fff; 
+  padding: 20px;
+  border-radius: 5px; 
 }
 
 .event-detail-main {
@@ -29,117 +34,70 @@
   flex-direction: row;
 }
 
-.event-detail-sub {
-  display: flex;
-  flex-direction: column;
-}
-
-.event-detail-group-crumb {
-  display: flex;
-  width: 800px;
-  height: auto;
-  flex-direction: row;
-  margin-left: 100px;
-  align-items: center;
-}
-
-.group-crumb {
-  display: flex;
-  flex-direction: column;
-  padding-left: 20px;
-}
-
-.group-crumb h2 {
+.event-detail-left {
+  flex: 2; 
   position: relative;
-  bottom: -10px;
+  margin-right: 20px;
 }
 
-.event-detail-info {
+.img-div-bottom {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.img-div-bottom img {
+  width: 100%;
+  display: block;
+}
+
+.event-detail-right-side-bottom {
+  flex: 1; 
   display: flex;
   flex-direction: column;
-  background-color: white;
+}
+
+.group-crumb-container {
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #e0e0e0; 
+  border-radius: 5px;
+  margin-bottom: 20px; 
+  cursor: pointer; /* Clickable? I think */
 }
 
 .event-detail-group-crumb img {
-  max-width: 20%;
+  width: 100%;
+  display: block;
+  margin-bottom: 10px; 
 }
 
-.event-date {
+.group-name {
+  font-size: 18px; 
+  word-wrap: break-word; 
+}
+
+/* Event-specific details */
+.event-detail-info {
   display: flex;
   flex-direction: row;
-  margin-left: 90px;
+  /* justify-content: space-between; */
 }
 
-.date-icon {
-  width: auto;
-  height: 25px;
-  margin: auto 0 auto 0;
-}
-
-.timeSubDiv {
-  display: flex;
-  flex-direction: column;
-}
-
-.timeSubDiv div {
-  display: flex;
-  flex-direction: row;
-}
-
-.startDiv {
-  position: relative;
-  bottom: -25px;
-}
-
-.endDiv {
-  position: relative;
-  top: -25px;
-}
-
-.endDiv h5 {
-  margin-left: 10px;
-}
-
-.timeSubDiv h5 {
-  position: relative;
-  top: 12px;
-  margin-left: 10px;
-}
-
-.event-price {
-  display: flex;
-  flex-direction: row;
-  margin-left: 90px;
-}
-
-.event-price h4 {
-  margin-left: 5px;
-}
-
-.price-icon {
-  width: auto;
-  height: 30px;
-  margin: auto 0 auto 0;
-}
-
-.event-type-delete-wrapper {
+.event-date, .event-price, .event-type {
   display: flex;
   align-items: center;
-  margin-left: 90px;
+  margin-bottom: 20px;
 }
 
-.event-type h4 {
-  margin-left: 20px;
+.type-icon, .date-icon, .price-icon {
+  margin-right: 10px; 
+  width: 24px; 
+  height: 24px; 
 }
 
-.type-icon {
-  width: auto;
-  height: 35px;
-  margin: auto 0 auto 0;
-}
-
-.events-grey-container {
-  background-color: #f0f0f0;
+.event-detail-about {
+  margin-top: 20px;
 }
 
 .delete-button {
@@ -167,12 +125,41 @@
   margin-left: 150px;
 }
 
-.event-detail-about {
-  text-align: left;
+.event-date {
+  display: inline-block;
+  flex-direction: column; 
+  align-items: flex-start; 
+  margin-bottom: 20px;
 }
 
-.event-detail-right-side-bottom {
+
+
+.endDiv{
+  margin-top: -20px;
+  margin-left: 30px;
+}
+
+.flexTest{
   display: flex;
-  flex-wrap: wrap;
-  column-gap: 2em;
+  align-items: center;
+}
+
+.date-icon {
+  margin-right: 10px; 
+  width: 24px; 
+  height: 24px;
+}
+
+.date-content {
+  display: flex;
+  align-items: center;
+}
+
+.date-label { 
+  font-weight: bold; 
+  margin-right: 5px; 
+}
+
+.delete-button, .update-button {
+  margin: 0 5px; 
 }

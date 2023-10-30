@@ -96,23 +96,24 @@ const EventsDetails = () => {
   
             <div className='event-detail-info'>
               <div className='event-date'>
-                <img className='date-icon' src='https://img.icons8.com/color/96/calendar--v1.png' alt='date icon' />
                 <div className='timeSubDiv'>
-                  <div className='startDiv'>
+                  <div className='startDiv flexTest'>
+                  <img className='date-icon' src='https://img.icons8.com/color/96/calendar--v1.png' alt='date icon' />
                     <h4>Start:</h4>
                     <h5>{eventStart.toLocaleDateString()} &bull; {eventStart.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</h5>
                   </div>
-                  <div className='endDiv'>
+                  <div className='endDiv flexTest'>
                     <h4>End:</h4>
                     <h5>{eventEnd.toLocaleDateString()} &bull; {eventEnd.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</h5>
                   </div>
-                </div>
-              </div>
-              <div className='event-price'>
+                  <div className='event-price'>
                 <img className='price-icon' src='https://img.icons8.com/color/96/us-dollar-circled--v1.png' alt='price icon' />
                 <h4>{event.price === 0 ? 'FREE' : `$${event.price}`}</h4>
               </div>
               <div className='event-type-delete-wrapper'>
+                </div>
+              </div>
+
                 <div className='event-type'>
                   {event.type && event.type.toLowerCase() === 'online' ? (
                     <img className='type-icon' src='https://img.icons8.com/color/96/pc-on-desk.png' alt='online type icon' />
@@ -121,12 +122,14 @@ const EventsDetails = () => {
                   ) : null}
                   <h4>{event.type}</h4>
                 </div>
+
+
                 {sessionUser?.id === event?.Organizer?.id && (
-                  <>
-                    <button className='delete-button' onClick={handleDelete}>Delete</button>
-                    <button className='update-button' onClick={handleUpdate}>Update</button>
-                  </>
-                )}
+                    <div className="buttons-container">
+                      <button className='delete-button' onClick={handleDelete}>Delete</button>
+                      <button className='update-button' onClick={handleUpdate}>Update</button>
+                    </div>
+                  )}
               </div>
             </div>
           </div>
