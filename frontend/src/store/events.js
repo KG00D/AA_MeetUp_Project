@@ -19,7 +19,6 @@ export const getEventDetail = (eventId) => async (dispatch) => {
   try {
     const res = await csrfFetch(`/api/events/${eventId}`);
     const data = await res.json();
-    console.log("Fetched Event Details KWG TEST: ", data);
     if (res.ok) {
       const structuredData = {
         ...data.event,
@@ -27,7 +26,9 @@ export const getEventDetail = (eventId) => async (dispatch) => {
           id: data.Organizer.id,
           firstName: data.Organizer.firstName,
           lastName: data.Organizer.lastName
-        }
+        },
+        groupImages: data.event.Group?.groupImages,
+        eventImages: data.event.eventImages
       };
       dispatch({ type: EVENT_DETAIL, event: structuredData });
     } else {
@@ -92,7 +93,7 @@ const eventsReducer = (state = initialState, action) => {
 
     case EVENT_DETAIL:
       return { ...state, currentEvent: action.event };
-
+  
     case NEW_EVENT:
       return { ...state, allEvents: [...state.allEvents, action.event] };
 

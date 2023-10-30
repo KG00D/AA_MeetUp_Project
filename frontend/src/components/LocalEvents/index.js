@@ -13,7 +13,7 @@ const LocalEvents = () => {
         // TODO add some junk
       });
     } else {
-      console.log("Geolocation not available");
+      // console.log("Geolocation not available");
     }
   }, []);
 

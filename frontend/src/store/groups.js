@@ -1,5 +1,5 @@
 import { csrfFetch } from './csrf';
-import { GET_GROUPS, GROUP_DETAIL, ADD_NEW_GROUP, UPDATE_GROUP, DELETE_GROUP, GROUP_EVENTS } from './actionTypes';
+import { GET_GROUPS, GROUP_DETAIL, ADD_NEW_GROUP, UPDATE_GROUP, DELETE_GROUP, GROUP_EVENTS, GET_GROUP_IMAGES } from './actionTypes';
 
 export const getAllGroups = () => async (dispatch) => {
   const res = await csrfFetch('/api/groups');
@@ -9,6 +9,16 @@ export const getAllGroups = () => async (dispatch) => {
     dispatch({type: GROUP_EVENTS, events: data.Events});
   } else {
     console.log('Error getting All Groups')
+  }
+};
+
+export const getGroupImages = (groupId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/groups/${groupId}`);
+  if (res.ok) {
+    const data = await res.json();
+    dispatch({ type: GET_GROUP_IMAGES, groups: data.Groups });
+  } else {
+    console.log('Error getting Group Images')
   }
 };
 
@@ -32,14 +42,19 @@ export const createNewGroup = (group) => async (dispatch) => {
     dispatch({ type: ADD_NEW_GROUP, group: data });
     return data;
   } else {
-    console.log('Error Creating New Group')
+    // console.log('Error Creating New Group')
     return null;
   }
 };
 
 export const updateGroup = (group, groupId) => async (dispatch) => {
+  console.log('GroupId:', groupId);
+
   const res = await csrfFetch(`/api/groups/${groupId}`, {
     method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(group)
   });
   if (res.ok) {
@@ -65,20 +80,22 @@ export const getGroupEvents = (groupId) => async (dispatch) => {
   const res = await csrfFetch(`/api/groups/${groupId}/events`);
   if (res.ok) {
     const data = await res.json();
+    console.log(data, 'getGroupEvents CONSOLE LOG')
     dispatch({ type: GROUP_EVENTS, events: data.Events });
   } else {
-    console.log('Error Getting Group Events')
+    console.log('Error Getting Group Events Data')
   }
 };
 
 const initialState = {
   allGroups: [],
   currentGroup: {},
-  currentGroupEvents: []
+  currentGroupEvents: [],
+  getGroupImages: []
 };
 
 const groupsReducer = (state = initialState, action) => {
-  console.log('action check ===', action)
+  // console.log('action check ===', action)
   switch (action.type) {
     case GET_GROUPS:
       return { ...state, allGroups: action.groups };
@@ -98,6 +115,9 @@ const groupsReducer = (state = initialState, action) => {
 
     case GROUP_EVENTS:
       return { ...state, currentGroupEvents: action.events };
+
+    case GET_GROUP_IMAGES:
+      return { ...state, getGroupImages: action.groups};
 
     default:
       return state;

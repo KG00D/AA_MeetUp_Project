@@ -8,82 +8,133 @@ const { Op } = require('sequelize');
 
 router.use(restoreUser)
 
+// router.get('/', async (req, res, next) => {
+//     try {
+//       const events = await Event.findAll({
+//         attributes: [
+//         'id',
+//         'groupId',
+//         'venueId',
+//         'name',
+//         'type',
+//         'startDate',
+//         'endDate',
+//         [sequelize.fn('COUNT', sequelize.col('Event.id')), 'numAttending']
+//         ],
+//         include: [
+//           {
+//             model: Group,
+//             attributes: ['id', 'name', 'city', 'state'],
+//           },
+//           {
+//             model: Venue,
+//             attributes: ['id', 'city', 'state'],
+//           },
+//         ],
+//         group: ['Event.id', 'Group.id', 'Venue.id']
+//       });
+//       return res.status(200).json({ Events: events });
+//     } catch (error) {
+//       return next(error);
+//     }
+// });
+
 router.get('/', async (req, res, next) => {
-    try {
-      const events = await Event.findAll({
-        attributes: [
-        'id',
-        'groupId',
-        'venueId',
-        'name',
-        'type',
-        'startDate',
-        'endDate',
-        [sequelize.fn('COUNT', sequelize.col('Event.id')), 'numAttending']
-        ],
-        include: [
-          {
-            model: Group,
-            attributes: ['id', 'name', 'city', 'state'],
-          },
-          {
-            model: Venue,
-            attributes: ['id', 'city', 'state'],
-          },
-        ],
-        group: ['Event.id', 'Group.id', 'Venue.id']
-      });
-      return res.status(200).json({ Events: events });
-    } catch (error) {
-      return next(error);
-    }
+  try {
+    const events = await Event.findAll({
+      attributes: [
+      'id',
+      'groupId',
+      'venueId',
+      'name',
+      'type',
+      'description',
+      'startDate',
+      'endDate',
+      [sequelize.fn('COUNT', sequelize.col('Event.id')), 'numAttending']
+      ],
+      include: [
+        {
+          model: Group,
+          attributes: ['id', 'name', 'city', 'state'],
+        },
+        {
+          model: Venue,
+          attributes: ['id', 'city', 'state'],
+        },
+        {
+          model: eventImage,
+          attributes: ['id', 'url', 'preview'],
+        }
+      ],
+      group: ['Event.id', 'Group.id', 'Venue.id', 'eventImages.id']
+    });
+    return res.status(200).json({ Events: events });
+  } catch (error) {
+    return next(error);
+  }
 });
 
 router.get('/:eventId', async (req, res, next) => {
   const id = req.params.eventId;
-  const event = await Event.findByPk(id, {
-    include: [
-      {
-        model: Group,
-        attributes: ["id", "name", "private" , "city", "state"],
-      },
-      {
-        model: Venue,
-        attributes: ["id", "address", "city", "state" , "lat", "lng"],
-      },
-      {
-        model: eventImage,
-        attributes: ["id", "url", "preview"],
-      },
-    ]
-  });
-
-  if (!event) {
-    return res.status(404).json({
-      message: "Event couldn't be found", 
-      status: 404 
+  try {
+    const event = await Event.findByPk(id, {
+      include: [
+        {
+          model: Group,
+          attributes: ["id", "name", "private", "city", "state"],
+        },
+        {
+          model: Venue,
+          attributes: ["id", "address", "city", "state", "lat", "lng"],
+        },
+        {
+          model: eventImage,
+          as: 'eventImages',
+          attributes: ["id", "url", "preview"],
+        },
+      ],
+      logging: console.log
     });
-  }
-
-  const groupId = event.groupId;
-  const group = await Group.findByPk(groupId, {
-    include: {
-      model: User, as: "Organizer",
-      attributes: ["id", "firstName", "lastName"],
+    console.log('find the query')
+    if (!event) {
+      return res.status(404).json({
+        message: "Event couldn't be found", 
+        status: 404 
+      });
     }
-  });
 
-  if (!group) {
-    return res.status(404).json({
-      message: "Group couldn't be found", 
-      status: 404 
+    const eventImages = event.eventImages ? event.eventImages : [];
+
+    const groupId = event.groupId;
+    const group = await Group.findByPk(groupId, {
+      include: {
+        model: User, as: "Organizer",
+        attributes: ["id", "firstName", "lastName"],
+      }
+    });
+
+    if (!group) {
+      return res.status(404).json({
+        message: "Group couldn't be found", 
+        status: 404 
+      });
+    }
+    console.log(event.toJSON());
+    return res.json({ 
+      event: event, 
+      Organizer: group.Organizer,
+      eventImages: eventImages 
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error",
+      status: 500
     });
   }
-  console.log("Group Details: ", group.toJSON());
-  console.log("Organizer Details: ", group.Organizer);
-
-  return res.json({ event: event, Organizer: group.Organizer });
 });
+
 
 router.get("/:eventId/attendees", async (req, res) => {
     const id = req.params.eventId;

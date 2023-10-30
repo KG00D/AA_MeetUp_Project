@@ -1,0 +1,67 @@
+/* Assuming this is the class for the overall container of the GroupsEvents component */
+.groups-events-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .event-card-2 {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: flex; /* Align image and text side by side */
+    align-items: center; /* Center items vertically */
+  }
+  
+  .event-card-2:hover {
+    transform: translateY(-5px);
+  }
+  
+  .event-card-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+  }
+  
+  .event-card-image img {
+    width: 100%;
+    max-width: 200px; /* Adjust based on your preference */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px;
+  }
+  
+  .event-details {
+    flex: 1;
+  }
+  
+  .event-about {
+    padding: 20px;
+    border-top: 1px solid #eee;
+  }
+  
+  h1 {
+    color: #343a40;
+    font-size: 24px;
+    margin-bottom: 20px; /* Add space between heading and cards */
+  }
+  
+  h2, h4 {
+    color: #495057;
+    margin-top: 0;
+  }
+  
+  p {
+    color: #6c757d;
+  }
+  
+  /* Clearfix for the floated elements */
+  .groups-events-container::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  

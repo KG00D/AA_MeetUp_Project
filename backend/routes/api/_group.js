@@ -240,7 +240,7 @@ router.get('/:groupId/events', async (req, res) => {
         }
         ,
         {
-          model: eventImage,
+          model: groupImage,
           attributes: ["id", "url", "preview"]
         },
       ]
@@ -329,18 +329,18 @@ router.get("/:groupId/members", async (req, res, next) => {
 router.put('/:groupId', async (req, res) => {
   try {
     const groupId = req.params.groupId;
-    const { name, about, type, private, city, state } = req.body;
+    const { name, about, type, isPrivate, city, state } = req.body;
     const errors = [];
     if (name && name.length > 60) {
       errors.push("Name must be 60 characters or less");
     }
-    if (about && about.length < 30) {
-      errors.push("About must be 30 characters or more");
+    if (about && about.length < 50) {
+      errors.push("About must be 50 characters or more");
     }
-    if (type && !['Online', 'In Person'].includes(type)) {
-      errors.push("Type must be 'Online' or 'In Person'");
+    if (type && !['Online', 'In person'].includes(type)) {
+      errors.push("Type must be 'Online' or 'In person'");
     }
-    if (private !== undefined && typeof private !== 'boolean') {
+    if (isPrivate !== undefined && typeof isPrivate !== 'boolean') {
       errors.push("Private must be a boolean");
     }
     if (!city) {
@@ -363,7 +363,7 @@ router.put('/:groupId', async (req, res) => {
         name: name || groups.name,
         about: about || groups.about,
         type: type || groups.type,
-        private: private === undefined ? groups.private : private,
+        isPrivate: isPrivate === undefined ? groups.isPrivate : isPrivate,
         city: city || groups.city,
         state: state || groups.state
       });
@@ -380,7 +380,7 @@ router.put('/:groupId', async (req, res) => {
 router.put("/:id", requireAuth, [
   body('name').isLength({ max: 60 }).withMessage('Name must be 60 characters or less'),
   body('about').isLength({ min: 50 }).withMessage('About must be 50 characters or more'),
-  body('type').isIn(['Online', 'In Person']).withMessage("Type must be 'Online' or 'In Person'"),
+  body('type').isIn(['Online', 'In person']).withMessage("Type must be 'Online' or 'In person'"),
   body('private').custom(value => typeof value === 'boolean').withMessage('Private must be a boolean'),
   body('city').notEmpty().withMessage('City is required'),
   body('state').notEmpty().withMessage('State is required'),

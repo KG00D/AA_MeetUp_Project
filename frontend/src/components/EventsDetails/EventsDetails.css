@@ -27,7 +27,6 @@
 .event-detail-main {
   display: flex;
   flex-direction: row;
-  margin-top: 100px;
 }
 
 .event-detail-sub {
@@ -58,6 +57,7 @@
 .event-detail-info {
   display: flex;
   flex-direction: column;
+  background-color: white;
 }
 
 .event-detail-group-crumb img {
@@ -72,7 +72,7 @@
 
 .date-icon {
   width: auto;
-  height: 50px;
+  height: 25px;
   margin: auto 0 auto 0;
 }
 
@@ -118,7 +118,7 @@
 
 .price-icon {
   width: auto;
-  height: 70px;
+  height: 30px;
   margin: auto 0 auto 0;
 }
 
@@ -134,7 +134,7 @@
 
 .type-icon {
   width: auto;
-  height: 45px;
+  height: 35px;
   margin: auto 0 auto 0;
 }
 
@@ -152,4 +152,27 @@
   font-weight: 500;
   cursor: pointer;
   margin-left: 150px; /* Adjust this value as needed */
+}
+
+
+.update-button {
+  background-color: #333;
+  border: #333 solid 1px;
+  box-shadow: 3px 4px 4px black;
+  color: white;
+  padding: 5px 8px 5px 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: 150px; /* Adjust this value as needed */
+}
+
+.event-detail-about {
+  text-align: left;
+}
+
+.event-detail-right-side-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 2em;
 }

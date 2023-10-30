@@ -8,10 +8,11 @@ const GroupsUpdates = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { groupId } = useParams(); 
-  const group = useSelector(state => state.groups.currentGroup);
 
-  console.log(group[0], 'HERE BE THY GROUP');
-
+  const group = useSelector(state => {
+    const fetchedGroup = state.groups.currentGroup;
+    return fetchedGroup;
+  });
 
   const [errors, setErrors] = useState([]);
   const [submissionAttempt, setSubmissionAttempt] = useState(false);
@@ -21,9 +22,27 @@ const GroupsUpdates = () => {
     name: '',
     about: '',
     type: '',
-    privacy: false, 
+    private: false, 
     imgUrl: ''
   };
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  useEffect(() => {
+    if (!group || Object.keys(group).length === 0 || !group[0] || !group[0].Venues || !group[0].Venues[0]) {
+      return;
+    }
+  
+    setFormData(prevData => ({
+      ...prevData,
+      location: `${group[0].city}, ${group[0].state}` || '',
+      name: group[0].name || '',
+      about: group[0].about || '',
+      type: group[0].type || '',
+      private: group[0].private || false, 
+      imgUrl: group[0].groupImages[0].url || ''
+    }));
+  }, [group]);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -36,33 +55,7 @@ const GroupsUpdates = () => {
     }
   }, [dispatch, groupId]);
 
-  useEffect(() => {
-    console.log('Group Changes' ,group)
-    if (group) {
-      setFormData({
-        location: group?.city && group?.state ? `${group.city}, ${group.state}` : '',
-        name: group.name || '',
-        about: group.about || '',
-        type: group.type || '',
-        privacy: group.private || false,
-        imgUrl: group.previewImage || ''
-      });
-    }
-  }, [group]);
-
-  const [formData, setFormData] = useState({
-    location: `${group?.city || ''}, ${group?.state || ''}`,
-    name: group?.name || '',
-    about: group?.about || '',
-    type: group?.type || '',
-    privacy: group?.private || false,
-    imgUrl: group?.previewImage || ''
-  });
-  
-
   const handleSubmit = async e => {
-    console.log("handleSubmit triggered");
-
     e.preventDefault();
     setSubmissionAttempt(true);
     
@@ -71,46 +64,46 @@ const GroupsUpdates = () => {
     if (!formData.name) loadErrors.push('Group name is required');
     if (formData.about.length < 30) loadErrors.push('Description must be at least 30 characters long');
     if (!formData.type) loadErrors.push('Group type is required');
-    if (formData.privacy === undefined || formData.privacy === null) loadErrors.push('Visibility Type is required');
+    if (formData.private === undefined || formData.private === null) loadErrors.push('Visibility Type is required');
     if (formData.imgUrl && !formData.imgUrl.match(/\.(jpg|jpeg|png)$/)) {
       loadErrors.push('Image URL must end in .jpg, .jpeg, or .png');
     }
   
     setErrors(loadErrors);
-    console.log("Validation Errors:", loadErrors);
 
     if (loadErrors.length === 0) {
       let city, state;
 
       if (formData.location) {
         const locationParts = formData.location.split(',').map(part => part.trim());
-        city = locationParts[0];
-        state = locationParts[1];
+        if (locationParts.length === 2) {
+          city = locationParts[0];
+          state = locationParts[1];
+        } else {
+          console.log('figure out what I want this to do')
+        }
       }
 
       try {
-        const newGroup = {
+        const updatedGroup = {
           city: city,
           state: state,
           name: formData.name,
           about: formData.about,
           type: formData.type,
-          private: formData.privacy,
+          private: formData.private === 'true',
           previewImage: formData.imgUrl,
         };
-        
-        console.log("Form Data before API call:", newGroup);
+        console.log(groupId, 'GROUPID HERE')
+        console.log(updatedGroup, 'UPDATEDGROUP HERE')
 
-        console.log("About to call API");
-        const createdGroup = await dispatch(groupActions.createNewGroup(newGroup));
-        console.log("API Response:", createdGroup);
+        const response = await dispatch(groupActions.updateGroup(updatedGroup, groupId)); 
+        console.log(response, 'RESPONSE HERE');
 
-        console.log(formData.name, 'FORMDATA NAME HERE')
-
-        if (createdGroup && createdGroup.groupId) {
-          history.push(`/groups/${createdGroup.groupId}`);
+        if (response && response.groupId) {
+          history.push(`${response.groupId}`);
         } else {
-          console.error('Error creating group.');
+          console.error('Error updating group.');
         }
       } catch (error) {
         const data = error.response?.data;
@@ -135,7 +128,7 @@ return (
           <h3>Meetup groups meet locally, in person and online. We'll connect you with people in your area, and more can join you online.</h3>
           <input
             type='text'
-            value={group.location}
+            value={formData.location}
             onChange={handleChange}
             placeholder="City, State"
             name='location'></input>
@@ -195,15 +188,15 @@ return (
           <div className='final-steps-border-div'>
             <h3>Is this group private or public?</h3>
             <select
-              name='privacy'
-              value={formData.privacy}
+              name='private'
+              value={formData.private}
               onChange={handleChange}
             >
               <option value=''>(select one)</option>
               <option value={true}>Private</option>
               <option value={false}>Public</option>
             </select>
-            {submissionAttempt && formData.privacy === '' && (
+            {submissionAttempt && formData.private === '' && (
     <p className='field-error'>Visibility Type is required</p>
   )}
           </div>

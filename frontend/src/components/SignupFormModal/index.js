@@ -71,13 +71,13 @@ function SignupFormModal() {
     if (newErrors.length === 0) {
       dispatch(sessionActions.signup({ email, username, firstName, lastName, password }))
         .then(() => {
-          console.log('Sign up successful!');
-          console.log("Session state after signup:", sessionState);
+          // console.log('Sign up successful!');
+          // console.log("Session state after signup:", sessionState);
           closeModal();
         })
         .catch(async (res) => {
           const data = await res.json();
-          console.log("Signup failed:", data);
+          // console.log("Signup failed:", data);
           if (data && data.errors) {
             setErrors(data.errors);
           }

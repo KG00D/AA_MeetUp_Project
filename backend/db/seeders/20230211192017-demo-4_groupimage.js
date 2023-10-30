@@ -9,18 +9,18 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
       {
         groupId:  1,
-        url: 'www.23478487437843872431.com',
+        url: 'https://media.carsandbids.com/cdn-cgi/image/width=2080,quality=80/da4b9237bacccdf19c0760cab7aec4a8359010b0/photos/Fvjv5bp3i5E.ruMVadnSt.jpg?t=160332255519',
         preview: true
       },
       {
         groupId:  2,
-        url: 'www.io42892389299843298423.com',
-        preview: false
+        url: 'https://media2.sevendaysvt.com/sevendaysvt/imager/coffee-cupcakes-and-coding-at-girl-develo/u/original/2255666/gdi-code-coffee.jpg',
+        preview: true
       },
       {
         groupId:  3,
-        url: 'www.342423233323124321.io',
-        preview: false
+        url: 'https://inktank.fi/wp-content/uploads/2013/09/Fight-Club-fight-club-30836125-1600-1200.jpg',
+        preview: true
       }
     ], {});
   },

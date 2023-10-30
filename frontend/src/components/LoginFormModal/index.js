@@ -49,7 +49,7 @@ function LoginFormModal({ onClose }) {
   }
 
   const handleSubmit = (e) => {
-    console.log(e)
+    // console.log(e)
     e.preventDefault();
     setErrors({});
     return dispatch(sessionActions.login({ credential, password }))

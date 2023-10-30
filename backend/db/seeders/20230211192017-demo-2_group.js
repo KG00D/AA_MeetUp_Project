@@ -9,30 +9,30 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
       {
         organizerId: 1,
-        name: 'Girls who Code',
-        about: 'A Group for Girls who Write Code',
-        type: 'A group',
-        private: true,
+        name: 'GT-R Meet & Greet',
+        about: 'A group for current and past GT-R owners',
+        type: 'In Person',
+        private: false,
         city: 'Oakland',
         state: 'California'
       },
       {
         organizerId: 2,
-        name: 'Kids who Code',
-        about: 'A Group for Kids who Write Code',
-        type: 'A group',
-        private: true,
+        name: 'Learn to Code!',
+        about: 'A group for people that want to learn how to code',
+        type: 'Online',
+        private: false,
         city: 'San Jose',
         state: 'California'
       },
       {
         organizerId: 3,
-        name: 'Guys who Code',
-        about: 'A Group for Guys who Write Code',
-        type: 'A group',
+        name: 'Fight Club',
+        about: 'We don\'t talk about Fight Club',
+        type: 'In Person',
         private: true,
-        city: 'Los Angelas',
-        state: 'California'
+        city: 'Philadelphia',
+        state: 'Pennsylvania'
       }
     ], );
   },

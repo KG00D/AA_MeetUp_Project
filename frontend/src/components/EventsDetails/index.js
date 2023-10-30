@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import * as eventActions from '../../store/events';
+// import * as groupActions from '../../store/groups';
+
 import ConfirmationModal from './ConfirmationModal';
 
 import './EventsDetails.css';
@@ -15,27 +16,27 @@ const EventsDetails = () => {
   
   const event = useSelector(state => state.events?.currentEvent);
   const sessionUser = useSelector(state => state.session?.user);
+
   const eventStart = new Date(event.startDate);
   const eventEnd = new Date(event.endDate);
   const eventFirstName = event?.Organizer?.firstName;
   const eventLastName = event?.Organizer?.lastName;
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(eventActions.getEventDetail(eventId));
+    // dispatch(groupActions.getGroupDetail(eventId));
   }, [dispatch, eventId]);
 
-  console.log(event, 'INSIDE COMPONENT EVENT PRINT')
-
-
-  if (!event) {
-    return <div>Loading...</div>;
-  }
 
   const handleBreadCrumb = () => {
     history.push('/events');
   };
+
+  const handleUpdate = () => {
+    alert("Feature coming soon");
+  };
+  
 
   const handleGroupCrumb = () => {
     const groupId = event.Group?.id
@@ -56,9 +57,11 @@ const EventsDetails = () => {
     setIsModalOpen(false);
   };
 
+  
+
   return (
     <div className='main-event-detail-container'>
-
+  
       {/* Top Container */}
       <div className='event-detail-header'>
         <div onClick={handleBreadCrumb}>
@@ -69,79 +72,84 @@ const EventsDetails = () => {
         <h1>{event.name}</h1>
         <h4>Hosted by {eventFirstName} {eventLastName}</h4>
       </div>
-
+  
       <div className='events-grey-container'>
         {/* Middle Container */}
         <div className='event-detail-main'>
-
-          {/* Left Section */}
-          <div className='img-div'>
-            <img src={event.previewImage || 'https://via.placeholder.com/600x400'} alt={event} />
-            
-            {/* Details Section */}
+  
+          {/* Left Container */}
+          <div className='event-detail-left'>
+            {/* Image Section */}
+            <div className='img-div-bottom'>
+            <img src={Array.isArray(event?.eventImages) && event.eventImages.length > 0 ? event.eventImages[0]?.url : 'https://via.placeholder.com/600x400'} alt={event?.name || 'Event'} />
+            </div>
+  
+            {/* Details Section below the Image */}
             <div className='event-detail-about'>
               <h2>Details</h2>
               <p>{event.description}</p>
             </div>
           </div>
-
+  
           {/* Right Section */}
-          <div className='event-detail-right-side'>
+          <div className='event-detail-right-side-bottom'>
             <div className='group-crumb-container'>
               <div className='event-detail-group-crumb' onClick={handleGroupCrumb}>
-                <img src={event.Group?.previewImage || 'https://via.placeholder.com/400x300'} alt={'group'} />
+                <img src={Array.isArray(event?.eventImages) && event.eventImages.length > 0 ? event.eventImages[0]?.url : 'https://via.placeholder.com/400x400'} alt={event?.name || 'Event'} />
+
               </div>
             </div>
-
+  
             <div className='event-detail-info'>
-              <div className='event-date'>
-                <img className='date-icon' src='https://img.icons8.com/color/96/calendar--v1.png' alt='date icon' />
-                <div className='timeSubDiv'>
-                  <div className='startDiv'>
-                    <h4>Start:</h4>
-                    <h5>{eventStart.toLocaleDateString()} &bull; {eventStart.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</h5>
-                  </div>
-                  <div className='endDiv'>
-                    <h4>End:</h4>
-                    <h5>{eventEnd.toLocaleDateString()} &bull; {eventEnd.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</h5>
-                  </div>
+            <div className='event-date'>
+              <img className='date-icon' src='https://img.icons8.com/color/96/calendar--v1.png' alt='date icon' />
+              <div className='timeSubDiv'>
+                <div className='startDiv'>
+                  <h4>Start:</h4>
+                  <h5>{eventStart.toLocaleDateString()} &bull; {eventStart.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</h5>
                 </div>
-              </div>
-              <div className='event-price'>
-                <img className='price-icon' src='https://img.icons8.com/color/96/us-dollar-circled--v1.png' alt='price icon' />
-                <h4>${event.price}</h4>
-              </div>
-              <div className='event-type-delete-wrapper'>
-                <div className='event-type'>
-                  {event.type === 'online' ? (
-                    <img className='type-icon' src='https://img.icons8.com/color/96/pc-on-desk.png' alt='online type icon' />
-                  ) : event.type === 'group' ? (
-                    <img className='type-icon' src='https://img.icons8.com/fluency/48/map-pin.png' alt='group type icon' />
-                  ) : null}
-                  <h4>{event.type}</h4>
+                <div className='endDiv'>
+                  <h4>End:</h4>
+                  <h5>{eventEnd.toLocaleDateString()} &bull; {eventEnd.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</h5>
                 </div>
-                {sessionUser?.id === event?.Organizer?.id && 
-                  <button className='delete-button' onClick={handleDelete}>Delete</button>
-                }
               </div>
             </div>
+            <div className='event-price'>
+            <img className='price-icon' src='https://img.icons8.com/color/96/us-dollar-circled--v1.png' alt='price icon' />
+            <h4>{event.price === 0 ? 'FREE' : `$${event.price}`}</h4>
+          </div>
+            <div className='event-type-delete-wrapper'>
+            <div className='event-type'>
+              {event.type && event.type.toLowerCase() === 'online' ? (
+                <img className='type-icon' src='https://img.icons8.com/color/96/pc-on-desk.png' alt='online type icon' />
+              ) : event.type && event.type.toLowerCase() === 'in person' ? (
+                <img className='type-icon' src='https://img.icons8.com/fluency/48/map-pin.png' alt='in person type icon' />
+              ) : null}
+              <h4>{event.type}</h4>
+            </div>
+              {sessionUser?.id === event?.Organizer?.id && 
+                <button className='delete-button' onClick={handleDelete}>Delete</button>
 
-            {/* Bottom Container */}
-            {/* <div className='event-detail-about'>
-              <h2>Details</h2>
-              <p>{event.description}</p>
-            </div> */}
+              }
+              <div>
+              <button className='update-button' onClick={handleUpdate}>Update</button>
 
-            <ConfirmationModal
-              isOpen={isModalOpen}
-              onClose={closeModal}
-              onConfirm={confirmDelete}
-            />
+
+              </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+  
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
-};
+}
+  
 
 export default EventsDetails;

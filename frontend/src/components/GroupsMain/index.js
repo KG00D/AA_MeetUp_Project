@@ -12,16 +12,15 @@ const GroupsMain = () => {
 
   const allGroups = useSelector((state) => state.groups.allGroups);
   const events = useSelector((state) => state.groups.currentGroupEvents);
-  console.log('allGroups ===', allGroups)
-  console.log('events ===', events)
+
 
   useEffect(() => {
     dispatch(getAllGroups());
   }, [dispatch]);
 
   const filterEvents = (data, id) => {
-    return data.filter((v) => v.groupId === id).length
-  }
+    return data.filter((v) => v.groupId === id).length;
+  };
 
   return (
     <div className='groups-list-card'>
@@ -38,8 +37,7 @@ const GroupsMain = () => {
         {Object.values(allGroups).map(({ id, previewImage, name, city, state, about, Events }) => (
           <div className='group-card' key={id} onClick={() => { console.log('Clicked on group card', id); history.push(`/groups/${id}`); }}>
             <div className='group-card-img'>
-              <img src={'https://via.placeholder.com/600x400'} alt={name} />
-
+              <img src={previewImage || 'https://via.placeholder.com/600x400'} alt={name} />
             </div>
 
             <div className='group-card-info'>

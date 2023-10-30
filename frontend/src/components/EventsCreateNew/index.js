@@ -62,7 +62,6 @@ const EventsCreateNew = () => {
   }, [dispatch, groupId]);
 
   const handleSubmit = async (e) => {
-    console.log('Clicking submit button')
     e.preventDefault();
 
     let formErrors = {};
@@ -109,6 +108,7 @@ const EventsCreateNew = () => {
       startDate,
       endDate,
       previewImage: imgUrl,
+      // groupImage: groupImgUrl
     };
   
     try {

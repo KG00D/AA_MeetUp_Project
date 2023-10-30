@@ -20,7 +20,7 @@ const { setModalContent, closeModal } = useModal();
     const history = useHistory();
 
     const handleLogout = async () => { 
-        console.log('logout button being clicked....') 
+        // console.log('logout button being clicked....') 
         await dispatch(sessionActions.logout());
         history.push('/'); 
     };
@@ -36,8 +36,8 @@ const { setModalContent, closeModal } = useModal();
     };
 
     useEffect(() => {
-        console.log("showLogin state:", showLogin);
-        console.log("showSignUp state:", showSignUp);
+        // console.log("showLogin state:", showLogin);
+        // console.log("showSignUp state:", showSignUp);
     }, [showLogin, showSignUp]);
 
     useEffect(() => {
@@ -90,7 +90,7 @@ const { setModalContent, closeModal } = useModal();
 
                 <button className="signup-btn" onClick={() => {
                     setModalContent(<SignupFormModal onClose={() => setShowSignUp(false)} />);
-                    console.log('Signup clicked');
+                    // console.log('Signup clicked');
                 }}>Sign Up</button>
             </div>
         );

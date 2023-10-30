@@ -9,25 +9,25 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
       {
         groupId: 1,
-        address: 'Classified',
-        city: 'Piedmont',
-        state: 'Italy',
+        address: '456 Brraaaaap Lane',
+        city: 'Oakland',
+        state: 'California',
         lat: 44.244167,
         lng: 7.769444,
       },
       {
         groupId: 2,
-        address: 'Classified',
-        city: 'Northern Territory',
-        state: 'Australia',
+        address: '123 Happy Lane',
+        city: 'San Jose',
+        state: 'California',
         lat: -25.344375,
         lng: 131.034401,
       },
       {
         groupId: 3,
         address: 'Classified',
-        city: 'Red Sea Governorate',
-        state: 'Egypt',
+        city: 'Classified',
+        state: 'Classified',
         lat: 27.3805833333,
         lng: 33.6318389
         ,

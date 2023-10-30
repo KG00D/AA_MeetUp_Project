@@ -4,26 +4,30 @@ import { useParams, useHistory } from 'react-router-dom';
 import GroupsEvents from '../GroupsEvents/GroupsEvents';
 import ConfirmationModal from './ConfirmationModal';
 import * as groupActions from '../../store/groups';
+import { getEventDetail } from '../../store/events';
 
 import './GroupsDetails.css';
 
 const GroupsDetails = () => {
+  
   const dispatch = useDispatch();
   const history = useHistory();
   const { groupId } = useParams();
 
   const group = useSelector((state) => state.groups.currentGroup)[0]; 
+  const groupsState = useSelector((state) => state.groups);
+
+
   const events = useSelector((state) => state.groups.currentGroupEvents);
-  
   const sessionUser = useSelector(state => state.session?.user);
 
   const [loaded, setLoaded] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
 
+  const previewImageUrl = group?.groupImages?.find(img => img.preview)?.url;
   const [userIsOrganizer, setUserIsOrganizer] = useState(false);
 
   useEffect(() => {
-    console.log("Current Group from Redux:", group);
     const isUserOrganizer = sessionUser?.id === group?.Organizer?.id;
     setUserIsOrganizer(isUserOrganizer);
   }, [sessionUser, group]);
@@ -31,6 +35,7 @@ const GroupsDetails = () => {
   useEffect(() => {
     dispatch(groupActions.getGroupDetail(groupId))
     dispatch(groupActions.getGroupEvents(groupId))
+    // dispatch(getEventDetail.getEventDetail())
     setLoaded(true)
   }, [dispatch, groupId])
 
@@ -46,15 +51,9 @@ const GroupsDetails = () => {
     history.push(`/groups/${groupId}/events`);
   };
 
-  // const handleDelete = async () => {
-  //   if (window.confirm('Are you sure you want to remove this group?')) {
-  //     dispatch(groupActions.removeGroup(groupId));
-  //     history.push(`/groups`);
-  //   }
-  // };
 
   const handleDelete = async () => {
-    console.log("Opening modal");
+    // console.log("Opening modal");
     setModalOpen(true);
   };
 
@@ -81,7 +80,8 @@ const GroupsDetails = () => {
             <div onClick={handleBreadCrumb}>Groups</div>
           </div>
           <div className='group-info'>
-          <img src={group?.previewImage || 'https://via.placeholder.com/600x400'} alt='group' />
+          <img src={previewImageUrl || 'https://via.placeholder.com/600x400'} alt='group' />
+
           <div className='group-info-content'>
             <div className='group-main-text'>
               <h1>{group?.name}</h1>

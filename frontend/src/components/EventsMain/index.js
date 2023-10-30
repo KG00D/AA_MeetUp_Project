@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useHistory, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllEvents } from '../../store/events';
+//import { getEventDetail } from '../../store/events';
+// import { getGroupImages } from '../../store/groups';
 import './EventsMain.css';
 
 const EventCard = ({ event, onClick }) => {
@@ -10,22 +12,24 @@ const EventCard = ({ event, onClick }) => {
   return (
     <div className='event-card' onClick={onClick}>
       <div className='event-card-container'>
-        <div className='event-card-image'>
-          <img src={event.previewImage || 'https://via.placeholder.com/600x400'} alt='event' />
+        <div className='event-card-top'>
+          <div className='event-card-image'>
+            <img src={event.eventImages[0].url} alt='event' />
+          </div>
+          <div className='event-details'>
+            <h4>{event?.Venue?.city}, {event?.Venue?.state}</h4>
+            <h2>{event.name}</h2> 
+            <h4>
+              {eventDate.toLocaleDateString()} &#8226;{' '}
+              {eventDate.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </h4>
+          </div>
         </div>
-        <div className='event-details'>
-          <h4>
-            {eventDate.toLocaleDateString()} &#8226;{' '}
-            {eventDate.toLocaleTimeString('en-US', {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-          </h4>
-          <h2>{event.name}</h2>
-          {event?.Venue?.city && <h4>{event.Venue.city}</h4>}
-        </div>
+        <p className='event-description'>{event?.description}</p>
       </div>
-      <p>{event.description}</p>
     </div>
   );
 };
@@ -39,6 +43,8 @@ const EventsMain = () => {
     dispatch(getAllEvents());
   }, [dispatch]);
 
+  const sortedEvents = events.slice().sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+
   return (
     <div className='events-list-card'>
       <div className='events-list-header'>
@@ -51,7 +57,7 @@ const EventsMain = () => {
         <h4>Events in Meetup</h4>
       </div>
       <div className='main-event-container'>
-        {events.map((event, idx) => (
+        {sortedEvents.map((event, idx) => (
           <EventCard
             key={idx}
             event={event}

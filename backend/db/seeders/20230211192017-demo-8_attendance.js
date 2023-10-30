@@ -14,17 +14,17 @@ module.exports = {
         {
           eventId: 1,
           userId: 2,
-          status: 'FULL'
+          status: 'Open'
         },
         {
           eventId: 2,
           userId: 3,
-          status: 'FULL'
+          status: 'Open'
         },
         {
           eventId: 3,
           userId: 1,
-          status: 'FULL'
+          status: 'Open'
         }
       ], {});
     } catch (error) {

@@ -9,17 +9,17 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
       {
         userId: 1,
-        groupId:  2,
+        groupId:  1,
         status: 'true'
       },
       {
         userId: 2,
-        groupId:  3,
+        groupId:  2,
         status: 'true'
       },
       {
         userId: 3,
-        groupId:  1,
+        groupId:  3,
         status: 'true'
       }
     ], options);
