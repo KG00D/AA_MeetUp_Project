@@ -50,20 +50,29 @@ export const createNewGroup = (group) => async (dispatch) => {
 export const updateGroup = (group, groupId) => async (dispatch) => {
   console.log('GroupId:', groupId);
 
-  const res = await csrfFetch(`/api/groups/${groupId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(group)
-  });
-  if (res.ok) {
-    const data = await res.json();
-    dispatch({ type: UPDATE_GROUP, group: data });
-  } else {
-    console.log('Error Updating Group')
+  try {
+    const res = await csrfFetch(`/api/groups/${groupId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(group)
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      dispatch({ type: UPDATE_GROUP, group: data });
+      return data;
+    } else {
+      const error = await res.json();
+      throw new Error(error.message || 'Error Updating Group');
+    }
+  } catch (error) {
+    console.error('Error Updating Group:', error);
+    throw error; 
   }
 };
+
 
 export const removeGroup = (groupId) => async (dispatch) => {
   const res = await csrfFetch(`/api/groups/${groupId}`, {

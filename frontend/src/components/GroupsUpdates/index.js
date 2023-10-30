@@ -100,8 +100,8 @@ const GroupsUpdates = () => {
         const response = await dispatch(groupActions.updateGroup(updatedGroup, groupId)); 
         console.log(response, 'RESPONSE HERE');
 
-        if (response && response.groupId) {
-          history.push(`${response.groupId}`);
+        if (response && response.id) {
+          history.push(`/groups/${response.id}`);
         } else {
           console.error('Error updating group.');
         }
