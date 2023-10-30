@@ -53,7 +53,6 @@ const GroupsDetails = () => {
 
 
   const handleDelete = async () => {
-    // console.log("Opening modal");
     setModalOpen(true);
   };
 

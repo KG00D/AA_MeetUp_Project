@@ -20,7 +20,6 @@ const { setModalContent, closeModal } = useModal();
     const history = useHistory();
 
     const handleLogout = async () => { 
-        // console.log('logout button being clicked....') 
         await dispatch(sessionActions.logout());
         history.push('/'); 
     };
@@ -36,8 +35,6 @@ const { setModalContent, closeModal } = useModal();
     };
 
     useEffect(() => {
-        // console.log("showLogin state:", showLogin);
-        // console.log("showSignUp state:", showSignUp);
     }, [showLogin, showSignUp]);
 
     useEffect(() => {

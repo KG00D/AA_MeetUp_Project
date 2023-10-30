@@ -43,7 +43,6 @@ const GroupsCreateNew = () => {
   };
 
   const handleSubmit = async e => {
-    console.log("handleSubmit triggered");
     e.preventDefault();
     setSubmissionAttempt(true);
     
@@ -88,16 +87,12 @@ const GroupsCreateNew = () => {
           previewImage: formData.imgUrl,
         };
         
-        console.log("Form Data before API call:", newGroup);
 
-        console.log("About to call API");
         const createdGroup = await dispatch(groupActions.createNewGroup(newGroup));
-        console.log("API Response:", createdGroup);
 
         if (createdGroup && createdGroup.groupId) {
           history.push(`/groups/${createdGroup.groupId}`);
         } else {
-          console.log('Test');
         }
       } catch (error) {
         const data = error.response?.data;

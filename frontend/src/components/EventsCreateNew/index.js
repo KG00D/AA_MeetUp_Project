@@ -112,9 +112,7 @@ const EventsCreateNew = () => {
     };
   
     try {
-      const res = await dispatch(eventActions.createNewEvent(groupId, event));
-      console.log(res, 'HERE IS THE CREATE RESPONSE:')
-      
+      const res = await dispatch(eventActions.createNewEvent(groupId, event));      
       if (res && res.id) {
         history.push(`/events/${res.id}`);
       } else {

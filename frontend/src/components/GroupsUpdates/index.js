@@ -94,11 +94,8 @@ const GroupsUpdates = () => {
           private: formData.private === 'true',
           previewImage: formData.imgUrl,
         };
-        console.log(groupId, 'GROUPID HERE')
-        console.log(updatedGroup, 'UPDATEDGROUP HERE')
-
+  
         const response = await dispatch(groupActions.updateGroup(updatedGroup, groupId)); 
-        console.log(response, 'RESPONSE HERE');
 
         if (response && response.id) {
           history.push(`/groups/${response.id}`);

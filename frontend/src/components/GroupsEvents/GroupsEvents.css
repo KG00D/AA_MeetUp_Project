@@ -79,7 +79,7 @@
     flex-direction: column;
   }
   
-/* 
+
   .event-card-container {
     display: flex;
     gap: 20px;
@@ -87,7 +87,7 @@
     width: 100%;
     flex-direction: column;
     box-sizing: border-box;
-  } */
+  }
   
   .event-image-description {
     display: flex;
