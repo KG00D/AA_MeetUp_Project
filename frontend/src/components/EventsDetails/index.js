@@ -70,23 +70,18 @@ const EventsDetails = () => {
       </div>
   
       <div className='events-grey-container'>
-        {/* Middle Container */}
         <div className='event-detail-main'>
-          {/* Left Container */}
           <div className='event-detail-left'>
-            {/* Image Section */}
             <div className='img-div-bottom'>
               <img src={Array.isArray(event?.eventImages) && event.eventImages.length > 0 ? event.eventImages[0]?.url : 'https://via.placeholder.com/600x400'} alt={event?.name || 'Event'} />
             </div>
   
-            {/* Details Section below the Image */}
             <div className='event-detail-about'>
               <h2>Details</h2>
               <p>{event.description}</p>
             </div>
           </div>
   
-          {/* Right Section */}
           <div className='event-detail-right-side-bottom'>
             <div className='group-crumb-container'>
               <div className='event-detail-group-crumb' onClick={handleGroupCrumb}>

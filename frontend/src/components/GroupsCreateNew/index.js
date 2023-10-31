@@ -204,7 +204,7 @@ const GroupsCreateNew = () => {
               </div>
           </div>
 
-          <button type='submit' className='newGroupSubmitButton' disabled={errors.length > 0}>
+          <button type='submit' className='new-group-submit' disabled={errors.length > 0}>
             Create group
           </button>
         </form>

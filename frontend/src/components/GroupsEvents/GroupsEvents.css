@@ -66,14 +66,6 @@
     clear: both;
   }
   
-  /* .event-card-container {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
-    width: 100%;
-    flex-direction: column; 
-  } */
-
   .event-image-description {
     display: flex;
     flex-direction: column;

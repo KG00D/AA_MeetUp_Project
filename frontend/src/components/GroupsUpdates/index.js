@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import * as groupActions from '../../store/groups';
 import { getGroupDetail } from '../../store/groups';
+import './GroupsUpdates.css'
 
 const GroupsUpdates = () => {
   const dispatch = useDispatch();
@@ -112,9 +113,9 @@ const GroupsUpdates = () => {
   };
 
 return (
-  <div id='main-form-container'>
-    <div className='sub-form-container'>
-      <div className='form-header'>
+  <div id='update-form'>
+    <div className='update-sub-form'>
+      <div className='update-form-header'>
         <h3>Update your groups information</h3>
         <h1>We'll walk you through a few steps to update your group's information</h1>
       </div>
@@ -211,7 +212,7 @@ return (
             </div>
         </div>
 
-        <button type='submit' className='newGroupSubmitButton'>
+        <button type='submit' className='new-group-submit'>
         Update Group
         </button>
       </form>

@@ -108,7 +108,6 @@ const EventsCreateNew = () => {
       startDate,
       endDate,
       previewImage: imgUrl,
-      // groupImage: groupImgUrl
     };
   
     try {

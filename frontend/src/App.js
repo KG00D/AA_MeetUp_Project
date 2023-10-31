@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch} from "react-router-dom";
 import { Modal, ModalProvider } from './context';
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
-//import Navigation from "./components/Navigation";
 import HomePage from "./components/Home";
-import SplashPage from "./components/SplashPage";
 import EventsMain from "./components/EventsMain";
 import EventsDetails from "./components/EventsDetails";
 import EventsCreateNew from "./components/EventsCreateNew";
@@ -32,9 +30,6 @@ function App() {
         <Switch>
           <Route exact path="/">
            <HomePage />
-          </Route>
-          <Route exact path="/splash">
-            <SplashPage />
           </Route>
           <Route exact path="/groups/new">
             <GroupsCreateNew />
